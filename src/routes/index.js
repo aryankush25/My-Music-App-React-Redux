@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 import Landing from "./Landing";
-import WithHeader from "../containers/LayoutWithHeader";
+import NavBar from "../containers/NavBar";
 import Home from "./Home";
 import About from "./About";
 import Users from "./Users";
 
 const Routes = () => {
-  console.log("asdas");
   return (
     <div>
       <Switch>
@@ -17,11 +16,11 @@ const Routes = () => {
           render={props => {
             return (
               <div>
-                <WithHeader {...props}>
-                  <Route path="home" exact component={Home} />
-                  <Route path="about" exact component={About} />
-                  <Route path="users" exact component={Users} />
-                </WithHeader>
+                <NavBar {...props}>
+                  <Route path="/home" exact component={Home} />
+                  <Route path="/about" exact component={About} />
+                  <Route path="/users" exact component={Users} />
+                </NavBar>
               </div>
             );
           }}

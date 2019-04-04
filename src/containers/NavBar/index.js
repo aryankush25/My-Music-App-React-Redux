@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "../../components/Header";
 
-const WithHeader = props => {
+const NavBar = props => {
   console.log(props);
   return (
     <div>
@@ -11,4 +11,4 @@ const WithHeader = props => {
   );
 };
 
-export default WithHeader;
+export default NavBar;
