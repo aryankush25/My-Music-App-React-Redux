@@ -7,19 +7,20 @@ import About from "./About";
 import Users from "./Users";
 
 const Routes = () => {
+  console.log("asdas");
   return (
     <div>
       <Switch>
-        <Route path="/" exact component={Landing} />
+        <Route path="/login" exact component={Landing} />
         <Route
-          path="*"
+          path="/"
           render={props => {
             return (
               <div>
                 <WithHeader {...props}>
-                  <Route path="/Home/" exact component={Home} />
-                  <Route path="/about/" exact component={About} />
-                  <Route path="/users/" exact component={Users} />
+                  <Route path="home" exact component={Home} />
+                  <Route path="about" exact component={About} />
+                  <Route path="users" exact component={Users} />
                 </WithHeader>
               </div>
             );
