@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import Index from "../routes/Index";
-import About from "../routes/About";
-import Users from "../routes/Users";
+import Routes from '../routes'
 
 class App extends Component {
   render() {
@@ -13,7 +11,7 @@ class App extends Component {
           <nav>
             <ul>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/Home">Home</Link>
               </li>
               <li>
                 <Link to="/about/">About</Link>
@@ -23,10 +21,7 @@ class App extends Component {
               </li>
             </ul>
           </nav>
-  
-          <Route path="/" exact component={Index} />
-          <Route path="/about/" component={About} />
-          <Route path="/users/" component={Users} />
+          <Routes />
         </div>
       </Router>
     );
