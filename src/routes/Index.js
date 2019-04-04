@@ -14,6 +14,7 @@ const Routes = () => {
         <Route
           path="*"
           render={props => {
+            console.log(props);
             return (
               <div>
                 <WithHeader {...props}>

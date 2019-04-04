@@ -4,9 +4,6 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Routes from "../routes";
 
 class App extends Component {
-  componentDidMount() {
-    console.log("Hi I am WOekin");
-  }
   render() {
     return (
       <div>
