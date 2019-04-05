@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import headerImage from "../../assets/images/acoustic-guitar.png";
-import "./index.css";
+import "./index.scss";
 
 const LoginRegisterContainer = props => {
   return (

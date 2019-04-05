@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import LoginRegisterContainer from "../../components/LoginRegister";
-import "./index.css";
+import "./index.scss";
 
 const RegisterFormDiv = () => {
   return (
