@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./components/App";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";
 import "./assets/styles/custom.scss";
 
