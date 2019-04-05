@@ -6,30 +6,3 @@ body {
   background-size: cover;
   height: -webkit-fill-available;
 }
-
-.login-container {
-  text-align: center;
-  padding: 3% 5% 3% 3%;
-}
-
-.card {
-  width: 450px;
-  max-width: 540px;
-}
-
-.form-signin {
-  padding: 20px 40px;
-  text-align: left;
-}
-
-.card-img {
-  padding-top: 20px;
-}
-
-.form-lable {
-  padding-top: 25px;
-}
-
-.form-signin button {
-  margin-top: 50px;
-}

@@ -1,0 +1,18 @@
+.login-register-container {
+  text-align: center;
+  padding: 3% 5% 3% 3%;
+}
+
+.card {
+  width: 450px;
+  max-width: 540px;
+}
+
+.card-img {
+  padding-top: 20px;
+}
+
+.card-img img {
+  width: 100px;
+  height: 100px;
+}

@@ -1,11 +1,21 @@
 import React from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
-import LoginRegisterContainer from "../components/LoginRegister";
+import LoginRegisterContainer from "../../components/LoginRegister";
+import "./index.css";
 
-const LoginFormDiv = () => {
+const RegisterFormDiv = () => {
   return (
     <div className="card-block">
       <form className="form-signin">
+        <label className="form-lable">Name</label>
+        <input
+          type="text"
+          id="inputName"
+          className="form-control"
+          placeholder="Name"
+          required
+          autoFocus
+        />
         <label className="form-lable">Email Address</label>
         <input
           type="email"
@@ -24,21 +34,24 @@ const LoginFormDiv = () => {
           required
         />
         <button className="btn btn-lg btn-info btn-block" type="submit">
-          Sign in
+          Sign up for free
         </button>
       </form>
       <p className="mt-5 mb-3 text-muted">
-        Don't have an account? <Link to="/register">Register</Link>
+        Already have an account? <Link to="/login">Log In</Link>
       </p>
     </div>
   );
 };
 
-const Login = () => {
-  const loginHeaderMsg = "Log in to your account";
+const Register = () => {
+  const registerHeaderMsg = "Create an account";
   return (
-    <LoginRegisterContainer headerMsg={loginHeaderMsg} form={LoginFormDiv} />
+    <LoginRegisterContainer
+      headerMsg={registerHeaderMsg}
+      form={RegisterFormDiv}
+    />
   );
 };
 
-export default Login;
+export default Register;
