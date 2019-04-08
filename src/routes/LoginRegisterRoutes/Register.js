@@ -13,17 +13,27 @@ const RegisterFormDiv = props => {
 
   const onFormSubmit = event => {
     event.preventDefault();
-    console.log(formData);
 
     auth()
       .createUserWithEmailAndPassword(formData.email, formData.password)
       .then(() => {
         // window.localStorage.setItem("musicAppSignedIn", true);
-        auth()
-          .signOut()
-          .then(() => {
-            props.history.push("/login");
-          });
+        var user = auth().currentUser;
+        if (user) {
+          user
+            .updateProfile({
+              displayName: formData.name
+            })
+            .then(() => {
+              console.log(user);
+              auth()
+                .signOut()
+                .then(() => {
+                  console.log("Register and LogOut Done");
+                  props.history.push("/login");
+                });
+            });
+        }
       })
       .catch(function(error) {
         var errorCode = error.code;
