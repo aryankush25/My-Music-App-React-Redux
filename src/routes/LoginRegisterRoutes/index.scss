@@ -1,0 +1,25 @@
+.form-signin {
+  padding: 20px 40px;
+  text-align: left;
+}
+
+.form-lable {
+  padding-top: 25px;
+}
+
+.form-signin button {
+  margin-top: 50px;
+}
+
+.valid-form {
+  top: 100%;
+  z-index: 5;
+  max-width: 100%;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #fff;
+  background-color: rgba(246, 68, 13, 0.9);
+  border-radius: 0.25rem;
+}
