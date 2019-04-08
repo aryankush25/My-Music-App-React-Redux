@@ -4,12 +4,34 @@ import { auth } from "firebase";
 import LoginRegisterContainer from "../../components/LoginRegister";
 import "./index.scss";
 
+const RegisterButton = props => {
+  if (props.isLoading === true) {
+    return (
+      <button className="btn btn-lg btn-info btn-block" type="button" disabled>
+        <span
+          className="spinner-grow spinner-grow-sm"
+          role="status"
+          aria-hidden="true"
+        />
+        Loading...
+      </button>
+    );
+  } else {
+    return (
+      <button className="btn btn-lg btn-info btn-block" type="submit">
+        Sign up for free
+      </button>
+    );
+  }
+};
+
 const RegisterFormDiv = props => {
   var [formData, updateFormData] = useState({
     name: "",
     email: "",
     password: "",
-    errorMessage: "Everything OK"
+    errorMessage: "Enter Details",
+    isLoading: false
   });
 
   const onFormSubmit = event => {
@@ -20,6 +42,11 @@ const RegisterFormDiv = props => {
       formData.password !== "" &&
       formData.name !== ""
     ) {
+      updateFormData({
+        ...formData,
+        isLoading: true
+      });
+      props.reRenderComponent();
       auth()
         .createUserWithEmailAndPassword(formData.email, formData.password)
         .then(() => {
@@ -47,6 +74,10 @@ const RegisterFormDiv = props => {
           if (errorCode === "auth/weak-password") {
             formData.errorMessage = "The password is too weak.";
           }
+          updateFormData({
+            ...formData,
+            isLoading: false
+          });
           props.reRenderComponent();
           console.log(error);
         });
@@ -133,9 +164,8 @@ const RegisterFormDiv = props => {
             onChange={handleChangePassword}
           />
         </div>
-        <button className="btn btn-lg btn-info btn-block" type="submit">
-          Sign up for free
-        </button>
+
+        <RegisterButton isLoading={formData.isLoading} />
       </form>
       <p className="mt-5 mb-3 text-muted">
         Already have an account? <Link to="/login">Log In</Link>
@@ -156,7 +186,7 @@ class Register extends React.Component {
       <LoginRegisterContainer
         headerMsg={this.registerHeaderMsg}
         form={RegisterFormDiv}
-        history={this.history}
+        history={this.props.history}
         reRenderComponent={this.reRenderComponent}
       />
     );
