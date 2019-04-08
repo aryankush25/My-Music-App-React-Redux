@@ -10,3 +10,16 @@
 .form-signin button {
   margin-top: 50px;
 }
+
+.valid-form {
+  top: 100%;
+  z-index: 5;
+  max-width: 100%;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #fff;
+  background-color: rgba(40, 167, 69, 0.9);
+  border-radius: 0.25rem;
+}
