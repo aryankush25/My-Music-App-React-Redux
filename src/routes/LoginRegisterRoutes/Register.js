@@ -2,60 +2,43 @@ import React, { useState } from "react";
 import { BrowserRouter as Route, Link } from "react-router-dom";
 import { auth } from "firebase";
 import LoginRegisterContainer from "../../components/LoginRegister";
+import SubmitButton from "../../components/SubmitButton/SubmitButton";
 import "./index.scss";
 
-const RegisterButton = props => {
-  if (props.isLoading === true) {
-    return (
-      <button className="btn btn-lg btn-info btn-block" type="button" disabled>
-        <span
-          className="spinner-grow spinner-grow-sm"
-          role="status"
-          aria-hidden="true"
-        />
-        Loading...
-      </button>
-    );
-  } else {
-    return (
-      <button className="btn btn-lg btn-info btn-block" type="submit">
-        Sign up for free
-      </button>
-    );
+class RegisterFormDiv extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
+      errorMessage: "Enter Details",
+      isErrorExists: false,
+      isLoading: false
+    };
   }
-};
 
-const RegisterFormDiv = props => {
-  var [formData, updateFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    errorMessage: "Enter Details",
-    isLoading: false
-  });
-
-  const onFormSubmit = event => {
+  onFormSubmit = event => {
     event.preventDefault();
 
     if (
-      formData.email !== "" &&
-      formData.password !== "" &&
-      formData.name !== ""
+      this.state.email !== "" &&
+      this.state.password !== "" &&
+      this.state.name !== ""
     ) {
-      updateFormData({
-        ...formData,
+      this.setState({
+        ...this.state,
         isLoading: true
       });
-      props.reRenderComponent();
       auth()
-        .createUserWithEmailAndPassword(formData.email, formData.password)
+        .createUserWithEmailAndPassword(this.state.email, this.state.password)
         .then(() => {
           // window.localStorage.setItem("musicAppSignedIn", true);
           var user = auth().currentUser;
           if (user) {
             user
               .updateProfile({
-                displayName: formData.name
+                displayName: this.state.name
               })
               .then(() => {
                 console.log(user);
@@ -63,122 +46,140 @@ const RegisterFormDiv = props => {
                   .signOut()
                   .then(() => {
                     console.log("Register and LogOut Done");
-                    props.history.push("/login");
+                    this.props.history.push("/login");
                   });
               });
           }
         })
-        .catch(function(error) {
+        .catch(error => {
           var errorCode = error.code;
-          formData.errorMessage = error.message;
+          this.setState({
+            ...this.state,
+            errorMessage: error.message,
+            isErrorExists: true
+          });
           if (errorCode === "auth/weak-password") {
-            formData.errorMessage = "The password is too weak.";
+            this.setState({
+              ...this.state,
+              errorMessage: "The password is too weak."
+            });
           }
-          updateFormData({
-            ...formData,
+          this.setState({
+            ...this.state,
             isLoading: false
           });
-          props.reRenderComponent();
           console.log(error);
         });
     } else {
-      if (formData.password === "") {
-        formData.errorMessage = "Enter Password";
-        props.reRenderComponent();
+      if (this.state.password === "") {
+        this.setState({
+          ...this.state,
+          errorMessage: "Enter Password",
+          isErrorExists: true
+        });
       }
-      if (formData.email === "") {
-        formData.errorMessage = "Enter Email";
-        props.reRenderComponent();
+      if (this.state.email === "") {
+        this.setState({
+          ...this.state,
+          errorMessage: "Enter Email",
+          isErrorExists: true
+        });
       }
-      if (formData.name === "") {
-        formData.errorMessage = "Enter Name";
-        props.reRenderComponent();
+      if (this.state.name === "") {
+        this.setState({
+          ...this.state,
+          errorMessage: "Enter Name",
+          isErrorExists: true
+        });
       }
     }
   };
 
-  const handleChangeName = event => {
+  handleChangeName = event => {
     const { value } = event.target;
-    updateFormData({
-      ...formData,
+    this.setState({
+      ...this.state,
       name: value
     });
   };
 
-  const handleChangeEmail = event => {
+  handleChangeEmail = event => {
     const { value } = event.target;
-    updateFormData({
-      ...formData,
+    this.setState({
+      ...this.state,
       email: value
     });
   };
 
-  const handleChangePassword = event => {
+  handleChangePassword = event => {
     const { value } = event.target;
-    updateFormData({
-      ...formData,
+    this.setState({
+      ...this.state,
       password: value
     });
   };
 
-  return (
-    <div className="card-block">
-      <div className="valid-form"> {formData.errorMessage} </div>
-      <form
-        className="form-signin needs-validation"
-        onSubmit={onFormSubmit}
-        noValidate
-      >
-        <div>
-          <label className="form-lable">Name</label>
-          <input
-            type="text"
-            id="inputName"
-            className="form-control"
-            placeholder="Name"
-            required
-            autoFocus
-            onChange={handleChangeName}
-          />
-        </div>
-        <div>
-          <label className="form-lable">Email Address</label>
-          <input
-            type="email"
-            id="inputEmail"
-            className="form-control"
-            placeholder="Email address"
-            required
-            autoFocus
-            onChange={handleChangeEmail}
-          />
-        </div>
-        <div>
-          <label className="form-lable">Password</label>
-          <input
-            type="password"
-            id="inputPassword"
-            className="form-control"
-            placeholder="Password"
-            required
-            onChange={handleChangePassword}
-          />
-        </div>
-
-        <RegisterButton isLoading={formData.isLoading} />
-      </form>
-      <p className="mt-5 mb-3 text-muted">
-        Already have an account? <Link to="/login">Log In</Link>
-      </p>
-    </div>
-  );
-};
-
-class Register extends React.Component {
-  reRenderComponent = () => {
-    this.forceUpdate();
+  renderErrorLable = () => {
+    if (this.state.isErrorExists === true) {
+      return <div className="valid-form"> {this.state.errorMessage} </div>;
+    }
   };
 
+  render() {
+    return (
+      <div className="card-block">
+        {this.renderErrorLable()}
+        <form className="form-signin" onSubmit={this.onFormSubmit} noValidate>
+          <div>
+            <label className="form-lable">Name</label>
+            <input
+              type="text"
+              id="inputName"
+              className="form-control"
+              placeholder="Name"
+              required
+              autoFocus
+              onChange={this.handleChangeName}
+            />
+          </div>
+          <div>
+            <label className="form-lable">Email Address</label>
+            <input
+              type="email"
+              id="inputEmail"
+              className="form-control"
+              placeholder="Email address"
+              required
+              autoFocus
+              onChange={this.handleChangeEmail}
+            />
+          </div>
+          <div>
+            <label className="form-lable">Password</label>
+            <input
+              type="password"
+              id="inputPassword"
+              className="form-control"
+              placeholder="Password"
+              required
+              onChange={this.handleChangePassword}
+            />
+          </div>
+
+          <SubmitButton
+            isLoading={this.state.isLoading}
+            buttonData={"Sign up for free"}
+          />
+        </form>
+        <p className="mt-5 mb-3 text-muted">
+          Already have an account? <Link to="/login">Log In</Link>
+        </p>
+      </div>
+    );
+  }
+}
+
+class Register extends React.Component {
   registerHeaderMsg = "Create an account";
 
   render() {
@@ -187,7 +188,6 @@ class Register extends React.Component {
         headerMsg={this.registerHeaderMsg}
         form={RegisterFormDiv}
         history={this.props.history}
-        reRenderComponent={this.reRenderComponent}
       />
     );
   }
