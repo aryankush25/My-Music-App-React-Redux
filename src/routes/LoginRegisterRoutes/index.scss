@@ -1,3 +1,5 @@
+@import "../../utils/ConstantKeywords/colorConstants.scss";
+
 .form-signin {
   padding: 20px 40px;
   text-align: left;
@@ -11,7 +13,7 @@
   margin-top: 50px;
 }
 
-.valid-form {
+.invalid-form {
   top: 100%;
   z-index: 5;
   max-width: 100%;
@@ -19,7 +21,7 @@
   margin-top: 0.1rem;
   font-size: 0.875rem;
   line-height: 1.5;
-  color: #fff;
-  background-color: rgba(246, 68, 13, 0.9);
+  color: $INVALID_FORM_COLOR;
+  background-color: $INVALID_FORM_BG_COLOR;
   border-radius: 0.25rem;
 }

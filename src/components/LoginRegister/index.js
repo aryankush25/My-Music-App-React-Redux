@@ -1,5 +1,4 @@
 import React from "react";
-import { BrowserRouter as Route, Link } from "react-router-dom";
 import headerImage from "../../assets/images/acoustic-guitar.png";
 import "./index.scss";
 
@@ -13,10 +12,9 @@ const LoginRegisterContainer = props => {
           </div>
           <h1 className="h3 mb-3 font-weight-normal">{props.headerMsg}</h1>
         </div>
-        <props.form
-          history={props.history}
-          reRenderComponent={props.reRenderComponent}
-        />
+        <div>
+          <props.children />
+        </div>
       </div>
     </div>
   );
