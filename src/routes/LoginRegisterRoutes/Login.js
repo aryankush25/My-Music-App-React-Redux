@@ -6,11 +6,9 @@ class Login extends React.Component {
   loginHeaderMsg = "Log in to your account";
   render() {
     return (
-      <LoginRegisterContainer
-        headerMsg={this.loginHeaderMsg}
-        form={LoginFormDiv}
-        history={this.props.history}
-      />
+      <LoginRegisterContainer headerMsg={this.loginHeaderMsg}>
+        {LoginFormDiv}
+      </LoginRegisterContainer>
     );
   }
 }

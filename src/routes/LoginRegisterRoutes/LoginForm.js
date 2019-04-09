@@ -1,10 +1,15 @@
 import React from "react";
-import { Link } from "react-router-dom";
-// import { auth } from "firebase";
-import SubmitButton from "../../components/SubmitButton/SubmitButton";
-import "./index.scss";
+import { withRouter, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
+import SubmitButton from "../../components/SubmitButton/SubmitButton";
+import "./index.scss";
+import validateEmail from "../../utils/ValidationFunctions/validateEmail";
+import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import {
+  AUTH_WRONG_PASS,
+  WRONG_PASS
+} from "../../utils/ConstantKeywords/errorConstants";
 
 class LoginFormDiv extends React.Component {
   constructor(props) {
@@ -12,7 +17,7 @@ class LoginFormDiv extends React.Component {
     this.state = {
       email: "",
       password: "",
-      errorMessage: "Enter Details",
+      errorMessage: "",
       isErrorExists: false,
       isLoading: false
     };
@@ -21,64 +26,44 @@ class LoginFormDiv extends React.Component {
   onFormSubmit = event => {
     event.preventDefault();
 
-    if (this.state.email !== "" && this.state.password !== "") {
+    var emailValidObj = validateEmail(this.state.email);
+    var passwordValidObj = validatePassword(this.state.password);
+
+    if (emailValidObj.isErrorExists === true) {
+      this.setState({
+        errorMessage: emailValidObj.errorMessage,
+        isErrorExists: emailValidObj.isErrorExists
+      });
+    } else if (passwordValidObj.isErrorExists === true) {
+      this.setState({
+        errorMessage: passwordValidObj.errorMessage,
+        isErrorExists: passwordValidObj.isErrorExists
+      });
+    } else {
       this.setState({
         isLoading: true
       });
-
-      let lastAtPos = this.state.email.lastIndexOf("@");
-      let lastDotPos = this.state.email.lastIndexOf(".");
-
-      if (
-        !(
-          lastAtPos < lastDotPos &&
-          lastAtPos > 0 &&
-          this.state.email.indexOf("@@") === -1 &&
-          lastDotPos > 2 &&
-          this.state.email.length - lastDotPos > 2
-        )
-      ) {
-        this.setState({
-          errorMessage: "Email is not valid",
-          isLoading: false,
-          isErrorExists: true
-        });
-      } else {
-        firebase
-          .auth()
-          .signInWithEmailAndPassword(this.state.email, this.state.password)
-          .then(() => {
-            this.props.history.push("/home");
-          })
-          .catch(error => {
-            var errorCode = error.code;
-            this.setState({
-              errorMessage: error.message,
-              isErrorExists: true
-            });
-            if (errorCode === "auth/wrong-password") {
-              this.setState({
-                errorMessage: "Wrong password."
-              });
-            }
-            this.setState({
-              isLoading: false
-            });
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(this.state.email, this.state.password)
+        .then(() => {
+          this.props.history.replace("/home");
+        })
+        .catch(error => {
+          var errorCode = error.code;
+          this.setState({
+            errorMessage: error.message,
+            isErrorExists: true
           });
-      }
-    } else {
-      if (this.state.password === "") {
-        this.setState({
-          errorMessage: "Enter Password",
-          isErrorExists: true
+          if (errorCode === AUTH_WRONG_PASS) {
+            this.setState({
+              errorMessage: WRONG_PASS
+            });
+          }
+          this.setState({
+            isLoading: false
+          });
         });
-      }
-      if (this.state.email === "") {
-        this.setState({
-          errorMessage: "Enter Email",
-          isErrorExists: true
-        });
-      }
     }
   };
 
@@ -98,7 +83,7 @@ class LoginFormDiv extends React.Component {
 
   renderErrorLable = () => {
     if (this.state.isErrorExists === true) {
-      return <div className="valid-form"> {this.state.errorMessage} </div>;
+      return <div className="invalid-form"> {this.state.errorMessage} </div>;
     }
   };
 
@@ -139,4 +124,4 @@ class LoginFormDiv extends React.Component {
   }
 }
 
-export default LoginFormDiv;
+export default withRouter(LoginFormDiv);

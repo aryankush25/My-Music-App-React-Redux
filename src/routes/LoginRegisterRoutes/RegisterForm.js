@@ -1,9 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import SubmitButton from "../../components/SubmitButton/SubmitButton";
 import "./index.scss";
+import validateName from "../../utils/ValidationFunctions/validateName";
+import validateEmail from "../../utils/ValidationFunctions/validateEmail";
+import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import {
+  AUTH_WEAK_PASS,
+  WEAK_PASS
+} from "../../utils/ConstantKeywords/errorConstants";
 
 class RegisterFormDiv extends React.Component {
   constructor(props) {
@@ -12,20 +19,36 @@ class RegisterFormDiv extends React.Component {
       name: "",
       email: "",
       password: "",
-      errorMessage: "Enter Details",
+      errorMessage: "",
       isErrorExists: false,
       isLoading: false
     };
   }
 
+  setTheState = (errorMessage, isErrorExists) => {
+    this.setState({
+      errorMessage: errorMessage,
+      isErrorExists: isErrorExists
+    });
+  };
+
   onFormSubmit = event => {
     event.preventDefault();
 
-    if (
-      this.state.email !== "" &&
-      this.state.password !== "" &&
-      this.state.name !== ""
-    ) {
+    var emailValidObj = validateEmail(this.state.email);
+    var passwordValidObj = validatePassword(this.state.password);
+    var nameValidObj = validateName(this.state.name);
+
+    if (nameValidObj.isErrorExists === true) {
+      this.setTheState(nameValidObj.errorMessage, nameValidObj.isErrorExists);
+    } else if (emailValidObj.isErrorExists === true) {
+      this.setTheState(emailValidObj.errorMessage, emailValidObj.isErrorExists);
+    } else if (passwordValidObj.isErrorExists === true) {
+      this.setTheState(
+        passwordValidObj.errorMessage,
+        passwordValidObj.isErrorExists
+      );
+    } else {
       this.setState({
         isLoading: true
       });
@@ -55,34 +78,15 @@ class RegisterFormDiv extends React.Component {
             errorMessage: error.message,
             isErrorExists: true
           });
-          if (errorCode === "auth/weak-password") {
+          if (errorCode === AUTH_WEAK_PASS) {
             this.setState({
-              errorMessage: "The password is too weak."
+              errorMessage: WEAK_PASS
             });
           }
           this.setState({
             isLoading: false
           });
         });
-    } else {
-      if (this.state.password === "") {
-        this.setState({
-          errorMessage: "Enter Password",
-          isErrorExists: true
-        });
-      }
-      if (this.state.email === "") {
-        this.setState({
-          errorMessage: "Enter Email",
-          isErrorExists: true
-        });
-      }
-      if (this.state.name === "") {
-        this.setState({
-          errorMessage: "Enter Name",
-          isErrorExists: true
-        });
-      }
     }
   };
 
@@ -109,7 +113,7 @@ class RegisterFormDiv extends React.Component {
 
   renderErrorLable = () => {
     if (this.state.isErrorExists === true) {
-      return <div className="valid-form"> {this.state.errorMessage} </div>;
+      return <div className="invalid-form"> {this.state.errorMessage} </div>;
     }
   };
 
@@ -167,4 +171,4 @@ class RegisterFormDiv extends React.Component {
   }
 }
 
-export default RegisterFormDiv;
+export default withRouter(RegisterFormDiv);
