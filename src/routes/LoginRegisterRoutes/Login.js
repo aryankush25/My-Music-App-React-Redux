@@ -7,7 +7,7 @@ class Login extends React.Component {
   render() {
     return (
       <LoginRegisterContainer headerMsg={this.loginHeaderMsg}>
-        {LoginFormDiv}
+        <LoginFormDiv />
       </LoginRegisterContainer>
     );
   }

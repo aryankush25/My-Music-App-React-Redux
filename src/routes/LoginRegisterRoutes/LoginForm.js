@@ -47,6 +47,7 @@ class LoginFormDiv extends React.Component {
         .auth()
         .signInWithEmailAndPassword(this.state.email, this.state.password)
         .then(() => {
+          window.localStorage.setItem("musicAppSignedIn", true);
           this.props.history.replace("/home");
         })
         .catch(error => {

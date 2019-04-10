@@ -14,6 +14,10 @@ export const EMPTY_PASS = "Enter Password";
 export const WEAK_PASS = "The password is too weak.";
 export const WRONG_PASS = "Wrong password.";
 
+// PAGE NOT FOUND ERROR MESSAGE
+
+export const PAGE_NOT_FOUND = "404 ERROR PAGE NOT FOUND";
+
 //* ############################################################ ERROR CODES ############################################################ *//
 
 // PASSWORD ERROR CODES
