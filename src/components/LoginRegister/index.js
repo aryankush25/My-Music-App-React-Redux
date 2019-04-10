@@ -12,9 +12,7 @@ const LoginRegisterContainer = props => {
           </div>
           <h1 className="h3 mb-3 font-weight-normal">{props.headerMsg}</h1>
         </div>
-        <div>
-          <props.children />
-        </div>
+        <div>{props.children}</div>
       </div>
     </div>
   );

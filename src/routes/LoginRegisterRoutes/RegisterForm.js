@@ -67,6 +67,7 @@ class RegisterFormDiv extends React.Component {
                   .auth()
                   .signOut()
                   .then(() => {
+                    window.localStorage.setItem("musicAppSignedIn", false);
                     this.props.history.push("/login");
                   });
               });

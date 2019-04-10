@@ -6,11 +6,8 @@ class Register extends React.Component {
   registerHeaderMsg = "Create an account";
   render() {
     return (
-      <LoginRegisterContainer
-        headerMsg={this.registerHeaderMsg}
-        history={this.props.history}
-      >
-        {RegisterFormDiv}
+      <LoginRegisterContainer headerMsg={this.registerHeaderMsg}>
+        <RegisterFormDiv />
       </LoginRegisterContainer>
     );
   }
