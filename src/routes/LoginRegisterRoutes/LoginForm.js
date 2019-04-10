@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, Link, Redirect } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import SubmitButton from "../../components/SubmitButton/SubmitButton";
@@ -89,45 +89,39 @@ class LoginFormDiv extends React.Component {
   };
 
   render() {
-    const musicAppSignedIn = window.localStorage.getItem("musicAppSignedIn");
-
-    if (musicAppSignedIn === "true") {
-      return <Redirect to="/home" />;
-    } else {
-      return (
-        <div className="card-block">
-          <form className="form-signin" onSubmit={this.onFormSubmit} noValidate>
-            {this.renderErrorLable()}
-            <label className="form-lable">Email Address</label>
-            <input
-              type="email"
-              id="inputEmail"
-              className="form-control"
-              placeholder="Email address"
-              required
-              autoFocus
-              onChange={this.handleChangeEmail}
-            />
-            <label className="form-lable">Password</label>
-            <input
-              type="password"
-              id="inputPassword"
-              className="form-control"
-              placeholder="Password"
-              required
-              onChange={this.handleChangePassword}
-            />
-            <SubmitButton
-              isLoading={this.state.isLoading}
-              buttonData={"Sign in"}
-            />
-          </form>
-          <p className="mt-5 mb-3 text-muted">
-            Don't have an account? <Link to="/register">Register</Link>
-          </p>
-        </div>
-      );
-    }
+    return (
+      <div className="card-block">
+        <form className="form-signin" onSubmit={this.onFormSubmit} noValidate>
+          {this.renderErrorLable()}
+          <label className="form-lable">Email Address</label>
+          <input
+            type="email"
+            id="inputEmail"
+            className="form-control"
+            placeholder="Email address"
+            required
+            autoFocus
+            onChange={this.handleChangeEmail}
+          />
+          <label className="form-lable">Password</label>
+          <input
+            type="password"
+            id="inputPassword"
+            className="form-control"
+            placeholder="Password"
+            required
+            onChange={this.handleChangePassword}
+          />
+          <SubmitButton
+            isLoading={this.state.isLoading}
+            buttonData={"Sign in"}
+          />
+        </form>
+        <p className="mt-5 mb-3 text-muted">
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
+      </div>
+    );
   }
 }
 

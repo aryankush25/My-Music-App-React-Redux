@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, Link, Redirect } from "react-router-dom";
+import { withRouter, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import SubmitButton from "../../components/SubmitButton/SubmitButton";
@@ -119,62 +119,56 @@ class RegisterFormDiv extends React.Component {
   };
 
   render() {
-    const musicAppSignedIn = window.localStorage.getItem("musicAppSignedIn");
-
-    if (musicAppSignedIn === "true") {
-      return <Redirect to="/home" />;
-    } else {
-      return (
-        <div className="card-block">
-          {this.renderErrorLable()}
-          <form className="form-signin" onSubmit={this.onFormSubmit} noValidate>
-            <div>
-              <label className="form-lable">Name</label>
-              <input
-                type="text"
-                id="inputName"
-                className="form-control"
-                placeholder="Name"
-                required
-                autoFocus
-                onChange={this.handleChangeName}
-              />
-            </div>
-            <div>
-              <label className="form-lable">Email Address</label>
-              <input
-                type="email"
-                id="inputEmail"
-                className="form-control"
-                placeholder="Email address"
-                required
-                autoFocus
-                onChange={this.handleChangeEmail}
-              />
-            </div>
-            <div>
-              <label className="form-lable">Password</label>
-              <input
-                type="password"
-                id="inputPassword"
-                className="form-control"
-                placeholder="Password"
-                required
-                onChange={this.handleChangePassword}
-              />
-            </div>
-
-            <SubmitButton
-              isLoading={this.state.isLoading}
-              buttonData={"Sign up for free"}
+    return (
+      <div className="card-block">
+        {this.renderErrorLable()}
+        <form className="form-signin" onSubmit={this.onFormSubmit} noValidate>
+          <div>
+            <label className="form-lable">Name</label>
+            <input
+              type="text"
+              id="inputName"
+              className="form-control"
+              placeholder="Name"
+              required
+              autoFocus
+              onChange={this.handleChangeName}
             />
-          </form>
-          <p className="mt-5 mb-3 text-muted">
-            Already have an account? <Link to="/login">Log In</Link>
-          </p>
-        </div>
-      );
-    }
+          </div>
+          <div>
+            <label className="form-lable">Email Address</label>
+            <input
+              type="email"
+              id="inputEmail"
+              className="form-control"
+              placeholder="Email address"
+              required
+              autoFocus
+              onChange={this.handleChangeEmail}
+            />
+          </div>
+          <div>
+            <label className="form-lable">Password</label>
+            <input
+              type="password"
+              id="inputPassword"
+              className="form-control"
+              placeholder="Password"
+              required
+              onChange={this.handleChangePassword}
+            />
+          </div>
+
+          <SubmitButton
+            isLoading={this.state.isLoading}
+            buttonData={"Sign up for free"}
+          />
+        </form>
+        <p className="mt-5 mb-3 text-muted">
+          Already have an account? <Link to="/login">Log In</Link>
+        </p>
+      </div>
+    );
   }
 }
 
