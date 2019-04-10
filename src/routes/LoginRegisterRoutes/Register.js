@@ -10,7 +10,7 @@ class Register extends React.Component {
         headerMsg={this.registerHeaderMsg}
         history={this.props.history}
       >
-        {RegisterFormDiv}
+        <RegisterFormDiv />
       </LoginRegisterContainer>
     );
   }

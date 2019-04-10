@@ -2,6 +2,7 @@ import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { Redirect } from "react-router-dom";
+import "./index.scss";
 
 class Home extends React.Component {
   render() {
