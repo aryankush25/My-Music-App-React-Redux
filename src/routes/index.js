@@ -9,26 +9,37 @@ import { PAGE_NOT_FOUND } from "../utils/ConstantKeywords/errorConstants";
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      window.localStorage.getItem("musicAppSignedIn") === "true" ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
+    render={props => {
+      const musicAppSignedInStatus = window.localStorage.getItem(
+        "musicAppSignedIn"
+      );
+      if (
+        musicAppSignedInStatus === "true" ||
+        musicAppSignedInStatus === true
+      ) {
+        return <Component {...props} />;
+      }
+      return <Redirect to="/login" />;
+    }}
   />
 );
 
 const NonPrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
-      window.localStorage.getItem("musicAppSignedIn") === "false" ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/home" />
-      )
-    }
+    render={props => {
+      const musicAppSignedInStatus = window.localStorage.getItem(
+        "musicAppSignedIn"
+      );
+      if (
+        !musicAppSignedInStatus ||
+        musicAppSignedInStatus === false ||
+        musicAppSignedInStatus === "false"
+      ) {
+        return <Component {...props} />;
+      }
+      return <Redirect to="/home" />;
+    }}
   />
 );
 
