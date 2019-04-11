@@ -2,10 +2,49 @@ import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { withRouter, Link } from "react-router-dom";
+import { Howl, Howler } from "howler";
 import "./index.scss";
-var FontAwesome = require("react-fontawesome");
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  sound = new Howl({
+    src: [
+      "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/First%20Class%20-%20Kalank.mp3?alt=media&token=9a01a38a-08e3-4922-b092-01d6eb3325f0"
+    ],
+    html5: true
+  });
+
+  playAudio() {
+    this.sound.play();
+    console.log(this.sound);
+  }
+
+  pauseAudio() {
+    this.sound.pause();
+    console.log(this.sound);
+  }
+
+  // getHower() {
+  //   this.player.howler;
+  // }
+
+  // getDuration() {
+  //   this.player.duration();
+  // }
+
+  // getSeek() {
+  //   this.player.seek();
+  // }
+
+  // setSeek() {
+  //   this.player.seek(0.5);
+  // }
+
   render() {
     return (
       <div className="homePageDiv">
@@ -19,17 +58,17 @@ class Home extends React.Component {
           <div className="col-8 middleCol">
             <div className="headerDivMiddle">
               <div className="">
-                <div class="input-group">
-                  <nav class="navbar navbar-light bg-light">
-                    <form class="form-inline">
+                <div className="input-group">
+                  <nav className="navbar navbar-light bg-light">
+                    <form className="form-inline">
                       <input
-                        class="form-control mr-sm-2"
+                        className="form-control mr-sm-2"
                         type="search"
                         placeholder="Search"
                         aria-label="Search"
                       />
                       <button
-                        class="btn btn-outline-success my-2 my-sm-0"
+                        className="btn btn-outline-success my-2 my-sm-0"
                         type="submit"
                       >
                         Search
@@ -69,7 +108,22 @@ class Home extends React.Component {
         </div>
         <div className="musicBar">
           <nav>
-            <button>Don't Click Me</button>
+            <button
+              onClick={() =>
+                this.playAudio(
+                  "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/First%20Class%20-%20Kalank.mp3?alt=media&token=9a01a38a-08e3-4922-b092-01d6eb3325f0"
+                )
+              }
+            >
+              Play Audio
+            </button>
+            <button
+              onClick={() => {
+                this.pauseAudio();
+              }}
+            >
+              Pause
+            </button>
           </nav>
         </div>
       </div>
