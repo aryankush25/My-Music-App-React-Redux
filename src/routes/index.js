@@ -4,6 +4,7 @@ import Login from "./LoginRegisterRoutes/Login";
 import Register from "./LoginRegisterRoutes/Register";
 import Home from "./HomeDashboard";
 import Landing from "./Landing";
+import Profile from "./HomeDashboard/Profile.js";
 import { PAGE_NOT_FOUND } from "../utils/ConstantKeywords/errorConstants";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -51,6 +52,7 @@ const Routes = () => {
         <NonPrivateRoute path="/login" exact component={Login} />
         <NonPrivateRoute path="/register" exact component={Register} />
         <PrivateRoute path="/home" exact component={Home} />
+        <PrivateRoute path="/profile" exact component={Profile} />
         <Route
           path="*"
           render={() => {

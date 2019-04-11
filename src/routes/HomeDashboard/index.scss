@@ -1,3 +1,76 @@
-body {
-  background-color: aqua;
+@import "../../utils/ConstantKeywords/colorConstants.scss";
+
+.homePageDiv {
+  background-image: url("../../assets/images/home-page-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-position: right;
+  background-size: cover;
+  height: -webkit-fill-available;
+}
+
+.upperDiv {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 88%;
+  margin-left: 0px;
+  padding: 0;
+}
+
+.musicBar {
+  background-color: #1b1c25;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 12%;
+}
+
+.headerDivLeft,
+.headerDivMiddle,
+.headerDivRight {
+  width: inherit;
+  height: 12%;
+}
+
+.headerDivLeft {
+  background-color: #eb4648;
+}
+.headerDivMiddle {
+  background-color: #ffffff;
+  display: flex;
+}
+.headerDivRight {
+  background-color: #77c4d3;
+}
+
+.middleCol,
+.leftCol,
+.rightCol {
+  padding: 0px;
+}
+
+.leftCol {
+  background-color: #eaeaea;
+}
+
+.middleCol {
+  background-color: #ffffff;
+}
+
+.rightCol {
+  background-color: #eaeaea;
+}
+
+hr {
+  margin: 0;
+}
+
+.smallDivLeft,
+.smallDivMiddle,
+.smallDivRight {
+  width: inherit;
+  height: 100%;
+  overflow: auto;
+  background: bottom;
 }
