@@ -9,41 +9,42 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      playing: false,
+      playingDuration: 0
+    };
+
+    // var context = new AudioContext();
   }
 
   sound = new Howl({
     src: [
-      "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/First%20Class%20-%20Kalank.mp3?alt=media&token=9a01a38a-08e3-4922-b092-01d6eb3325f0"
+      "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FFirst%20Class%20-%20Kalank.mp3?alt=media&token=1dd066b3-381f-4598-bce0-ffddba7fdc25"
     ],
     html5: true
   });
 
-  playAudio() {
-    this.sound.play();
+  context = new AudioContext();
+
+  playPauseAudio() {
+    if (this.state.playing === true) {
+      this.sound.pause();
+    } else {
+      this.sound.play();
+    }
+    this.setState({
+      playing: !this.state.playing
+    });
     console.log(this.sound);
   }
 
-  pauseAudio() {
-    this.sound.pause();
-    console.log(this.sound);
+  adjustSeek(value) {
+    this.sound.seek(value);
   }
 
-  // getHower() {
-  //   this.player.howler;
-  // }
-
-  // getDuration() {
-  //   this.player.duration();
-  // }
-
-  // getSeek() {
-  //   this.player.seek();
-  // }
-
-  // setSeek() {
-  //   this.player.seek(0.5);
-  // }
+  adjustAudio(value) {
+    Howler.volume(value / 10);
+  }
 
   render() {
     return (
@@ -108,22 +109,34 @@ class Home extends React.Component {
         </div>
         <div className="musicBar">
           <nav>
-            <button
-              onClick={() =>
-                this.playAudio(
-                  "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/First%20Class%20-%20Kalank.mp3?alt=media&token=9a01a38a-08e3-4922-b092-01d6eb3325f0"
-                )
-              }
-            >
-              Play Audio
+            <button onClick={() => this.playPauseAudio()}>
+              Play / Pause Audio
             </button>
-            <button
-              onClick={() => {
-                this.pauseAudio();
-              }}
-            >
-              Pause
-            </button>
+            <div className="volumeDiv">
+              <span>Volume</span>
+              <input
+                type="range"
+                name="points"
+                min="0"
+                max="10"
+                onChange={event => {
+                  this.adjustAudio(event.target.value);
+                }}
+              />
+            </div>
+            <div className="seekDiv">
+              <span>Seek</span>
+              <input
+                type="range"
+                name="points"
+                min="0"
+                max={this.sound._duration}
+                defaultValue="0"
+                onChange={event => {
+                  this.adjustSeek(event.target.value);
+                }}
+              />
+            </div>
           </nav>
         </div>
       </div>
