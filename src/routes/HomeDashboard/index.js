@@ -14,7 +14,7 @@ class Home extends React.Component {
       playingDuration: 0
     };
 
-    // var context = new AudioContext();
+    var context = new AudioContext();
   }
 
   sound = new Howl({

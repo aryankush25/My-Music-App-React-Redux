@@ -4,17 +4,13 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "firebase": "^5.9.3",
+    "firebase": "^5.9.4",
     "howler": "^2.1.1",
     "node-sass": "^4.11.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-fontawesome": "^1.6.1",
-    "react-howler": "^3.7.4",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
-    "reactstrap": "^8.0.0",
-    "redux-logger": "^3.0.6"
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -30,5 +26,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {}
 }
