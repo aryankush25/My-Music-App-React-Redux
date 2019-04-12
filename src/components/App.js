@@ -4,6 +4,11 @@ import Routes from "../routes";
 import firebase from "firebase/app";
 import "firebase/auth";
 
+// import { library } from "@fortawesome/fontawesome-svg-core";
+// import { faStroopwafel, faCamera } from "@fortawesome/free-solid-svg-icons";
+
+// library.add(faStroopwafel, faCamera);
+
 class App extends Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
