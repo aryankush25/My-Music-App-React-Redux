@@ -4,7 +4,7 @@ import Login from "./LoginRegisterRoutes/Login";
 import Register from "./LoginRegisterRoutes/Register";
 import Home from "./HomeDashboard";
 import Landing from "./Landing";
-import Profile from "./HomeDashboard/Profile.js";
+import Profile from "../components/Profile";
 import { PAGE_NOT_FOUND } from "../utils/ConstantKeywords/errorConstants";
 
 const PrivateRoute = ({ component: Component, ...rest }) => (

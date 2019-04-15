@@ -1,0 +1,39 @@
+/* The slider itself */
+.slidervolume {
+  -webkit-appearance: none; /* Override default CSS styles */
+  appearance: none;
+  width: 100%; /* Full-width */
+  height: 5px;
+  border-radius: 5px;
+  background: #d3d3d3; /* Grey background */
+  outline: none; /* Remove outline */
+  margin-left: 10px;
+  margin-top: 5px;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slidervolume::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  width: 10px; /* Set a specific slider handle width */
+  height: 10px; /* Slider handle height */
+  border-radius: 50%;
+  background: #eb4648; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slidervolume::-moz-range-thumb {
+  width: 10px; /* Set a specific slider handle width */
+  height: 10px; /* Slider handle height */
+  border-radius: 50%;
+  background: #eb4648; /* Green background */
+  cursor: pointer; /* Cursor on hover */
+}
+
+.slidecontainervolume {
+  width: 25%; /* Width of the outside container */
+  margin-top: 14px;
+  margin-right: 50px;
+  margin-left: 20px;
+  display: flex;
+}
