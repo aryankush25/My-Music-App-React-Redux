@@ -1,0 +1,18 @@
+.mainMusicBarBox {
+  display: flex;
+}
+
+.musicBarBox {
+  background-color: aqua;
+  width: 100%;
+  height: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 7px;
+}
+
+.increasingBarBox {
+  background-color: crimson;
+  height: 10px;
+  width: 0;
+}

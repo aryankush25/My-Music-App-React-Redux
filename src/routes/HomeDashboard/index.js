@@ -3,6 +3,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import { withRouter, Link } from "react-router-dom";
 import { Howl, Howler } from "howler";
+import MusicSeekBar from "../../components/MusicBar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faForward,
@@ -21,61 +22,71 @@ class Home extends React.Component {
 
     this.state = {
       playing: false,
-      playingDuration: 0
+      currentDuration: 0
     };
-
-    var context = new AudioContext();
   }
 
+  self = this;
+
+  arr = [
+    "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FFirst%20Class%20-%20Kalank.mp3?alt=media&token=1dd066b3-381f-4598-bce0-ffddba7fdc25",
+    "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FBulleya%20-%20RAW.mp3?alt=media&token=29476bb5-23b6-4d74-925e-eac3dccb3ea3"
+  ];
+  intervalID = 0;
+
   sound = new Howl({
-    src: [
-      "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FFirst%20Class%20-%20Kalank.mp3?alt=media&token=1dd066b3-381f-4598-bce0-ffddba7fdc25"
-    ],
+    src: [this.arr[0]],
     html5: true
   });
 
-  context = new AudioContext();
-
   playPauseAudio() {
+    console.log(this.state.playing);
     if (this.state.playing === true) {
       this.sound.pause();
+      clearInterval(this.intervalID);
     } else {
       this.sound.play();
+      this.intervalID = setInterval(() => {
+        this.setState({
+          currentDuration: this.state.currentDuration + 1
+        });
+      }, 1000);
     }
+    console.log(this.state.playing);
     this.setState({
       playing: !this.state.playing
     });
+    console.log(this.state.playing);
   }
 
   playNext() {
     this.sound.stop();
     this.sound = new Howl({
-      src: [
-        "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FBulleya%20-%20RAW.mp3?alt=media&token=29476bb5-23b6-4d74-925e-eac3dccb3ea3"
-      ],
+      src: [this.arr[1]],
       html5: true
     });
-    this.sound.play();
+
+    this.playPauseAudio();
   }
 
   playPrevious() {
     this.sound.stop();
     this.sound = new Howl({
-      src: [
-        "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FFirst%20Class%20-%20Kalank.mp3?alt=media&token=1dd066b3-381f-4598-bce0-ffddba7fdc25"
-      ],
+      src: [this.arr[0]],
       html5: true
     });
-    this.sound.play();
+    this.playPauseAudio();
   }
 
-  adjustSeek(value) {
+  adjustSeek = value => {
     this.sound.seek(value);
-  }
+    this.setState({
+      currentDuration: value
+    });
+  };
 
   adjustAudio(value) {
     Howler.volume(value / 10);
-    console.log(Howler._volume);
   }
 
   playPauseButton() {
@@ -92,7 +103,7 @@ class Home extends React.Component {
         <div className="row upperDiv">
           <div className="col leftCol">
             <div className="headerDivLeft">
-              <img src={logo} />
+              <img src={logo} alt="logo" />
             </div>
             <hr />
             <div className="smallDivLeft">Friends</div>
@@ -168,7 +179,7 @@ class Home extends React.Component {
 
           <div className="col rightCol">
             <div className="headerDivRight">
-              <img src={playlistImg} />
+              <img src={playlistImg} alt="playlistimg" />
             </div>
             <hr />
             <div className="smallDivRight">Playlist1</div>
@@ -205,16 +216,10 @@ class Home extends React.Component {
           </div>
 
           <div className="slidecontainerseek">
-            <input
-              type="range"
-              min="0"
-              max={this.sound._duration}
-              defaultValue="0"
-              onChange={event => {
-                this.adjustSeek(event.target.value);
-              }}
-              className="sliderseek"
-              id="myRange"
+            <MusicSeekBar
+              duration={this.sound._duration}
+              currentDuration={this.state.currentDuration}
+              adjustSeek={this.adjustSeek}
             />
           </div>
 

@@ -36,6 +36,12 @@
 .headerDivLeft {
   background-color: #eb4648;
 }
+
+.headerDivLeft img {
+  height: 100%;
+  width: 100%;
+}
+
 .headerDivMiddle {
   background-color: #ffffff;
   padding: 15px;
@@ -43,6 +49,11 @@
 }
 .headerDivRight {
   background-color: #77c4d3;
+}
+
+.headerDivRight img {
+  height: 100%;
+  width: 100%;
 }
 
 .middleCol,
