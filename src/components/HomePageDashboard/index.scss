@@ -7,15 +7,10 @@
   padding: 0;
 }
 
-.headerDivLeft,
-.headerDivMiddle,
-.headerDivRight {
-  width: inherit;
-  height: 12%;
-}
-
 .headerDivLeft {
   background-color: #eb4648;
+  width: inherit;
+  height: 12%;
 }
 
 .headerDivLeft img {
@@ -23,13 +18,10 @@
   width: 100%;
 }
 
-.headerDivMiddle {
-  background-color: #ffffff;
-  padding: 15px;
-  display: flex;
-}
 .headerDivRight {
   background-color: #77c4d3;
+  width: inherit;
+  height: 12%;
 }
 
 .headerDivRight img {
@@ -55,25 +47,9 @@
   background-color: #eaeaea;
 }
 
-hr {
-  margin: 0;
-}
-
 .smallDivLeft,
-.smallDivMiddle,
-.smallDivRight {
+.smallDivMiddle {
   width: inherit;
-  height: 100%;
-  overflow: auto;
+  height: inherit;
   background: bottom;
-}
-
-.dropdown {
-  margin-top: 7px;
-  margin-left: auto;
-  margin-right: 40px;
-}
-
-.dropdown-item {
-  text-align: center;
 }
