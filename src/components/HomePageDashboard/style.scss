@@ -1,0 +1,55 @@
+.upper-div {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 88%;
+  margin-left: 0px;
+  padding: 0;
+}
+
+.header-div-left {
+  background-color: #eb4648;
+  width: inherit;
+  height: 12%;
+}
+
+.header-div-left img {
+  height: 100%;
+  width: 100%;
+}
+
+.header-div-right {
+  background-color: #77c4d3;
+  width: inherit;
+  height: 12%;
+}
+
+.header-div-right img {
+  height: 100%;
+  width: 100%;
+}
+
+.middle-col,
+.left-col,
+.right-col {
+  padding: 0px;
+}
+
+.left-col {
+  background-color: #eaeaea;
+}
+
+.middle-col {
+  background-color: #ffffff;
+}
+
+.right-col {
+  background-color: #eaeaea;
+}
+
+.small-div-left,
+.small-div-middle {
+  width: inherit;
+  height: inherit;
+  background: bottom;
+}

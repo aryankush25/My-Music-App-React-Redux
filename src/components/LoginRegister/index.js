@@ -1,6 +1,6 @@
 import React from "react";
 import headerImage from "../../assets/images/acoustic-guitar.png";
-import "./index.scss";
+import "./style.scss";
 
 const LoginRegisterContainer = props => {
   return (

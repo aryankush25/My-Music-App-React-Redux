@@ -1,13 +1,4 @@
-@import "../../utils/ConstantKeywords/colorConstants.scss";
-
-body {
-  background-image: url("../../assets/images/music-bg.jpg");
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-position: right;
-  background-size: cover;
-  height: -webkit-fill-available;
-}
+@import "../../utils/styles/colorConstants.scss";
 
 .form-signin {
   padding: 20px 40px;
