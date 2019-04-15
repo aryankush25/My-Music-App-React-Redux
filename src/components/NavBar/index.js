@@ -5,6 +5,17 @@ import { withRouter, Link } from "react-router-dom";
 import "./style.scss";
 
 class NavBar extends React.Component {
+  signOutUser = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(() => {
+        window.localStorage.setItem("musicAppSignedIn", false);
+        this.props.sound.unload();
+        this.props.history.push("/login");
+      });
+  };
+
   render() {
     return (
       <div className="header-div-middle">
@@ -43,19 +54,7 @@ class NavBar extends React.Component {
               <Link to="/profile">My Profile</Link>
             </div>
             <div className="dropdown-item">
-              <button
-                className="btn btn-info"
-                onClick={() => {
-                  firebase
-                    .auth()
-                    .signOut()
-                    .then(() => {
-                      window.localStorage.setItem("musicAppSignedIn", false);
-                      this.props.sound.unload();
-                      this.props.history.push("/login");
-                    });
-                }}
-              >
+              <button className="btn btn-info" onClick={this.signOutUser}>
                 Logout
               </button>
             </div>

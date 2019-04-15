@@ -22,9 +22,7 @@ class MusicBarButtons extends React.Component {
         <div className="previous-song">
           <span
             className="btn btn-info btn-lg"
-            onClick={() => {
-              this.props.playPrevious();
-            }}
+            onClick={this.props.playPrevious}
           >
             <FontAwesomeIcon icon={faBackward} />
           </span>
@@ -32,18 +30,13 @@ class MusicBarButtons extends React.Component {
         <div className="play-pause-song">
           <span
             className="btn btn-info btn-lg"
-            onClick={() => this.props.playPauseAudio()}
+            onClick={this.props.playPauseAudio}
           >
             <IconComponent isPlaying={this.props.isPlaying} />
           </span>
         </div>
         <div className="next-song">
-          <span
-            className="btn btn-info btn-lg"
-            onClick={() => {
-              this.props.playNext();
-            }}
-          >
+          <span className="btn btn-info btn-lg" onClick={this.props.playNext}>
             <FontAwesomeIcon icon={faForward} />
           </span>
         </div>
