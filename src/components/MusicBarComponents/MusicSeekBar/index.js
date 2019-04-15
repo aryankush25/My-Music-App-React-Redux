@@ -14,12 +14,12 @@ class MusicSeekBar extends React.Component {
     console.log(this.props.currentDuration);
 
     return (
-      <div className="slidecontainerseek">
-        <div className="mainMusicBarBox">
+      <div className="slider-container-seek">
+        <div className="main-music-bar-box">
           <p>{this.props.currentDuration} </p>
-          <div className="musicBarBox" onClick={this.handleOnClick}>
+          <div className="music-bar-box" onClick={this.handleOnClick}>
             <div
-              className="increasingBarBox"
+              className="increasing-bar-box"
               style={{
                 width:
                   (this.props.currentDuration * 100) / this.props.duration + "%"

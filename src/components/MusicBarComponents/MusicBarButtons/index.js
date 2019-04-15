@@ -18,8 +18,8 @@ const IconComponent = props => {
 class MusicBarButtons extends React.Component {
   render() {
     return (
-      <div className="buttonsDiv">
-        <div className="previousSong">
+      <div className="buttons-div">
+        <div className="previous-song">
           <span
             className="btn btn-info btn-lg"
             onClick={() => {
@@ -29,7 +29,7 @@ class MusicBarButtons extends React.Component {
             <FontAwesomeIcon icon={faBackward} />
           </span>
         </div>
-        <div className="playPauseSong">
+        <div className="play-pause-song">
           <span
             className="btn btn-info btn-lg"
             onClick={() => this.props.playPauseAudio()}
@@ -37,7 +37,7 @@ class MusicBarButtons extends React.Component {
             <IconComponent isPlaying={this.props.isPlaying} />
           </span>
         </div>
-        <div className="nextSong">
+        <div className="next-song">
           <span
             className="btn btn-info btn-lg"
             onClick={() => {

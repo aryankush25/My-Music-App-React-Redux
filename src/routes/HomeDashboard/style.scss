@@ -1,6 +1,6 @@
 @import "../../utils/ConstantKeywords/colorConstants.scss";
 
-.homePageDiv {
+.home-page-div {
   background-image: url("../../assets/images/home-page-bg.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -9,7 +9,7 @@
   height: -webkit-fill-available;
 }
 
-.musicBar {
+.music-bar {
   background-color: #1b1c25;
   position: fixed;
   bottom: 0;

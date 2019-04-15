@@ -1,4 +1,4 @@
-.upperDiv {
+.upper-div {
   position: fixed;
   top: 0;
   width: 100%;
@@ -7,48 +7,48 @@
   padding: 0;
 }
 
-.headerDivLeft {
+.header-div-left {
   background-color: #eb4648;
   width: inherit;
   height: 12%;
 }
 
-.headerDivLeft img {
+.header-div-left img {
   height: 100%;
   width: 100%;
 }
 
-.headerDivRight {
+.header-div-right {
   background-color: #77c4d3;
   width: inherit;
   height: 12%;
 }
 
-.headerDivRight img {
+.header-div-right img {
   height: 100%;
   width: 100%;
 }
 
-.middleCol,
-.leftCol,
-.rightCol {
+.middle-col,
+.left-col,
+.right-col {
   padding: 0px;
 }
 
-.leftCol {
+.left-col {
   background-color: #eaeaea;
 }
 
-.middleCol {
+.middle-col {
   background-color: #ffffff;
 }
 
-.rightCol {
+.right-col {
   background-color: #eaeaea;
 }
 
-.smallDivLeft,
-.smallDivMiddle {
+.small-div-left,
+.small-div-middle {
   width: inherit;
   height: inherit;
   background: bottom;

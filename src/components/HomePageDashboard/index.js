@@ -8,21 +8,21 @@ import playlistImg from "../../assets/images/playlist.png";
 class HomePageDashboard extends React.Component {
   render() {
     return (
-      <div className="row upperDiv">
-        <div className="col leftCol">
-          <div className="headerDivLeft">
+      <div className="row upper-div">
+        <div className="col left-col">
+          <div className="header-div-left">
             <img src={logo} alt="logo" />
           </div>
-          <div className="smallDivLeft">Friends</div>
+          <div className="small-div-left">Friends</div>
         </div>
 
-        <div className="col-8 middleCol">
+        <div className="col-8 middle-col">
           <NavBar sound={this.props.sound} />
-          <div className="smallDivMiddle">Songs</div>
+          <div className="small-div-middle">Songs</div>
         </div>
 
-        <div className="col rightCol">
-          <div className="headerDivRight">
+        <div className="col right-col">
+          <div className="header-div-right">
             <img src={playlistImg} alt="playlistimg" />
           </div>
           <Playlists />

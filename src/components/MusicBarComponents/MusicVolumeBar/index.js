@@ -6,7 +6,7 @@ import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 class MusicVolumeBar extends React.Component {
   render() {
     return (
-      <div className="slidecontainervolume">
+      <div className="slider-container-volume">
         <FontAwesomeIcon icon={faVolumeUp} />
 
         <input
@@ -17,7 +17,7 @@ class MusicVolumeBar extends React.Component {
           onChange={event => {
             this.props.adjustAudio(event.target.value);
           }}
-          className="slidervolume"
+          className="slider-volume"
           id="myRange"
         />
       </div>

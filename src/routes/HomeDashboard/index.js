@@ -81,12 +81,12 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="homePageDiv">
+      <div className="home-page-div">
         <HomePageDashboard sound={this.sound} />
 
         {/* Music Bar Div That Contains the music bar elements */}
 
-        <div className="musicBar">
+        <div className="music-bar">
           <MusicBarButtons
             playPrevious={this.playPrevious}
             playPauseAudio={this.playPauseAudio}
