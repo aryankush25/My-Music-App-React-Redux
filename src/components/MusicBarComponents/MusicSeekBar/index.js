@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.scss";
+import "./style.scss";
 
 class MusicSeekBar extends React.Component {
   handleOnClick = e => {

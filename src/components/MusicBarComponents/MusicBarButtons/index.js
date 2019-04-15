@@ -6,17 +6,16 @@ import {
   faPlay,
   faPause
 } from "@fortawesome/free-solid-svg-icons";
-import "./index.scss";
+import "./style.scss";
+
+const IconComponent = props => {
+  if (props.isPlaying) {
+    return <FontAwesomeIcon icon={faPause} />;
+  }
+  return <FontAwesomeIcon icon={faPlay} />;
+};
 
 class MusicBarButtons extends React.Component {
-  playPauseButton() {
-    if (this.props.isPlaying === false) {
-      return <FontAwesomeIcon icon={faPlay} />;
-    } else {
-      return <FontAwesomeIcon icon={faPause} />;
-    }
-  }
-
   render() {
     return (
       <div className="buttonsDiv">
@@ -35,7 +34,7 @@ class MusicBarButtons extends React.Component {
             className="btn btn-info btn-lg"
             onClick={() => this.props.playPauseAudio()}
           >
-            {this.playPauseButton()}
+            <IconComponent isPlaying={this.props.isPlaying} />
           </span>
         </div>
         <div className="nextSong">

@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import firebase from "firebase/app";
-import "./index.scss";
+import "./style.scss";
 import App from "./components/App";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.css";

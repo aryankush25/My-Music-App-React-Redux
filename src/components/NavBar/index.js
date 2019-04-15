@@ -2,7 +2,7 @@ import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import { withRouter, Link } from "react-router-dom";
-import "./index.scss";
+import "./style.scss";
 
 class NavBar extends React.Component {
   render() {

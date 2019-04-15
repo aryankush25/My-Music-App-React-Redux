@@ -1,7 +1,7 @@
 import React from "react";
 import NavBar from "../NavBar/";
 import Playlists from "../Playlists/";
-import "./index.scss";
+import "./style.scss";
 import logo from "../../assets/images/logo.png";
 import playlistImg from "../../assets/images/playlist.png";
 

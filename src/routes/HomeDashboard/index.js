@@ -4,7 +4,7 @@ import HomePageDashboard from "../../components/HomePageDashboard";
 import MusicSeekBar from "../../components/MusicBarComponents/MusicSeekBar";
 import MusicVolumeBar from "../../components/MusicBarComponents/MusicVolumeBar";
 import MusicBarButtons from "../../components/MusicBarComponents/MusicBarButtons";
-import "./index.scss";
+import "./style.scss";
 
 class Home extends React.Component {
   constructor(props) {

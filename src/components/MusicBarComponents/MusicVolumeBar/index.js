@@ -1,5 +1,5 @@
 import React from "react";
-import "./index.scss";
+import "./style.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeUp } from "@fortawesome/free-solid-svg-icons";
 

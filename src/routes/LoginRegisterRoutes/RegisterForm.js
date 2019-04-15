@@ -3,7 +3,7 @@ import { withRouter, Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import SubmitButton from "../../components/SubmitButton/";
-import "./index.scss";
+import "./style.scss";
 import validateName from "../../utils/ValidationFunctions/validateName";
 import validateEmail from "../../utils/ValidationFunctions/validateEmail";
 import validatePassword from "../../utils/ValidationFunctions/validatePassword";
