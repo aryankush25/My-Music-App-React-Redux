@@ -1,19 +1,19 @@
 import React from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
+
 import { withRouter, Link } from "react-router-dom";
 import "./style.scss";
+import signOutUser from "../../services/firebase/signOutUser";
 
 class NavBar extends React.Component {
-  signOutUser = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(() => {
-        window.localStorage.setItem("musicAppSignedIn", false);
-        this.props.sound.unload();
-        this.props.history.push("/login");
-      });
+  handleSignOut = async () => {
+    try {
+      await signOutUser();
+      window.localStorage.setItem("musicAppSignedIn", false);
+      this.props.sound.unload();
+      this.props.history.push("/login");
+    } catch (err) {
+      console.log("err", err);
+    }
   };
 
   render() {
@@ -54,7 +54,7 @@ class NavBar extends React.Component {
               <Link to="/profile">My Profile</Link>
             </div>
             <div className="dropdown-item">
-              <button className="btn btn-info" onClick={this.signOutUser}>
+              <button className="btn btn-info" onClick={this.handleSignOut}>
                 Logout
               </button>
             </div>

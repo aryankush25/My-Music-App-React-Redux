@@ -1,16 +1,18 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
-import firebase from "firebase/app";
-import "firebase/auth";
 import SubmitButton from "../../components/SubmitButton/";
-import "./style.scss";
 import validateName from "../../utils/ValidationFunctions/validateName";
 import validateEmail from "../../utils/ValidationFunctions/validateEmail";
 import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import signUpUser from "../../services/firebase/signUpUser";
+import signOutUser from "../../services/firebase/signOutUser";
+import currentUser from "../../services/firebase/currentUser";
+import updateUser from "../../services/firebase/updateUser";
 import {
   AUTH_WEAK_PASS,
   WEAK_PASS
 } from "../../utils/ConstantKeywords/errorConstants";
+import "./style.scss";
 
 class RegisterFormDiv extends React.Component {
   constructor(props) {
@@ -52,42 +54,35 @@ class RegisterFormDiv extends React.Component {
       this.setState({
         isLoading: true
       });
-      firebase
-        .auth()
-        .createUserWithEmailAndPassword(this.state.email, this.state.password)
-        .then(() => {
-          var user = firebase.auth().currentUser;
-          if (user) {
-            user
-              .updateProfile({
-                displayName: this.state.name
-              })
-              .then(() => {
-                firebase
-                  .auth()
-                  .signOut()
-                  .then(() => {
-                    window.localStorage.setItem("musicAppSignedIn", false);
-                    this.props.history.push("/login");
-                  });
-              });
-          }
-        })
-        .catch(error => {
-          var errorCode = error.code;
-          this.setState({
-            errorMessage: error.message,
-            isErrorExists: true
-          });
-          if (errorCode === AUTH_WEAK_PASS) {
-            this.setState({
-              errorMessage: WEAK_PASS
-            });
-          }
-          this.setState({
-            isLoading: false
-          });
+
+      this.handleSignUpUser();
+    }
+  };
+
+  handleSignUpUser = async () => {
+    try {
+      await signUpUser(this.state.email, this.state.password);
+      var user = await currentUser();
+      if (user) {
+        await updateUser(this.state.name);
+        await signOutUser();
+        window.localStorage.setItem("musicAppSignedIn", false);
+        this.props.history.push("/login");
+      }
+    } catch (error) {
+      var errorCode = error.code;
+      this.setState({
+        errorMessage: error.message,
+        isErrorExists: true
+      });
+      if (errorCode === AUTH_WEAK_PASS) {
+        this.setState({
+          errorMessage: WEAK_PASS
         });
+      }
+      this.setState({
+        isLoading: false
+      });
     }
   };
 
