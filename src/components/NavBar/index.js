@@ -2,7 +2,7 @@ import React from "react";
 
 import { withRouter, Link } from "react-router-dom";
 import "./style.scss";
-import signOutUser from "../../services/firebase/signOutUser";
+import signOutUser from "../../services/firebaseAuth/signOutUser";
 
 class NavBar extends React.Component {
   handleSignOut = async () => {

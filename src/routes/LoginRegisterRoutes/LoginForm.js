@@ -4,7 +4,7 @@ import SubmitButton from "../../components/SubmitButton/";
 import "./style.scss";
 import validateEmail from "../../utils/ValidationFunctions/validateEmail";
 import validatePassword from "../../utils/ValidationFunctions/validatePassword";
-import signInUser from "../../services/firebase/signInUser";
+import signInUser from "../../services/firebaseAuth/signInUser";
 import {
   AUTH_WRONG_PASS,
   WRONG_PASS

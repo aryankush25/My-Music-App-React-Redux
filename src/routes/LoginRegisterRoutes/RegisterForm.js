@@ -4,10 +4,10 @@ import SubmitButton from "../../components/SubmitButton/";
 import validateName from "../../utils/ValidationFunctions/validateName";
 import validateEmail from "../../utils/ValidationFunctions/validateEmail";
 import validatePassword from "../../utils/ValidationFunctions/validatePassword";
-import signUpUser from "../../services/firebase/signUpUser";
-import signOutUser from "../../services/firebase/signOutUser";
-import currentUser from "../../services/firebase/currentUser";
-import updateUser from "../../services/firebase/updateUser";
+import signUpUser from "../../services/firebaseAuth/signUpUser";
+import signOutUser from "../../services/firebaseAuth/signOutUser";
+import currentUser from "../../services/firebaseAuth/currentUser";
+import updateUser from "../../services/firebaseAuth/updateUser";
 import {
   AUTH_WEAK_PASS,
   WEAK_PASS
