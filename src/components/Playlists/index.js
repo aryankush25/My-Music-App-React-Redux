@@ -1,11 +1,23 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./style.scss";
 
 class Playlists extends React.Component {
   render() {
     return (
       <div className="small-div-right">
-        <h1>Hello</h1>
+        <Link to="#">
+          <div className="playlist-element">Default Playlist </div>
+        </Link>
+        <Link to="#">
+          <div className="playlist-element">Playlist 1</div>
+        </Link>
+        <Link to="#">
+          <div className="playlist-element">Playlist 2</div>
+        </Link>
+        <Link to="#">
+          <div className="playlist-element">Playlist 3</div>
+        </Link>
       </div>
     );
   }

@@ -1,5 +1,28 @@
 .small-div-right {
+  text-align: center;
+}
+
+.small-div-right {
   width: inherit;
   height: inherit;
   background: bottom;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.playlist-element {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: inherit;
+  height: 50px;
+  color: #111111;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.playlist-element:hover {
+  background-color: darkgray;
 }
