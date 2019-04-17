@@ -33,9 +33,9 @@ class App extends Component {
   render() {
     if (this.state.isLoading === true) {
       return (
-        <div class="d-flex justify-content-center spinner-body">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+        <div className="d-flex justify-content-center spinner-body">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         </div>
       );

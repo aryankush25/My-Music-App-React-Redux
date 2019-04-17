@@ -1,10 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./style.scss";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
+// import firebase from "firebase/app";
+// import "firebase/auth";
+// import "firebase/firestore";
+// import "firebase/storage";
 
 class Playlists extends React.Component {
   render() {

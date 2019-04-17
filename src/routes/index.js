@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Login from "./LoginRegisterRoutes/Login";
 import Register from "./LoginRegisterRoutes/Register";
-import Home from "./HomeDashboard";
+import Home from "./HomeDashboardRoutes";
 import Landing from "./Landing";
 import Profile from "../components/Profile";
 import { PAGE_NOT_FOUND } from "../utils/ConstantKeywords/errorConstants";

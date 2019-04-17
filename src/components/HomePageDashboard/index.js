@@ -17,7 +17,10 @@ class HomePageDashboard extends React.Component {
 
         <div className="col-8 middle-col">
           <NavBar sound={this.props.sound} />
-          <Songs />
+          <Songs
+            handleArrayUpdate={this.props.handleArrayUpdate}
+            handleSongClick={this.props.handleSongClick}
+          />
         </div>
 
         <div className="col right-col">

@@ -12,7 +12,7 @@ const SongCard = props => {
         className="card song-div"
         key={index}
         style={{ width: "10rem" }}
-        onClick={() => console.log(index)}
+        onClick={() => props.handleSongClick(index)}
       >
         <div className="song-logo">{song.name.trim().charAt(0)}</div>
         <div className="card-body">
@@ -42,9 +42,11 @@ class Songs extends React.Component {
     try {
       var docRef = await firebase.firestore().collection("defaultPlaylist");
       var songsTempArray = [];
+      var songsTempArrayUrl = [];
       await docRef.get().then(querySnapshot => {
         querySnapshot.forEach(doc => {
           songsTempArray.push(doc.data());
+          songsTempArrayUrl.push(doc.data().url);
         });
       });
 
@@ -52,6 +54,8 @@ class Songs extends React.Component {
         isLoading: false,
         songsArray: songsTempArray
       });
+
+      this.props.handleArrayUpdate(songsTempArray, songsTempArrayUrl);
     } catch (error) {
       console.log(error);
     }
@@ -60,15 +64,20 @@ class Songs extends React.Component {
   render() {
     if (this.state.isLoading === true) {
       return (
-        <div class="d-flex justify-content-center loader-songs ">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+        <div className="d-flex justify-content-center loader-songs ">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
           </div>
         </div>
       );
     }
 
-    return <SongCard songsArray={this.state.songsArray} />;
+    return (
+      <SongCard
+        songsArray={this.state.songsArray}
+        handleSongClick={this.props.handleSongClick}
+      />
+    );
   }
 }
 

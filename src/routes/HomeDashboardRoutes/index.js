@@ -1,7 +1,5 @@
 import React from "react";
 import { Howl, Howler } from "howler";
-import firebase from "firebase/app";
-import "firebase/auth";
 import HomePageDashboard from "../../components/HomePageDashboard";
 import MusicSeekBar from "../../components/MusicBarComponents/MusicSeekBar";
 import MusicVolumeBar from "../../components/MusicBarComponents/MusicVolumeBar";
@@ -13,61 +11,112 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      playing: false,
-      currentDuration: 0
+      isPlaying: false,
+      currentDuration: 0,
+      currentIndex: 0,
+      songsUrlArray: []
     };
   }
 
-  arr = [
-    "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FFirst%20Class%20-%20Kalank.mp3?alt=media&token=1dd066b3-381f-4598-bce0-ffddba7fdc25",
-    "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FBulleya%20-%20RAW.mp3?alt=media&token=29476bb5-23b6-4d74-925e-eac3dccb3ea3"
-  ];
+  sound = {};
   intervalID = 0;
 
-  sound = new Howl({
-    src: [this.arr[0]],
-    html5: true
-  });
+  handleArrayUpdate = (songsArrayUpdated, songsUrlArray) => {
+    this.setState({
+      songsUrlArray: songsUrlArray
+    });
+    this.sound = new Howl({
+      src: [this.state.songsUrlArray[this.state.currentIndex]],
+      html5: true
+    });
+  };
 
-  handlePlayPauseAudio = () => {
-    if (this.state.playing === true) {
+  handleStop = async () => {
+    this.sound.stop();
+    clearInterval(this.intervalID);
+    await this.setState({
+      isPlaying: false,
+      currentDuration: 0
+    });
+  };
+
+  handleSongClick = async index => {
+    if (this.state.isPlaying === true) this.handleStop();
+    await this.setState({
+      currentIndex: index
+    });
+    this.sound = new Howl({
+      src: [this.state.songsUrlArray[index]],
+      html5: true
+    });
+    this.handlePlayPauseAudio();
+  };
+
+  handlePlayPauseAudio = async () => {
+    if (this.state.isPlaying === true) {
       this.sound.pause();
       clearInterval(this.intervalID);
     } else {
-      this.sound.play();
-      this.intervalID = setInterval(() => {
-        this.setState({
-          currentDuration: this.state.currentDuration + 1
-        });
+      this.intervalID = setInterval(async () => {
+        if (Math.round(this.sound._duration) === this.state.currentDuration) {
+          this.handleStop();
+          this.handlePlayNext();
+        } else {
+          await this.setState({
+            currentDuration: this.state.currentDuration + 1
+          });
+        }
       }, 1000);
+      this.sound.play();
     }
-    this.setState({
-      playing: !this.state.playing
+    await this.setState({
+      isPlaying: !this.state.isPlaying
     });
   };
 
-  handlePlayNext = () => {
-    this.sound.stop();
+  handlePlayNext = async () => {
+    this.handleStop();
+
+    if (this.state.songsUrlArray.length - 1 > this.state.currentIndex) {
+      await this.setState({
+        currentIndex: this.state.currentIndex + 1
+      });
+    } else {
+      await this.setState({
+        currentIndex: 0
+      });
+    }
+
     this.sound = new Howl({
-      src: [this.arr[1]],
+      src: [this.state.songsUrlArray[this.state.currentIndex]],
       html5: true
     });
-
     this.handlePlayPauseAudio();
   };
 
-  handlePlayPrevious = () => {
-    this.sound.stop();
+  handlePlayPrevious = async () => {
+    this.handleStop();
+
+    if (this.state.currentIndex > 0) {
+      await this.setState({
+        currentIndex: this.state.currentIndex - 1
+      });
+    } else {
+      await this.setState({
+        currentIndex: this.state.songsUrlArray.length - 1
+      });
+    }
+
     this.sound = new Howl({
-      src: [this.arr[0]],
+      src: [this.state.songsUrlArray[this.state.currentIndex]],
       html5: true
     });
     this.handlePlayPauseAudio();
   };
 
-  handleAdjustSeek = value => {
+  handleAdjustSeek = async value => {
     this.sound.seek(value);
-    this.setState({
+    await this.setState({
       currentDuration: value
     });
   };
@@ -79,13 +128,17 @@ class Home extends React.Component {
   render() {
     return (
       <div className="home-page-div">
-        <HomePageDashboard sound={this.sound} />
+        <HomePageDashboard
+          sound={this.sound}
+          handleArrayUpdate={this.handleArrayUpdate}
+          handleSongClick={this.handleSongClick}
+        />
 
         {/* Music Bar Div That Contains the music bar elements */}
 
         <div className="music-bar">
           <MusicBarButtons
-            isPlaying={this.state.playing}
+            isPlaying={this.state.isPlaying}
             playPrevious={this.handlePlayPrevious}
             playPauseAudio={this.handlePlayPauseAudio}
             playNext={this.handlePlayNext}
