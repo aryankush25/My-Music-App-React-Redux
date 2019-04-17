@@ -1,3 +1,5 @@
+@import "../../utils/styles/colorConstants.scss";
+
 .songs-div {
   justify-content: center;
   padding: 40px;
@@ -7,21 +9,22 @@
 
 .song-div {
   margin: 10px;
-  border: 2px solid gray;
+  border: 2px solid $HOVER_COLOR;
+  width: 15rem;
 }
 
 .song-logo {
-  background-color: #123672;
+  background-color: $SONG_DIV_BG_COLOR;
   height: 150px;
   font-size: 100px;
   text-align: center;
   font-weight: 100;
-  color: aliceblue;
+  color: $SONG_DIV_TEXT_COLOR;
 }
 
 .song-div:hover {
-  border: 2px solid #123672;
-  background-color: ghostwhite;
+  border: 2px solid $SONG_DIV_BG_COLOR;
+  background-color: $HOVER_COLOR_BG;
   cursor: pointer;
 }
 
@@ -31,6 +34,6 @@
 }
 
 .loader-songs {
-  color: #123672;
+  color: $SONG_DIV_BG_COLOR;
   margin-top: 25%;
 }

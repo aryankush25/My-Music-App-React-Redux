@@ -1,5 +1,7 @@
+@import "../../utils/styles/colorConstants.scss";
+
 .header-div-middle {
-  background-color: #ffffff;
+  background-color: $PURE_WHITE_COLOR;
   padding: 15px;
   display: flex;
   width: inherit;

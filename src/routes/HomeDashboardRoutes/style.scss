@@ -9,13 +9,13 @@
 // }
 
 .music-bar {
-  background-color: #1b1c25;
+  background-color: $MUSIC_BAR_BG_COLOR;
   position: fixed;
   bottom: 0;
   width: 100%;
   height: 12%;
   display: flex;
-  color: aliceblue;
+  color: $SONG_DIV_TEXT_COLOR;
   padding: 25px;
 }
 

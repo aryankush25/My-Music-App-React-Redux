@@ -1,3 +1,5 @@
+@import "../../utils/styles/colorConstants.scss";
+
 .small-div-right {
   text-align: center;
 }
@@ -17,12 +19,12 @@ a {
   padding: 12px;
   background-color: inherit;
   height: 50px;
-  color: #111111;
+  color: $PURE_BLACK_COLOR;
   font-size: 18px;
   font-weight: 600;
   font-style: italic;
 }
 
 .playlist-element:hover {
-  background-color: darkgray;
+  background-color: $HOVER_COLOR;
 }

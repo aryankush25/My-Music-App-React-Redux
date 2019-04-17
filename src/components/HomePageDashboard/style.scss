@@ -1,3 +1,5 @@
+@import "../../utils/styles/colorConstants.scss";
+
 .upper-div {
   position: fixed;
   top: 0;
@@ -8,7 +10,7 @@
 }
 
 .header-div-left {
-  background-color: #eb4648;
+  background-color: $FRIENDS_HEADING_COLOR;
   width: inherit;
   height: 12%;
 }
@@ -19,7 +21,7 @@
 }
 
 .header-div-right {
-  background-color: #77c4d3;
+  background-color: $PLAYLISTS_HEADING_COLOR;
   width: inherit;
   height: 12%;
 }
@@ -32,15 +34,15 @@
 }
 
 .left-col {
-  background-color: #eaeaea;
+  background-color: $SIDE_NAVBAR_COLORS;
 }
 
 .middle-col {
-  background-color: #ffffff;
+  background-color: $PURE_WHITE_COLOR;
 }
 
 .right-col {
-  background-color: #eaeaea;
+  background-color: $SIDE_NAVBAR_COLORS;
 }
 
 .small-div-left,
@@ -55,5 +57,5 @@
   font-family: "Cute Font", cursive;
   font-size: 60px;
   text-align: center;
-  color: aliceblue;
+  color: $PURE_WHITE_COLOR;
 }

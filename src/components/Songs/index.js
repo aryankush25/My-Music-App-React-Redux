@@ -11,7 +11,6 @@ const SongCard = props => {
       <div
         className="card song-div"
         key={index}
-        style={{ width: "10rem" }}
         onClick={() => props.handleSongClick(index)}
       >
         <div className="song-logo">{song.name.trim().charAt(0)}</div>
