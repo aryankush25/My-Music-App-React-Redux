@@ -58,12 +58,14 @@ class LoginFormDiv extends React.Component {
       });
       if (errorCode === AUTH_WRONG_PASS) {
         this.setState({
-          errorMessage: WRONG_PASS
+          errorMessage: WRONG_PASS,
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
         });
       }
-      this.setState({
-        isLoading: false
-      });
     }
   };
 

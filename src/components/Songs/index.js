@@ -13,9 +13,13 @@ const SongCard = props => {
         key={index}
         onClick={() => props.handleSongClick(index)}
       >
-        <div className="song-logo">{song.name.trim().charAt(0)}</div>
+        <div className="song-logo">
+          {song.name ? song.name.trim().charAt(0) : "?"}
+        </div>
         <div className="card-body">
-          <p className="card-text">{song.name.trim()}</p>
+          <p className="card-text">
+            {song.name ? song.name.trim() : "NO NAME"}
+          </p>
         </div>
       </div>
     );
@@ -42,11 +46,10 @@ class Songs extends React.Component {
       var docRef = await firebase.firestore().collection("defaultPlaylist");
       var songsTempArray = [];
       var songsTempArrayUrl = [];
-      await docRef.get().then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          songsTempArray.push(doc.data());
-          songsTempArrayUrl.push(doc.data().url);
-        });
+      var querySnapshot = await docRef.get();
+      querySnapshot.forEach(doc => {
+        songsTempArray.push(doc.data());
+        songsTempArrayUrl.push(doc.data().url);
       });
 
       this.setState({

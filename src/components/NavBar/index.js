@@ -6,14 +6,10 @@ import signOutUser from "../../services/firebaseAuth/signOutUser";
 
 class NavBar extends React.Component {
   handleSignOut = async () => {
-    try {
-      await signOutUser();
-      window.localStorage.setItem("musicAppSignedIn", false);
-      this.props.sound.unload();
-      this.props.history.push("/login");
-    } catch (err) {
-      console.log("err", err);
-    }
+    await signOutUser();
+    window.localStorage.setItem("musicAppSignedIn", false);
+    // this.props.sound.unload();
+    this.props.history.push("/login");
   };
 
   render() {
