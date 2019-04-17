@@ -1,6 +1,6 @@
 @import "../../utils/styles/colorConstants.scss";
 
-.home-page-div {
+.body {
   background-image: url("../../assets/images/home-page-bg.jpg");
   background-repeat: no-repeat;
   background-position: center center;
@@ -17,4 +17,8 @@
   display: flex;
   color: aliceblue;
   padding: 25px;
+}
+
+.spinner-grow {
+  justify-content: center;
 }

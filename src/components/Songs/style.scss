@@ -1,0 +1,30 @@
+.songs-div {
+  justify-content: center;
+  padding: 40px;
+  overflow: auto;
+  height: 88%;
+}
+
+.song-div {
+  margin: 10px;
+  border: 2px solid gray;
+}
+
+.song-logo {
+  background-color: #44bbbf;
+  height: 150px;
+  font-size: 100px;
+  text-align: center;
+  font-weight: 100;
+  color: aliceblue;
+}
+
+.song-div:hover {
+  border: 2px solid black;
+  cursor: pointer;
+}
+
+.card-text {
+  text-align: center;
+  font-size: 15px;
+}

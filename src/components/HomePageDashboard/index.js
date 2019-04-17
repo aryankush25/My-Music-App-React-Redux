@@ -1,9 +1,8 @@
 import React from "react";
 import NavBar from "../NavBar/";
 import Playlists from "../Playlists/";
+import Songs from "../Songs/";
 import "./style.scss";
-import logo from "../../assets/images/logo.png";
-import playlistImg from "../../assets/images/playlist.png";
 
 class HomePageDashboard extends React.Component {
   render() {
@@ -11,19 +10,19 @@ class HomePageDashboard extends React.Component {
       <div className="row upper-div">
         <div className="col left-col">
           <div className="header-div-left">
-            <img src={logo} alt="logo" />
+            <p className="friends-logo">FRIENDS</p>
           </div>
           <div className="small-div-left">Friends</div>
         </div>
 
         <div className="col-8 middle-col">
           <NavBar sound={this.props.sound} />
-          <div className="small-div-middle">Songs</div>
+          <Songs />
         </div>
 
         <div className="col right-col">
           <div className="header-div-right">
-            <img src={playlistImg} alt="playlistimg" />
+            <p className="playlist-logo">PLAYLISTS</p>
           </div>
           <Playlists />
         </div>

@@ -25,6 +25,32 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
   />
 );
 
+// class PrivateRoute1 extends React.Component {
+//   constructor({ component: Component, ...rest }) {
+//     super({ component: Component, ...rest });
+//     console.log("A", rest);
+//   }
+//   render() {
+//     return (
+//       <Route
+//         {...this.rest}
+//         render={props => {
+//           const musicAppSignedInStatus = window.localStorage.getItem(
+//             "musicAppSignedIn"
+//           );
+//           if (
+//             musicAppSignedInStatus === "true" ||
+//             musicAppSignedInStatus === true
+//           ) {
+//             return <this.Component {...props} />;
+//           }
+//           return <Redirect to="/login" />;
+//         }}
+//       />
+//     );
+//   }
+// }
+
 const NonPrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
@@ -47,6 +73,7 @@ const NonPrivateRoute = ({ component: Component, ...rest }) => (
 const Routes = () => {
   return (
     <div>
+      {/* <PrivateRoute1 path="/home" exact component={Home} /> */}
       <Switch>
         <Route path="/" exact component={Landing} />
         <NonPrivateRoute path="/login" exact component={Login} />

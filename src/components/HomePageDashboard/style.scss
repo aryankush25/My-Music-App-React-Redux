@@ -24,15 +24,11 @@
   height: 12%;
 }
 
-.header-div-right img {
-  height: 100%;
-  width: 100%;
-}
-
 .middle-col,
 .left-col,
 .right-col {
   padding: 0px;
+  height: 100%;
 }
 
 .left-col {
@@ -52,4 +48,12 @@
   width: inherit;
   height: inherit;
   background: bottom;
+}
+
+.playlist-logo,
+.friends-logo {
+  font-family: "Cute Font", cursive;
+  font-size: 60px;
+  text-align: center;
+  color: #eaeaea;
 }
