@@ -13,22 +13,9 @@ class Home extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: true,
       playing: false,
       currentDuration: 0
     };
-  }
-
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => this.handleState(user));
-  }
-
-  handleState(user) {
-    if (user) {
-      this.setState({
-        isLoading: false
-      });
-    }
   }
 
   arr = [
@@ -90,13 +77,6 @@ class Home extends React.Component {
   };
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="spinner-grow" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      );
-    }
     return (
       <div className="home-page-div">
         <HomePageDashboard sound={this.sound} />

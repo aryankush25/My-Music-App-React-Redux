@@ -12,7 +12,6 @@ import {
   AUTH_WEAK_PASS,
   WEAK_PASS
 } from "../../utils/ConstantKeywords/errorConstants";
-import "./style.scss";
 
 class RegisterFormDiv extends React.Component {
   constructor(props) {

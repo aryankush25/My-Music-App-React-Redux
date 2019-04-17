@@ -1,7 +1,6 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton/";
-import "./style.scss";
 import validateEmail from "../../utils/ValidationFunctions/validateEmail";
 import validatePassword from "../../utils/ValidationFunctions/validatePassword";
 import signInUser from "../../services/firebaseAuth/signInUser";
