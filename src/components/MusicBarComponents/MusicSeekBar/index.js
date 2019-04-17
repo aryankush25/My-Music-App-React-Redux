@@ -13,7 +13,12 @@ class MusicSeekBar extends React.Component {
     return (
       <div className="slider-container-seek">
         <div className="main-music-bar-box">
-          <p>{this.props.currentDuration} </p>
+          <div className="duration-div">
+            <p>
+              {Math.round(this.props.currentDuration / 60)}:
+              {Math.round(this.props.currentDuration % 60)}
+            </p>
+          </div>
           <div className="music-bar-box" onClick={this.handleOnClick}>
             <div
               className="increasing-bar-box"
@@ -23,7 +28,12 @@ class MusicSeekBar extends React.Component {
               }}
             />
           </div>
-          <p> {this.props.duration}</p>
+          <div className="duration-div">
+            <p>
+              {Math.round(this.props.duration / 60)}:
+              {Math.round(this.props.duration % 60)}
+            </p>
+          </div>
         </div>
       </div>
     );
