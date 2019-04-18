@@ -1,6 +1,7 @@
 import React from "react";
 import LoginRegisterContainer from "../../components/LoginRegister";
 import LoginFormDiv from "./LoginForm";
+import "./style.scss";
 
 class Login extends React.Component {
   loginHeaderMsg = "Log in to your account";

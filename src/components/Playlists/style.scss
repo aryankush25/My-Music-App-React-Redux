@@ -1,5 +1,30 @@
+@import "../../utils/styles/colorConstants.scss";
+
+.small-div-right {
+  text-align: center;
+}
+
 .small-div-right {
   width: inherit;
   height: inherit;
   background: bottom;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.playlist-element {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: inherit;
+  height: 50px;
+  color: $PURE_BLACK_COLOR;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.playlist-element:hover {
+  background-color: $HOVER_COLOR;
 }

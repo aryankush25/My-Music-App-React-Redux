@@ -1,11 +1,9 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
-import firebase from "firebase/app";
-import "firebase/auth";
 import SubmitButton from "../../components/SubmitButton/";
-import "./style.scss";
 import validateEmail from "../../utils/ValidationFunctions/validateEmail";
 import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import signInUser from "../../services/firebaseAuth/signInUser";
 import {
   AUTH_WRONG_PASS,
   WRONG_PASS
@@ -43,28 +41,31 @@ class LoginFormDiv extends React.Component {
       this.setState({
         isLoading: true
       });
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password)
-        .then(() => {
-          window.localStorage.setItem("musicAppSignedIn", true);
-          this.props.history.replace("/home");
-        })
-        .catch(error => {
-          var errorCode = error.code;
-          this.setState({
-            errorMessage: error.message,
-            isErrorExists: true
-          });
-          if (errorCode === AUTH_WRONG_PASS) {
-            this.setState({
-              errorMessage: WRONG_PASS
-            });
-          }
-          this.setState({
-            isLoading: false
-          });
+      this.handleSignIn();
+    }
+  };
+
+  handleSignIn = async () => {
+    try {
+      await signInUser(this.state.email, this.state.password);
+      window.localStorage.setItem("musicAppSignedIn", true);
+      this.props.history.replace("/home");
+    } catch (error) {
+      var errorCode = error.code;
+      this.setState({
+        errorMessage: error.message,
+        isErrorExists: true
+      });
+      if (errorCode === AUTH_WRONG_PASS) {
+        this.setState({
+          errorMessage: WRONG_PASS,
+          isLoading: false
         });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
     }
   };
 

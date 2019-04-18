@@ -1,3 +1,5 @@
+@import "../../utils/styles/colorConstants.scss";
+
 .upper-div {
   position: fixed;
   top: 0;
@@ -8,7 +10,7 @@
 }
 
 .header-div-left {
-  background-color: #eb4648;
+  background-color: $FRIENDS_HEADING_COLOR;
   width: inherit;
   height: 12%;
 }
@@ -19,32 +21,28 @@
 }
 
 .header-div-right {
-  background-color: #77c4d3;
+  background-color: $PLAYLISTS_HEADING_COLOR;
   width: inherit;
   height: 12%;
-}
-
-.header-div-right img {
-  height: 100%;
-  width: 100%;
 }
 
 .middle-col,
 .left-col,
 .right-col {
   padding: 0px;
+  height: 100%;
 }
 
 .left-col {
-  background-color: #eaeaea;
+  background-color: $SIDE_NAVBAR_COLORS;
 }
 
 .middle-col {
-  background-color: #ffffff;
+  background-color: $PURE_WHITE_COLOR;
 }
 
 .right-col {
-  background-color: #eaeaea;
+  background-color: $SIDE_NAVBAR_COLORS;
 }
 
 .small-div-left,
@@ -52,4 +50,12 @@
   width: inherit;
   height: inherit;
   background: bottom;
+}
+
+.playlist-logo,
+.friends-logo {
+  font-family: "Cute Font", cursive;
+  font-size: 60px;
+  text-align: center;
+  color: $PURE_WHITE_COLOR;
 }

@@ -29,7 +29,7 @@ class MusicBarButtons extends React.Component {
         </div>
         <div className="play-pause-song">
           <span
-            className="btn btn-info btn-lg"
+            className="btn btn-danger btn-lg"
             onClick={this.props.playPauseAudio}
           >
             <IconComponent isPlaying={this.props.isPlaying} />

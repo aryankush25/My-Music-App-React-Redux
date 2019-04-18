@@ -13,7 +13,7 @@ class MusicVolumeBar extends React.Component {
           type="range"
           min="0"
           max="10"
-          defaultValue={this.props.volune * 10}
+          defaultValue={this.props.volume * 10}
           onChange={event => {
             this.props.adjustAudio(event.target.value);
           }}
