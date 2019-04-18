@@ -26,97 +26,105 @@ class Home extends React.Component {
       songsUrlArray: songsUrlArray
     });
     this.sound = new Howl({
-      src: [this.state.songsUrlArray[this.state.currentIndex]],
+      src: [songsUrlArray[this.state.currentIndex]],
       html5: true
     });
   };
 
-  handleStop = async () => {
+  handleStop = () => {
     this.sound.stop();
     clearInterval(this.intervalID);
-    await this.setState({
+    this.setState({
       isPlaying: false,
       currentDuration: 0
     });
   };
 
-  handleSongClick = async index => {
+  handleSongClick = index => {
     if (this.state.isPlaying === true) this.handleStop();
-    await this.setState({
+    this.setState({
       currentIndex: index
     });
     this.sound = new Howl({
       src: [this.state.songsUrlArray[index]],
       html5: true
     });
-    this.handlePlayPauseAudio();
+    this.handlePlayAudio();
   };
 
-  handlePlayPauseAudio = async () => {
+  handlePlayAudio = () => {
+    this.intervalID = setInterval(() => {
+      if (Math.round(this.sound._duration) === this.state.currentDuration) {
+        this.handleStop();
+        this.handlePlayNext();
+      } else {
+        this.setState({
+          currentDuration: this.state.currentDuration + 1
+        });
+      }
+    }, 1000);
+    this.sound.play();
+    this.setState({
+      isPlaying: true
+    });
+  };
+
+  handlePauseAudio = () => {
+    this.sound.pause();
+    clearInterval(this.intervalID);
+    this.setState({
+      isPlaying: false
+    });
+  };
+
+  handlePlayPauseAudio = () => {
     if (this.state.isPlaying === true) {
-      this.sound.pause();
-      clearInterval(this.intervalID);
+      this.handlePauseAudio();
     } else {
-      this.intervalID = setInterval(async () => {
-        if (Math.round(this.sound._duration) === this.state.currentDuration) {
-          this.handleStop();
-          this.handlePlayNext();
-        } else {
-          await this.setState({
-            currentDuration: this.state.currentDuration + 1
-          });
-        }
-      }, 1000);
-      this.sound.play();
+      this.handlePlayAudio();
     }
-    await this.setState({
-      isPlaying: !this.state.isPlaying
-    });
   };
 
-  handlePlayNext = async () => {
+  handlePlayNext = () => {
     this.handleStop();
-
+    var currentIndex = 0;
     if (this.state.songsUrlArray.length - 1 > this.state.currentIndex) {
-      await this.setState({
-        currentIndex: this.state.currentIndex + 1
-      });
+      currentIndex = this.state.currentIndex + 1;
     } else {
-      await this.setState({
-        currentIndex: 0
-      });
+      currentIndex = 0;
     }
-
+    this.setState({
+      currentIndex: currentIndex
+    });
     this.sound = new Howl({
-      src: [this.state.songsUrlArray[this.state.currentIndex]],
+      src: [this.state.songsUrlArray[currentIndex]],
       html5: true
     });
-    this.handlePlayPauseAudio();
+    this.handlePlayAudio();
   };
 
-  handlePlayPrevious = async () => {
+  handlePlayPrevious = () => {
     this.handleStop();
-
+    var currentIndex = 0;
     if (this.state.currentIndex > 0) {
-      await this.setState({
-        currentIndex: this.state.currentIndex - 1
-      });
+      currentIndex = this.state.currentIndex - 1;
     } else {
-      await this.setState({
-        currentIndex: this.state.songsUrlArray.length - 1
-      });
+      currentIndex = this.state.songsUrlArray.length - 1;
     }
 
+    this.setState({
+      currentIndex: currentIndex
+    });
     this.sound = new Howl({
-      src: [this.state.songsUrlArray[this.state.currentIndex]],
+      src: [this.state.songsUrlArray[currentIndex]],
       html5: true
     });
-    this.handlePlayPauseAudio();
+    this.handlePlayAudio();
   };
 
-  handleAdjustSeek = async value => {
+  handleAdjustSeek = value => {
     this.sound.seek(value);
-    await this.setState({
+    this.setState({
       currentDuration: value
     });
   };
