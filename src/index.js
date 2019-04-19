@@ -9,12 +9,16 @@ import "bootstrap/dist/js/bootstrap.js";
 import "./assets/styles/custom.scss";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import FirebaseConfig from "./config/firebase-config";
+import { Provider } from "react-redux";
+import { store } from "./store/index";
 
 firebase.initializeApp(FirebaseConfig);
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>,
   document.getElementById("root")
 );

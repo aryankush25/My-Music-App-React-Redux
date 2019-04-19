@@ -4,6 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import { connect } from "react-redux";
 
 const SongCard = props => {
   const songsdiv = props.songsArray.map((song, index) => {
@@ -83,4 +84,12 @@ class Songs extends React.Component {
   }
 }
 
-export default Songs;
+const mapStateToProps = state => {
+  const { songs } = state;
+  return { songs };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Songs);
