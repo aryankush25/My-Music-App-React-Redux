@@ -25,7 +25,43 @@ const SongCard = props => {
       </div>
     );
   });
-  return <div className="row songs-div">{songsdiv}</div>;
+
+  const handleOnChange = event => {
+    const selectedFile = event.target.files[0];
+    const uploadTask = firebase
+      .storage()
+      .ref()
+      .child(`Music/${selectedFile.name}`)
+      .put(selectedFile);
+
+    uploadTask.on(
+      "state_changed",
+      snapshot => {
+        props.handleLoadingStateChange(true);
+      },
+      error => {
+        console.log(error);
+      },
+      () => {
+        props.handleLoadingStateChange(false);
+        console.log("success");
+      }
+    );
+  };
+
+  return (
+    <div className="row songs-div">
+      {songsdiv}
+      <div id="filesubmit">
+        <input
+          type="file"
+          className="file-select"
+          accept="audio/*"
+          onChange={handleOnChange}
+        />
+      </div>
+    </div>
+  );
 };
 
 class Songs extends React.Component {
@@ -38,6 +74,12 @@ class Songs extends React.Component {
     };
   }
 
+  handleLoadingStateChange = isLoading => {
+    this.setState({
+      isLoading: isLoading
+    });
+  };
+
   componentDidMount() {
     this.playistList();
   }
@@ -48,6 +90,7 @@ class Songs extends React.Component {
       var songsTempArray = [];
       var songsTempArrayUrl = [];
       var querySnapshot = await docRef.get();
+      // console.log(querySnapshot);
       querySnapshot.forEach(doc => {
         songsTempArray.push(doc.data());
         songsTempArrayUrl.push(doc.data().url);
@@ -79,6 +122,7 @@ class Songs extends React.Component {
       <SongCard
         songsArray={this.state.songsArray}
         handleSongClick={this.props.handleSongClick}
+        handleLoadingStateChange={this.handleLoadingStateChange}
       />
     );
   }
