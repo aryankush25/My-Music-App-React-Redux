@@ -12,21 +12,24 @@ class Playlists extends React.Component {
       .firestore()
       .collection("users")
       .get()
-      .then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc1) {
-          console.log(doc1.data().documentName);
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc1 => {
+          console.log(doc1.ref);
+          doc1.ref.getCollections().then(collection => {
+            collection.forEach(coll => {
+              coll.get().then(doc => {
+                doc.forEach(data => {
+                  console.log(data);
+                });
+              });
+            });
+          });
         });
       });
   };
 
-  func2 = () => {
-    var storageRef = firebase.storage().ref();
-    var imagesRef = storageRef.child("Default Music/");
-    console.log(imagesRef);
-  };
-
   render() {
-    // this.func2();
+    this.func();
 
     return (
       <div className="small-div-right">

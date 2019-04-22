@@ -118,12 +118,6 @@ class Songs extends React.Component {
 
   componentDidMount() {
     this.playistList();
-    // firebase
-    //   .firestore()
-    //   .collection("defaultPlaylist")
-    //   .snapshot(() => {
-    //     this.playistList();
-    //   });
   }
 
   playistList = async () => {
