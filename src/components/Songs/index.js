@@ -4,7 +4,6 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
-import { connect } from "react-redux";
 
 const SongCard = props => {
   const songsdiv = props.songsArray.map((song, index) => {
@@ -26,36 +25,71 @@ const SongCard = props => {
     );
   });
 
-  const handleOnChange = event => {
+  const handleOnChange = async event => {
     const selectedFile = event.target.files[0];
-    const uploadTask = firebase
-      .storage()
-      .ref()
-      .child(`Music/${selectedFile.name}`)
-      .put(selectedFile);
 
-    uploadTask.on(
-      "state_changed",
-      snapshot => {
-        props.handleLoadingStateChange(true);
-      },
-      error => {
-        console.log(error);
-      },
-      () => {
-        props.handleLoadingStateChange(false);
-        console.log("success");
-      }
-    );
+    var filePresent = false;
+
+    await firebase
+      .firestore()
+      .collection("defaultPlaylist")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
+          if (doc.data().name === selectedFile.name) {
+            console.log(doc.data());
+            filePresent = true;
+          }
+        });
+      });
+
+    if (filePresent === false) {
+      const uploadTask = firebase
+        .storage()
+        .ref()
+        .child(`Default Music/${selectedFile.name}`)
+        .put(selectedFile);
+
+      uploadTask.on(
+        "state_changed",
+        () => {
+          props.handleLoadingStateChange(true);
+        },
+        error => {
+          props.handleLoadingStateChange(false);
+          console.log(error);
+        },
+        () => {
+          uploadTask.snapshot.ref.getDownloadURL().then(url => {
+            console.log(url);
+
+            firebase
+              .firestore()
+              .collection("defaultPlaylist")
+              .add({
+                name: selectedFile.name,
+                url: url
+              })
+              .then(function() {
+                props.handleLoadingStateChange(false);
+                console.log("Document successfully written!");
+              })
+              .catch(function(error) {
+                console.error("Error writing document: ", error);
+              });
+          });
+        }
+      );
+    }
   };
 
   return (
-    <div className="row songs-div">
-      {songsdiv}
-      <div id="filesubmit">
+    <div className="songs-div">
+      <div className="row songs-div">{songsdiv}</div>
+      <div className="filesubmit row">
         <input
           type="file"
-          className="file-select"
+          className="file-select btn btn-md btn-info"
           accept="audio/*"
           onChange={handleOnChange}
         />
@@ -73,6 +107,8 @@ class Songs extends React.Component {
       songsArray: []
     };
   }
+  songsTempArray = [];
+  songsTempArrayUrl = [];
 
   handleLoadingStateChange = isLoading => {
     this.setState({
@@ -82,26 +118,30 @@ class Songs extends React.Component {
 
   componentDidMount() {
     this.playistList();
+    // firebase
+    //   .firestore()
+    //   .collection("defaultPlaylist")
+    //   .snapshot(() => {
+    //     this.playistList();
+    //   });
   }
 
   playistList = async () => {
     try {
       var docRef = await firebase.firestore().collection("defaultPlaylist");
-      var songsTempArray = [];
-      var songsTempArrayUrl = [];
+
       var querySnapshot = await docRef.get();
-      // console.log(querySnapshot);
       querySnapshot.forEach(doc => {
-        songsTempArray.push(doc.data());
-        songsTempArrayUrl.push(doc.data().url);
+        this.songsTempArray.push(doc.data());
+        this.songsTempArrayUrl.push(doc.data().url);
       });
 
       this.setState({
         isLoading: false,
-        songsArray: songsTempArray
+        songsArray: this.songsTempArray
       });
 
-      this.props.handleArrayUpdate(songsTempArray, songsTempArrayUrl);
+      this.props.handleArrayUpdate(this.songsTempArray, this.songsTempArrayUrl);
     } catch (error) {
       console.log(error);
     }
@@ -128,12 +168,4 @@ class Songs extends React.Component {
   }
 }
 
-const mapStateToProps = state => {
-  const { songs } = state;
-  return { songs };
-};
-
-export default connect(
-  mapStateToProps,
-  null
-)(Songs);
+export default Songs;
