@@ -16,20 +16,21 @@ class Playlists extends React.Component {
         querySnapshot.forEach(doc1 => {
           console.log(doc1.ref);
           doc1.ref.getCollections().then(collection => {
-            collection.forEach(coll => {
-              coll.get().then(doc => {
-                doc.forEach(data => {
-                  console.log(data);
-                });
-              });
-            });
+            console.log(collection);
+            // collection.forEach(coll => {
+            //   coll.get().then(doc => {
+            //     doc.forEach(data => {
+            //       console.log(data);
+            //     });
+            //   });
+            // });
           });
         });
       });
   };
 
   render() {
-    this.func();
+    //this.func();
 
     return (
       <div className="small-div-right">
