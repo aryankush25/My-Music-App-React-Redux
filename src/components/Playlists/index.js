@@ -6,46 +6,69 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 
+const Playlist = props => {
+  const playlistDiv = props.playlistsArray.map((playlist, index) => {
+    return (
+      <Link
+        to="#"
+        key={index}
+        onClick={() => {
+          props.handleSongsArray(playlist.playlist);
+        }}
+      >
+        <div className="playlist-element">Playlist {index + 1} </div>
+      </Link>
+    );
+  });
+
+  return <div>{playlistDiv}</div>;
+};
+
 class Playlists extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: true,
+      playlistsArray: []
+    };
+  }
+
+  componentDidMount() {
+    this.func();
+  }
+
   func = () => {
     firebase
       .firestore()
       .collection("users")
       .get()
       .then(querySnapshot => {
-        querySnapshot.forEach(doc1 => {
-          console.log(doc1.ref);
-          doc1.ref.getCollections().then(collection => {
-            console.log(collection);
-            // collection.forEach(coll => {
-            //   coll.get().then(doc => {
-            //     doc.forEach(data => {
-            //       console.log(data);
-            //     });
-            //   });
-            // });
+        querySnapshot.forEach(user => {
+          this.setState({
+            isLoading: false,
+            playlistsArray: user.data().playlists
           });
         });
       });
   };
 
   render() {
-    //this.func();
+    if (this.state.isLoading === true) {
+      return (
+        <div className="d-flex justify-content-center loader-songs ">
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div className="small-div-right">
-        <Link to="#">
-          <div className="playlist-element">Default Playlist </div>
-        </Link>
-        <Link to="#">
-          <div className="playlist-element">Playlist 1</div>
-        </Link>
-        <Link to="#">
-          <div className="playlist-element">Playlist 2</div>
-        </Link>
-        <Link to="#">
-          <div className="playlist-element">Playlist 3</div>
-        </Link>
+        <Playlist
+          playlistsArray={this.state.playlistsArray}
+          handleSongsArray={this.props.handleSongsArray}
+        />
       </div>
     );
   }

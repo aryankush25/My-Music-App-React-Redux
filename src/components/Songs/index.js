@@ -5,13 +5,53 @@ import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
 
-const SongCard = props => {
-  const songsdiv = props.songsArray.map((song, index) => {
+class SongCard extends React.Component {
+  componentDidMount() {
+    var songsTempArrayUrl = [];
+    this.props.songsArray.forEach(doc => {
+      songsTempArrayUrl.push(doc.url);
+    });
+    this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
+  }
+
+  shouldComponentUpdate(nextProps) {
+    if (this.props.songsArray !== nextProps.songsArray) {
+      var songsTempArrayUrl = [];
+      nextProps.songsArray.forEach(doc => {
+        songsTempArrayUrl.push(doc.url);
+      });
+      nextProps.handleArrayUpdate(nextProps.songsArray, songsTempArrayUrl);
+
+      this.songsdiv = nextProps.songsArray.map((song, index) => {
+        return (
+          <div
+            className="card song-div"
+            key={index}
+            onClick={() => nextProps.handleSongClick(index)}
+          >
+            <div className="song-logo">
+              {song.name ? song.name.trim().charAt(0) : "?"}
+            </div>
+            <div className="card-body">
+              <p className="card-text">
+                {song.name ? song.name.trim() : "NO NAME"}
+              </p>
+            </div>
+          </div>
+        );
+      });
+
+      return true;
+    }
+    return false;
+  }
+
+  songsdiv = this.props.songsArray.map((song, index) => {
     return (
       <div
         className="card song-div"
         key={index}
-        onClick={() => props.handleSongClick(index)}
+        onClick={() => this.props.handleSongClick(index)}
       >
         <div className="song-logo">
           {song.name ? song.name.trim().charAt(0) : "?"}
@@ -25,7 +65,7 @@ const SongCard = props => {
     );
   });
 
-  const handleOnChange = async event => {
+  handleOnChange = async event => {
     const selectedFile = event.target.files[0];
 
     var filePresent = false;
@@ -53,10 +93,10 @@ const SongCard = props => {
       uploadTask.on(
         "state_changed",
         () => {
-          props.handleLoadingStateChange(true);
+          this.props.handleLoadingStateChange(true);
         },
         error => {
-          props.handleLoadingStateChange(false);
+          this.props.handleLoadingStateChange(false);
           console.log(error);
         },
         () => {
@@ -71,7 +111,7 @@ const SongCard = props => {
                 url: url
               })
               .then(function() {
-                props.handleLoadingStateChange(false);
+                this.props.handleLoadingStateChange(false);
                 console.log("Document successfully written!");
               })
               .catch(function(error) {
@@ -82,21 +122,24 @@ const SongCard = props => {
       );
     }
   };
+  render() {
+    // console.log("Inside" + this.props.songsArray);
 
-  return (
-    <div className="songs-div">
-      <div className="row songs-div">{songsdiv}</div>
-      <div className="filesubmit row">
-        <input
-          type="file"
-          className="file-select btn btn-md btn-info"
-          accept="audio/*"
-          onChange={handleOnChange}
-        />
+    return (
+      <div className="songs-div">
+        <div className="row songs-div">{this.songsdiv}</div>
+        <div className="filesubmit row">
+          <input
+            type="file"
+            className="file-select btn btn-md btn-info"
+            accept="audio/*"
+            onChange={this.handleOnChange}
+          />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 class Songs extends React.Component {
   constructor(props) {
@@ -107,8 +150,6 @@ class Songs extends React.Component {
       songsArray: []
     };
   }
-  songsTempArray = [];
-  songsTempArrayUrl = [];
 
   handleLoadingStateChange = isLoading => {
     this.setState({
@@ -116,33 +157,8 @@ class Songs extends React.Component {
     });
   };
 
-  componentDidMount() {
-    this.playistList();
-  }
-
-  playistList = async () => {
-    try {
-      var docRef = await firebase.firestore().collection("defaultPlaylist");
-
-      var querySnapshot = await docRef.get();
-      querySnapshot.forEach(doc => {
-        this.songsTempArray.push(doc.data());
-        this.songsTempArrayUrl.push(doc.data().url);
-      });
-
-      this.setState({
-        isLoading: false,
-        songsArray: this.songsTempArray
-      });
-
-      this.props.handleArrayUpdate(this.songsTempArray, this.songsTempArrayUrl);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   render() {
-    if (this.state.isLoading === true) {
+    if (this.props.playlistComponentIsLoading === true) {
       return (
         <div className="d-flex justify-content-center loader-songs ">
           <div className="spinner-border" role="status">
@@ -151,11 +167,11 @@ class Songs extends React.Component {
         </div>
       );
     }
-
     return (
       <SongCard
-        songsArray={this.state.songsArray}
+        songsArray={this.props.songsArray}
         handleSongClick={this.props.handleSongClick}
+        handleArrayUpdate={this.props.handleArrayUpdate}
         handleLoadingStateChange={this.handleLoadingStateChange}
       />
     );

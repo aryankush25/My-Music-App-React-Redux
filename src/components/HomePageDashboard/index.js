@@ -5,6 +5,21 @@ import Songs from "../Songs/";
 import "./style.scss";
 
 class HomePageDashboard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      songsArray: [],
+      playlistComponentIsLoading: true
+    };
+  }
+
+  handleSongsArray = songsArray => {
+    this.setState({
+      songsArray: songsArray,
+      playlistComponentIsLoading: false
+    });
+  };
+
   render() {
     return (
       <div className="row upper-div">
@@ -18,6 +33,8 @@ class HomePageDashboard extends React.Component {
         <div className="col-8 middle-col">
           <NavBar sound={this.props.sound} />
           <Songs
+            playlistComponentIsLoading={this.state.playlistComponentIsLoading}
+            songsArray={this.state.songsArray}
             handleArrayUpdate={this.props.handleArrayUpdate}
             handleSongClick={this.props.handleSongClick}
           />
@@ -27,7 +44,7 @@ class HomePageDashboard extends React.Component {
           <div className="header-div-right">
             <p className="playlist-logo">PLAYLISTS</p>
           </div>
-          <Playlists />
+          <Playlists handleSongsArray={this.handleSongsArray} />
         </div>
       </div>
     );

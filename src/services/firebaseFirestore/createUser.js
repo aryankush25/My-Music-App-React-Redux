@@ -48,6 +48,20 @@ const createUser = async (uId, userName) => {
                 "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FBulleya%20-%20RAW.mp3?alt=media&token=29476bb5-23b6-4d74-925e-eac3dccb3ea3"
             }
           ]
+        },
+        {
+          playlist: [
+            {
+              name: "First Class - Kalank.mp3",
+              url:
+                "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FFirst%20Class%20-%20Kalank.mp3?alt=media&token=1dd066b3-381f-4598-bce0-ffddba7fdc25"
+            },
+            {
+              name: "Bulleya - RAW.mp3",
+              url:
+                "https://firebasestorage.googleapis.com/v0/b/react-mini-project-music-app.appspot.com/o/Default%20Music%2FBulleya%20-%20RAW.mp3?alt=media&token=29476bb5-23b6-4d74-925e-eac3dccb3ea3"
+            }
+          ]
         }
       ]
     });
