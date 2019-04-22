@@ -67,27 +67,21 @@ class SongCard extends React.Component {
 
   handleOnChange = async event => {
     const selectedFile = event.target.files[0];
-
     var filePresent = false;
 
-    await firebase
-      .firestore()
-      .collection("defaultPlaylist")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
-          if (doc.data().name === selectedFile.name) {
-            console.log(doc.data());
-            filePresent = true;
-          }
-        });
-      });
+    this.props.songsArray.forEach(doc => {
+      if (doc.name === selectedFile.name) {
+        console.log(doc.name);
+        console.log(this.props.index);
+        filePresent = true;
+      }
+    });
 
     if (filePresent === false) {
       const uploadTask = firebase
         .storage()
         .ref()
-        .child(`Default Music/${selectedFile.name}`)
+        .child(`Music/${selectedFile.name}`)
         .put(selectedFile);
 
       uploadTask.on(
@@ -100,31 +94,30 @@ class SongCard extends React.Component {
           console.log(error);
         },
         () => {
-          uploadTask.snapshot.ref.getDownloadURL().then(url => {
-            console.log(url);
-
-            firebase
-              .firestore()
-              .collection("defaultPlaylist")
-              .add({
-                name: selectedFile.name,
-                url: url
-              })
-              .then(function() {
-                this.props.handleLoadingStateChange(false);
-                console.log("Document successfully written!");
-              })
-              .catch(function(error) {
-                console.error("Error writing document: ", error);
-              });
-          });
+          // uploadTask.snapshot.ref.getDownloadURL().then(url => {
+          //   console.log(url);
+          //   console.log(this.props.userId);
+          //   firebase
+          //     .firestore()
+          //     .collection("users")
+          //     .doc(this.props.userId)
+          //     .playlists[this.props.index].playlist.update({
+          //       name: selectedFile.name,
+          //       url: url
+          //     })
+          //     .then(() => {
+          //       this.props.handleLoadingStateChange(false);
+          //       console.log("Document successfully written!");
+          //     })
+          //     .catch(error => {
+          //       console.error("Error writing document: ", error);
+          //     });
+          // });
         }
       );
     }
   };
   render() {
-    // console.log("Inside" + this.props.songsArray);
-
     return (
       <div className="songs-div">
         <div className="row songs-div">{this.songsdiv}</div>
@@ -170,6 +163,8 @@ class Songs extends React.Component {
     return (
       <SongCard
         songsArray={this.props.songsArray}
+        index={this.props.index}
+        userId={this.props.userId}
         handleSongClick={this.props.handleSongClick}
         handleArrayUpdate={this.props.handleArrayUpdate}
         handleLoadingStateChange={this.handleLoadingStateChange}

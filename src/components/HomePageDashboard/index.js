@@ -9,14 +9,18 @@ class HomePageDashboard extends React.Component {
     super(props);
     this.state = {
       songsArray: [],
-      playlistComponentIsLoading: true
+      playlistComponentIsLoading: true,
+      index: 0,
+      userId: ""
     };
   }
 
-  handleSongsArray = songsArray => {
+  handleSongsArray = (songsArray, index, userId) => {
     this.setState({
       songsArray: songsArray,
-      playlistComponentIsLoading: false
+      playlistComponentIsLoading: false,
+      index: index,
+      userId: userId
     });
   };
 
@@ -35,6 +39,8 @@ class HomePageDashboard extends React.Component {
           <Songs
             playlistComponentIsLoading={this.state.playlistComponentIsLoading}
             songsArray={this.state.songsArray}
+            index={this.state.index}
+            userId={this.state.userId}
             handleArrayUpdate={this.props.handleArrayUpdate}
             handleSongClick={this.props.handleSongClick}
           />

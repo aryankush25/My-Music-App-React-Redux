@@ -13,7 +13,7 @@ const Playlist = props => {
         to="#"
         key={index}
         onClick={() => {
-          props.handleSongsArray(playlist.playlist);
+          props.handleSongsArray(playlist.playlist, index, props.userId);
         }}
       >
         <div className="playlist-element">Playlist {index + 1} </div>
@@ -29,7 +29,8 @@ class Playlists extends React.Component {
     super(props);
     this.state = {
       isLoading: true,
-      playlistsArray: []
+      playlistsArray: [],
+      userId: ""
     };
   }
 
@@ -44,10 +45,13 @@ class Playlists extends React.Component {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(user => {
-          this.setState({
-            isLoading: false,
-            playlistsArray: user.data().playlists
-          });
+          if (user.data().uId === firebase.auth().currentUser.uid) {
+            this.setState({
+              isLoading: false,
+              playlistsArray: user.data().playlists,
+              userId: user.id
+            });
+          }
         });
       });
   };
@@ -67,6 +71,7 @@ class Playlists extends React.Component {
       <div className="small-div-right">
         <Playlist
           playlistsArray={this.state.playlistsArray}
+          userId={this.state.userId}
           handleSongsArray={this.props.handleSongsArray}
         />
       </div>
