@@ -9,28 +9,24 @@ class HomePageDashboard extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      clickedUserArray: [],
+      clickedUserObject: [],
       isLoading: true,
       songsArray: [],
-      playlistComponentIsLoading: true,
-      index: 0,
-      userId: ""
+      index: 0
     };
   }
 
-  handleClickedUser = userArray => {
+  handleClickedUser = userObject => {
     this.setState({
-      clickedUserArray: userArray,
+      clickedUserObject: userObject,
       isLoading: false
     });
   };
 
-  handleSongsArray = (songsArray, index, userId) => {
+  handleSongsArray = (songsArray, index) => {
     this.setState({
       songsArray: songsArray,
-      playlistComponentIsLoading: false,
-      index: index,
-      userId: userId
+      index: index
     });
   };
 
@@ -62,10 +58,11 @@ class HomePageDashboard extends React.Component {
           <NavBar sound={this.props.sound} />
           {this.checkUserLoaded(
             <Songs
-              playlistComponentIsLoading={this.state.playlistComponentIsLoading}
+              handleClickedUser={this.handleClickedUser}
+              userObject={this.state.clickedUserObject}
               songsArray={this.state.songsArray}
               index={this.state.index}
-              userId={this.state.userId}
+              userId={this.state.clickedUserObject.userId}
               handleArrayUpdate={this.props.handleArrayUpdate}
               handleSongClick={this.props.handleSongClick}
             />
@@ -78,7 +75,7 @@ class HomePageDashboard extends React.Component {
           </div>
           {this.checkUserLoaded(
             <Playlists
-              userArray={this.state.clickedUserArray}
+              userObject={this.state.clickedUserObject}
               handleSongsArray={this.handleSongsArray}
             />
           )}

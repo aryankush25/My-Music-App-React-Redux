@@ -94,25 +94,28 @@ class SongCard extends React.Component {
           console.log(error);
         },
         () => {
-          // uploadTask.snapshot.ref.getDownloadURL().then(url => {
-          //   console.log(url);
-          //   console.log(this.props.userId);
-          //   firebase
-          //     .firestore()
-          //     .collection("users")
-          //     .doc(this.props.userId)
-          //     .playlists[this.props.index].playlist.update({
-          //       name: selectedFile.name,
-          //       url: url
-          //     })
-          //     .then(() => {
-          //       this.props.handleLoadingStateChange(false);
-          //       console.log("Document successfully written!");
-          //     })
-          //     .catch(error => {
-          //       console.error("Error writing document: ", error);
-          //     });
-          // });
+          uploadTask.snapshot.ref.getDownloadURL().then(async url => {
+            var userObject = this.props.userObject.userData;
+            userObject.playlists[this.props.index].playlist.push({
+              name: selectedFile.name,
+              url: url
+            });
+
+            await firebase
+              .firestore()
+              .collection("users")
+              .doc(this.props.userId)
+              .update({
+                playlists: userObject.playlists
+              })
+              .then(() => {
+                console.log("Document successfully written!");
+              })
+              .catch(error => {
+                console.error("Error writing document: ", error);
+              });
+            this.props.handleLoadingStateChange(false);
+          });
         }
       );
     }
@@ -139,7 +142,7 @@ class Songs extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: true,
+      isLoading: false,
       songsArray: []
     };
   }
@@ -151,7 +154,7 @@ class Songs extends React.Component {
   };
 
   render() {
-    if (this.props.playlistComponentIsLoading === true) {
+    if (this.state.isLoading === true) {
       return (
         <div className="d-flex justify-content-center loader-songs ">
           <div className="spinner-border" role="status">
@@ -160,10 +163,14 @@ class Songs extends React.Component {
         </div>
       );
     }
+
     return (
       <SongCard
+        userObject={this.props.userObject}
         songsArray={this.props.songsArray}
         index={this.props.index}
+        userId={this.props.userId}
+        handleClickedUser={this.props.handleClickedUser}
         handleSongClick={this.props.handleSongClick}
         handleArrayUpdate={this.props.handleArrayUpdate}
         handleLoadingStateChange={this.handleLoadingStateChange}

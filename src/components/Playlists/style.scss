@@ -29,3 +29,18 @@ a {
 .playlist-element:hover {
   background-color: $HOVER_COLOR;
 }
+
+.button-class {
+  background-color: $MUSIC_BAR_FILLED_COLOR;
+}
+
+.button-class button {
+  color: $PURE_WHITE_COLOR;
+  background-color: inherit;
+  border: 0;
+  width: 100%;
+}
+
+.button-class:hover {
+  background-color: $INVALID_FORM_BG_COLOR;
+}

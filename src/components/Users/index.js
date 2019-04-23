@@ -13,7 +13,7 @@ const UsersData = props => {
         <Link
           to="#"
           key={index}
-          style={{ backgroundColor: "#1c3459" }}
+          style={{ backgroundColor: "#77c4d3" }}
           onClick={() => {
             props.handleClickedUser(user);
           }}
