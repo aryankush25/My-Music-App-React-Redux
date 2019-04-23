@@ -24,15 +24,49 @@ class SongCard extends React.Component {
 
       this.songsdiv = nextProps.songsArray.map((song, index) => {
         return (
-          <div
-            className="card song-div"
-            key={index}
-            onClick={() => nextProps.handleSongClick(index)}
-          >
-            <div className="song-logo">
+          <div className="card song-div" key={index}>
+            <div
+              className="song-logo"
+              onClick={() => {
+                nextProps.handleSongClick(index);
+              }}
+            >
               {song.name ? song.name.trim().charAt(0) : "?"}
             </div>
-            <div className="card-body">
+            <div
+              className="card-body"
+              onClick={async () => {
+                var playlistObject = this.props.userObject.userData.playlists[
+                  this.props.index
+                ].playlist;
+                var newSongs = [];
+
+                for (var i = 0; i < playlistObject.length; i++) {
+                  if (i !== index) {
+                    newSongs.push(playlistObject[i]);
+                  }
+                }
+
+                var newPlaylistObject = this.props.userObject.userData
+                  .playlists;
+                newPlaylistObject[this.props.index].playlist = newSongs;
+
+                await firebase
+                  .firestore()
+                  .collection("users")
+                  .doc(this.props.userId)
+                  .update({
+                    playlists: newPlaylistObject
+                  })
+                  .then(() => {
+                    console.log("Document successfully written!");
+                  })
+                  .catch(error => {
+                    console.error("Error writing document: ", error);
+                  });
+                this.props.handleLoadingStateChange(false);
+              }}
+            >
               <p className="card-text">
                 {song.name ? song.name.trim() : "NO NAME"}
               </p>
@@ -48,12 +82,11 @@ class SongCard extends React.Component {
 
   songsdiv = this.props.songsArray.map((song, index) => {
     return (
-      <div
-        className="card song-div"
-        key={index}
-        onClick={() => this.props.handleSongClick(index)}
-      >
-        <div className="song-logo">
+      <div className="card song-div" key={index}>
+        <div
+          className="song-logo"
+          onClick={() => this.props.handleSongClick(index)}
+        >
           {song.name ? song.name.trim().charAt(0) : "?"}
         </div>
         <div className="card-body">
