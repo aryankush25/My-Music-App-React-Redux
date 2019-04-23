@@ -8,6 +8,11 @@
   width: inherit;
   height: 88%;
   background: bottom;
+}
+
+.playlists-container {
+  width: inherit;
+  height: 92.5%;
   overflow: auto;
 }
 
@@ -31,6 +36,9 @@ a {
 }
 
 .button-class {
+  padding: 12px;
+  height: 50px;
+  font-size: 18px;
   background-color: $MUSIC_BAR_FILLED_COLOR;
 }
 

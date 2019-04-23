@@ -20,7 +20,7 @@ const Playlist = props => {
     );
   });
 
-  return <div>{playlistDiv}</div>;
+  return <div className="playlists-container">{playlistDiv}</div>;
 };
 
 class Playlists extends React.Component {
@@ -101,7 +101,7 @@ class Playlists extends React.Component {
           playlistsArray={this.props.userObject.userData.playlists}
           handleSongsArray={this.props.handleSongsArray}
         />
-        <div className="playlist-element button-class">
+        <div className="button-class">
           <button onClick={() => this.handleAddPlaylist()}>Add Playlist</button>
         </div>
       </div>
