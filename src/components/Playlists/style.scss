@@ -31,8 +31,18 @@ a {
   font-style: italic;
 }
 
-.playlist-element:hover {
-  background-color: $HOVER_COLOR;
+// .playlist-text {
+// }
+
+// .playlist-cross {
+// }
+
+.playlist-text:hover {
+  color: $HOVER_COLOR;
+}
+
+.playlist-cross:hover {
+  color: $HOVER_COLOR;
 }
 
 .button-class {

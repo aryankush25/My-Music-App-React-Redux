@@ -52,12 +52,11 @@ class Playlists extends React.Component {
   }
 
   fetchUsers = () => {
-    var userArray = [];
     firebase
       .firestore()
       .collection("users")
-      .get()
-      .then(querySnapshot => {
+      .onSnapshot(querySnapshot => {
+        var userArray = [];
         querySnapshot.forEach(user => {
           var obj = { userData: user.data(), userId: user.id };
           userArray.push(obj);

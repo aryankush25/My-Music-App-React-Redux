@@ -2,18 +2,28 @@ import React from "react";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 
 const Playlist = props => {
   const playlistDiv = props.playlistsArray.map((playlist, index) => {
     return (
-      <div
-        key={index}
-        onClick={() => {
-          props.handleSongsArray(playlist.playlist, index);
-        }}
-      >
-        <div className="playlist-element">Playlist {index + 1} </div>
+      <div key={index} className="playlist-element">
+        <div
+          onClick={() => {
+            props.handleSongsArray(playlist.playlist, index);
+          }}
+          className="d-inline playlist-text"
+        >
+          Playlist {index + 1}
+        </div>
+        <div
+          className="d-inline playlist-cross"
+          onClick={() => props.handleDeletePlaylist(index)}
+        >
+          <FontAwesomeIcon icon={faTimesCircle} />
+        </div>
       </div>
     );
   });
@@ -76,6 +86,34 @@ class Playlists extends React.Component {
     this.handleLoadingStateChange(false);
   };
 
+  handleDeletePlaylist = async index => {
+    var userObject = this.props.userObject.userData.playlists;
+    var newPlaylists = [];
+
+    for (var i = 0; i < userObject.length; i++) {
+      if (i !== index) {
+        newPlaylists.push(userObject[i]);
+      }
+    }
+
+    this.handleLoadingStateChange(true);
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userObject.userId)
+      .update({
+        playlists: newPlaylists
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+      });
+    this.handleLoadingStateChange(false);
+  };
+
   handleLoadingStateChange = isLoading => {
     this.setState({
       isLoading: isLoading
@@ -98,6 +136,7 @@ class Playlists extends React.Component {
         <Playlist
           playlistsArray={this.props.userObject.userData.playlists}
           handleSongsArray={this.props.handleSongsArray}
+          handleDeletePlaylist={this.handleDeletePlaylist}
         />
         <div className="button-class">
           <button onClick={() => this.handleAddPlaylist()}>Add Playlist</button>
