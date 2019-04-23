@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -8,15 +7,14 @@ import "./style.scss";
 const Playlist = props => {
   const playlistDiv = props.playlistsArray.map((playlist, index) => {
     return (
-      <Link
-        to="#"
+      <div
         key={index}
         onClick={() => {
           props.handleSongsArray(playlist.playlist, index);
         }}
       >
         <div className="playlist-element">Playlist {index + 1} </div>
-      </Link>
+      </div>
     );
   });
 
