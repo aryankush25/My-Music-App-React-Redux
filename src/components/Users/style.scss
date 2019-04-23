@@ -1,0 +1,31 @@
+@import "../../utils/styles/colorConstants.scss";
+
+.small-div-left {
+  text-align: center;
+}
+
+.small-div-left {
+  width: inherit;
+  height: 88%;
+  background: bottom;
+  overflow: auto;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.user-element {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: inherit;
+  height: 50px;
+  color: $PURE_BLACK_COLOR;
+  font-size: 18px;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.user-element:hover {
+  background-color: $HOVER_COLOR;
+}

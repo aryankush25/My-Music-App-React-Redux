@@ -164,7 +164,6 @@ class Songs extends React.Component {
       <SongCard
         songsArray={this.props.songsArray}
         index={this.props.index}
-        userId={this.props.userId}
         handleSongClick={this.props.handleSongClick}
         handleArrayUpdate={this.props.handleArrayUpdate}
         handleLoadingStateChange={this.handleLoadingStateChange}

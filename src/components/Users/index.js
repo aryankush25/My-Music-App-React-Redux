@@ -4,19 +4,33 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "./style.scss";
 
 const UsersData = props => {
   const userDiv = props.userArray.map((user, index) => {
-    if (firebase.auth().currentUser.uid === user.uId) {
+    if (firebase.auth().currentUser.uid === user.userData.uId) {
       return (
-        <Link to="#" key={index} onClick={() => {}}>
-          <div className="playlist-element"> {user.userName} </div>
+        <Link
+          to="#"
+          key={index}
+          style={{ backgroundColor: "#1c3459" }}
+          onClick={() => {
+            props.handleClickedUser(user);
+          }}
+        >
+          <div className="user-element"> {user.userData.userName} </div>
         </Link>
       );
     }
     return (
-      <Link to="#" key={index} onClick={() => {}}>
-        <div className="playlist-element"> {user.userName} </div>
+      <Link
+        to="#"
+        key={index}
+        onClick={() => {
+          props.handleClickedUser(user);
+        }}
+      >
+        <div className="user-element"> {user.userData.userName} </div>
       </Link>
     );
   });
@@ -46,7 +60,11 @@ class Playlists extends React.Component {
       .get()
       .then(querySnapshot => {
         querySnapshot.forEach(user => {
-          userArray.push(user.data());
+          var obj = { userData: user.data(), userId: user.id };
+          userArray.push(obj);
+          if (firebase.auth().currentUser.uid === user.data().uId) {
+            this.props.handleClickedUser(obj);
+          }
         });
         this.setState({
           isLoading: false,
@@ -68,7 +86,10 @@ class Playlists extends React.Component {
 
     return (
       <div className="small-div-right">
-        <UsersData userArray={this.state.userArray} />
+        <UsersData
+          userArray={this.state.userArray}
+          handleClickedUser={this.props.handleClickedUser}
+        />
       </div>
     );
   }
