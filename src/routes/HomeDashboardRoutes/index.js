@@ -22,9 +22,14 @@ class Home extends React.Component {
   intervalID = 0;
 
   handleArrayUpdate = (songsArrayUpdated, songsUrlArray) => {
+    if (this.state.isPlaying === true) {
+      this.handleStop();
+    }
+
     this.setState({
       songsUrlArray: songsUrlArray
     });
+
     this.sound = new Howl({
       src: [songsUrlArray[this.state.currentIndex]],
       html5: true

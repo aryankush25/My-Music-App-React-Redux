@@ -8,6 +8,7 @@ import signUpUser from "../../services/firebaseAuth/signUpUser";
 import signOutUser from "../../services/firebaseAuth/signOutUser";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import updateUser from "../../services/firebaseAuth/updateUser";
+import createUser from "../../services/firebaseFirestore/createUser";
 import {
   AUTH_WEAK_PASS,
   WEAK_PASS
@@ -64,6 +65,7 @@ class RegisterFormDiv extends React.Component {
       var user = await currentUser();
       if (user) {
         await updateUser(this.state.name);
+        await createUser(user.uid, this.state.name);
         await signOutUser();
         window.localStorage.setItem("musicAppSignedIn", false);
         this.props.history.push("/login");

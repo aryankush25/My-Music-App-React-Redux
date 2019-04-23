@@ -1,10 +1,10 @@
 @import "../../utils/styles/colorConstants.scss";
 
-.small-div-right {
+.small-div-left {
   text-align: center;
 }
 
-.small-div-right {
+.small-div-left {
   width: inherit;
   height: 88%;
   background: bottom;
@@ -15,7 +15,7 @@ a {
   text-decoration: none !important;
 }
 
-.playlist-element {
+.user-element {
   margin-top: 20px;
   padding: 12px;
   background-color: inherit;
@@ -26,21 +26,6 @@ a {
   font-style: italic;
 }
 
-.playlist-element:hover {
+.user-element:hover {
   background-color: $HOVER_COLOR;
-}
-
-.button-class {
-  background-color: $MUSIC_BAR_FILLED_COLOR;
-}
-
-.button-class button {
-  color: $PURE_WHITE_COLOR;
-  background-color: inherit;
-  border: 0;
-  width: 100%;
-}
-
-.button-class:hover {
-  background-color: $INVALID_FORM_BG_COLOR;
 }
