@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import "firebase/storage";
 import "./style.scss";
 
 const Playlist = props => {
@@ -29,8 +28,7 @@ class Playlists extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: false,
-      songsArray: []
+      isLoading: false
     };
   }
 
@@ -41,7 +39,11 @@ class Playlists extends React.Component {
     );
   }
 
-  shouldComponentUpdate(nextProps) {
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.isLoading !== nextState.isLoading) {
+      return true;
+    }
+
     if (this.props.userObject !== nextProps.userObject) {
       nextProps.handleSongsArray(
         nextProps.userObject.userData.playlists[0].playlist,
@@ -57,7 +59,6 @@ class Playlists extends React.Component {
     userObject.playlists.push({
       playlist: []
     });
-    console.log(userObject);
 
     this.handleLoadingStateChange(true);
 
@@ -74,7 +75,6 @@ class Playlists extends React.Component {
       .catch(error => {
         console.error("Error writing document: ", error);
       });
-
     this.handleLoadingStateChange(false);
   };
 
