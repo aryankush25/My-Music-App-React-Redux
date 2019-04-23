@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../NavBar/";
 import Playlists from "../Playlists/";
 import Songs from "../Songs/";
+import Users from "../Users/";
 import "./style.scss";
 
 class HomePageDashboard extends React.Component {
@@ -31,7 +32,7 @@ class HomePageDashboard extends React.Component {
           <div className="header-div-left">
             <p className="friends-logo">FRIENDS</p>
           </div>
-          <div className="small-div-left">Friends</div>
+          <Users />
         </div>
 
         <div className="col-8 middle-col">
