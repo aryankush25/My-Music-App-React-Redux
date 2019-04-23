@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -10,7 +9,7 @@ const UsersData = props => {
   const userDiv = props.userArray.map((user, index) => {
     if (firebase.auth().currentUser.uid === user.userData.uId) {
       return (
-        <Link
+        <div
           to="#"
           key={index}
           style={{ backgroundColor: "#77c4d3" }}
@@ -19,11 +18,11 @@ const UsersData = props => {
           }}
         >
           <div className="user-element"> {user.userData.userName} </div>
-        </Link>
+        </div>
       );
     }
     return (
-      <Link
+      <div
         to="#"
         key={index}
         onClick={() => {
@@ -31,7 +30,7 @@ const UsersData = props => {
         }}
       >
         <div className="user-element"> {user.userData.userName} </div>
-      </Link>
+      </div>
     );
   });
 
@@ -53,12 +52,11 @@ class Playlists extends React.Component {
   }
 
   fetchUsers = () => {
-    var userArray = [];
     firebase
       .firestore()
       .collection("users")
-      .get()
-      .then(querySnapshot => {
+      .onSnapshot(querySnapshot => {
+        var userArray = [];
         querySnapshot.forEach(user => {
           var obj = { userData: user.data(), userId: user.id };
           userArray.push(obj);
