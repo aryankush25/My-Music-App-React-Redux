@@ -1,5 +1,7 @@
 import React from "react";
 import signOutUser from "../../services/firebaseAuth/signOutUser";
+import currentUser from "../../services/firebaseAuth/currentUser";
+import "./style.scss";
 
 class Profile extends React.Component {
   constructor(props) {
@@ -12,13 +14,18 @@ class Profile extends React.Component {
   handleSignOut = async () => {
     await signOutUser();
     window.localStorage.setItem("musicAppSignedIn", false);
-
     this.props.history.push("/login");
   };
 
+  func = async () => {
+    var currentUserData = await currentUser();
+    console.log(currentUserData);
+  };
+
   render() {
+    this.func();
     return (
-      <div>
+      <div className="profile-container">
         <h1>Profile</h1>
         <button className="btn btn-info" onClick={this.handleSignOut}>
           Logout
