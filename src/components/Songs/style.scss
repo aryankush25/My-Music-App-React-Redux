@@ -14,7 +14,13 @@
 .song-div {
   margin: 10px;
   border: 2px solid $HOVER_COLOR;
-  width: 15rem;
+  max-width: 15rem;
+  max-height: 18rem;
+  border-radius: 0;
+}
+
+.song-div button {
+  border-radius: 0px;
 }
 
 .current-address {
