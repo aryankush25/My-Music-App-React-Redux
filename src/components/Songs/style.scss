@@ -7,7 +7,7 @@
 .songs-div {
   justify-content: center;
   overflow-y: auto;
-  height: 86.2%;
+  height: 88%;
   margin: 0;
 }
 
@@ -20,6 +20,7 @@
 .current-address {
   margin-left: 20px;
   color: $SOLID_HEADING_COLOR;
+  height: 2%;
 }
 
 .song-logo {
