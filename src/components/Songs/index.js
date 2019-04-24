@@ -98,24 +98,28 @@ class SongCard extends React.Component {
     );
   });
 
-  handleOnChange = async event => {
-    const selectedFile = event.target.files[0];
-    var filePresent = false;
+  selectedFile = "";
+  filePresent = true;
+  handleOnChange = event => {
+    this.selectedFile = event.target.files[0];
+    this.filePresent = false;
 
     this.props.songsArray.forEach(doc => {
-      if (doc.name === selectedFile.name) {
+      if (doc.name === this.selectedFile.name) {
         console.log(doc.name);
         console.log(this.props.index);
-        filePresent = true;
+        this.filePresent = true;
       }
     });
+  };
 
-    if (filePresent === false) {
+  handleOnClick = async () => {
+    if (this.filePresent === false) {
       const uploadTask = firebase
         .storage()
         .ref()
-        .child(`Music/${selectedFile.name}`)
-        .put(selectedFile);
+        .child(`Music/${this.selectedFile.name}`)
+        .put(this.selectedFile);
 
       uploadTask.on(
         "state_changed",
@@ -130,7 +134,7 @@ class SongCard extends React.Component {
           uploadTask.snapshot.ref.getDownloadURL().then(async url => {
             var userObject = this.props.userObject.userData;
             userObject.playlists[this.props.index].playlist.push({
-              name: selectedFile.name,
+              name: this.selectedFile.name,
               url: url
             });
 
@@ -155,15 +159,22 @@ class SongCard extends React.Component {
   };
   render() {
     return (
-      <div className="songs-div">
+      <div className="middle-songs-container">
+        <p className="current-address">
+          {this.props.userObject.userData.userName} > Playlist{" "}
+          {this.props.index + 1}
+        </p>
         <div className="row songs-div">{this.songsdiv}</div>
-        <div className="filesubmit row">
+        <div className="filesubmit">
           <input
             type="file"
-            className="file-select btn btn-md btn-info"
+            className="file-select btn btn-md btn-danger"
             accept="audio/*"
             onChange={this.handleOnChange}
           />
+          <button className="btn btn-md btn-info" onClick={this.handleOnClick}>
+            Submit
+          </button>
         </div>
       </div>
     );

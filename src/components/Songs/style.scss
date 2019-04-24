@@ -1,17 +1,25 @@
 @import "../../utils/styles/colorConstants.scss";
 
+.middle-songs-container {
+  height: 88%;
+}
+
 .songs-div {
   justify-content: center;
-  padding: 40px;
-  overflow: auto;
-  height: 88%;
-  padding-bottom: 2px;
+  overflow-y: auto;
+  height: 86.2%;
+  margin: 0;
 }
 
 .song-div {
   margin: 10px;
   border: 2px solid $HOVER_COLOR;
   width: 15rem;
+}
+
+.current-address {
+  margin-left: 20px;
+  color: $SOLID_HEADING_COLOR;
 }
 
 .song-logo {
@@ -40,10 +48,20 @@
 }
 
 .filesubmit {
-  padding: 10px;
   justify-content: center;
+  height: 7.5%;
+  margin: 0;
 }
 
 .filesubmit input {
-  border-radius: 12px;
+  padding: 9px;
+  border-radius: 0px;
+  height: 100%;
+  width: 70%;
+}
+
+.filesubmit button {
+  border-radius: 0px;
+  height: 100%;
+  width: 30%;
 }
