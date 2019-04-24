@@ -34,7 +34,7 @@ class FetchCurrentUserDetails extends React.Component {
     return (
       <div className="user-details">
         <img src={this.state.userProfilePic} alt="img" className="userImage" />
-        <p>{this.state.userName}</p>
+        <Link to="/profile">{this.state.userName}</Link>
       </div>
     );
   }
@@ -60,30 +60,11 @@ class NavBar extends React.Component {
           />
         </div>
 
-        <FetchCurrentUserDetails />
+        {/* <button className="btn btn-info" onClick={this.handleSignOut}>
+          Logout
+        </button> */}
 
-        <div className="dropdown">
-          <button
-            className="btn btn-info dropdown-toggle"
-            type="button"
-            id="dropdownMenuButton"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            Profile
-          </button>
-          <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <div className="dropdown-item">
-              <Link to="/profile">My Profile</Link>
-            </div>
-            <div className="dropdown-item">
-              <button className="btn btn-info" onClick={this.handleSignOut}>
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
+        <FetchCurrentUserDetails />
       </div>
     );
   }
