@@ -173,7 +173,7 @@ class SongCard extends React.Component {
             onChange={this.handleOnChange}
           />
           <button className="btn btn-md btn-info" onClick={this.handleOnClick}>
-            Submit
+            Upload
           </button>
         </div>
       </div>
