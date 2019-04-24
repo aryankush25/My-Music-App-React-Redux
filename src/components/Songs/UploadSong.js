@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import "firebase/storage";
 import "./style.scss";
 
 class UploadSong extends React.Component {
@@ -63,6 +64,12 @@ class UploadSong extends React.Component {
   };
 
   render() {
+    if (
+      this.props.userObject.userData.uId !== firebase.auth().currentUser.uid
+    ) {
+      return <p>You Can't Upload The Songs</p>;
+    }
+
     return (
       <div className="filesubmit">
         <input
