@@ -1,0 +1,11 @@
+@import "../../utils/styles/colorConstants.scss";
+
+.profile-container {
+  min-width: 100vw;
+  min-height: 100vh;
+  background-image: url("../../assets/images/music-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-position: right;
+  background-size: cover;
+}

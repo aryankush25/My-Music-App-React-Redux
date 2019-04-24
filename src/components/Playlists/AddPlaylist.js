@@ -33,7 +33,7 @@ class AddPlaylist extends React.Component {
     if (
       this.props.userObject.userData.uId !== firebase.auth().currentUser.uid
     ) {
-      return <p>You Make Playlists</p>;
+      return <p />;
     }
     return (
       <div className="button-class">

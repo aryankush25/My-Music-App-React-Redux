@@ -6,6 +6,20 @@ import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
 
+const DeleteButton = props => {
+  if (props.userObject.userData.uId !== firebase.auth().currentUser.uid) {
+    return <p />;
+  }
+  return (
+    <button
+      className="btn btn-md btn-info"
+      onClick={() => props.handleSongDelete(props.index)}
+    >
+      Delete
+    </button>
+  );
+};
+
 class SongCard extends React.Component {
   componentDidMount() {
     var songsTempArrayUrl = [];
@@ -25,53 +39,27 @@ class SongCard extends React.Component {
 
       this.songsdiv = nextProps.songsArray.map((song, index) => {
         return (
-          <div className="card song-div" key={index}>
-            <div
-              className="song-logo"
-              onClick={() => {
-                nextProps.handleSongClick(index);
-              }}
-            >
+          <div
+            className="card song-div"
+            key={index}
+            onClick={() => {
+              nextProps.handleSongClick(index);
+            }}
+          >
+            <div className="song-logo">
               {song.name ? song.name.trim().charAt(0) : "?"}
             </div>
-            <div
-              className="card-body"
-              onClick={async () => {
-                var playlistObject = this.props.userObject.userData.playlists[
-                  this.props.index
-                ].playlist;
-                var newSongs = [];
-
-                for (var i = 0; i < playlistObject.length; i++) {
-                  if (i !== index) {
-                    newSongs.push(playlistObject[i]);
-                  }
-                }
-
-                var newPlaylistObject = this.props.userObject.userData
-                  .playlists;
-                newPlaylistObject[this.props.index].playlist = newSongs;
-
-                await firebase
-                  .firestore()
-                  .collection("users")
-                  .doc(this.props.userId)
-                  .update({
-                    playlists: newPlaylistObject
-                  })
-                  .then(() => {
-                    console.log("Document successfully written!");
-                  })
-                  .catch(error => {
-                    console.error("Error writing document: ", error);
-                  });
-                this.props.handleLoadingStateChange(false);
-              }}
-            >
+            <div className="card-body">
               <p className="card-text">
                 {song.name ? song.name.trim() : "NO NAME"}
               </p>
             </div>
+
+            <DeleteButton
+              handleSongDelete={this.handleSongDelete}
+              index={index}
+              userObject={this.props.userObject}
+            />
           </div>
         );
       });
@@ -81,23 +69,36 @@ class SongCard extends React.Component {
     return false;
   }
 
-  songsdiv = this.props.songsArray.map((song, index) => {
-    return (
-      <div className="card song-div" key={index}>
-        <div
-          className="song-logo"
-          onClick={() => this.props.handleSongClick(index)}
-        >
-          {song.name ? song.name.trim().charAt(0) : "?"}
-        </div>
-        <div className="card-body">
-          <p className="card-text">
-            {song.name ? song.name.trim() : "NO NAME"}
-          </p>
-        </div>
-      </div>
-    );
-  });
+  handleSongDelete = async index => {
+    var playlistObject = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist;
+    var newSongs = [];
+
+    for (var i = 0; i < playlistObject.length; i++) {
+      if (i !== index) {
+        newSongs.push(playlistObject[i]);
+      }
+    }
+
+    var newPlaylistObject = this.props.userObject.userData.playlists;
+    newPlaylistObject[this.props.index].playlist = newSongs;
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userId)
+      .update({
+        playlists: newPlaylistObject
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+      });
+    this.props.handleLoadingStateChange(false);
+  };
 
   render() {
     return (
