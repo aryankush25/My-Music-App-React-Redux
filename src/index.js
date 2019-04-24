@@ -10,7 +10,7 @@ import "./assets/styles/custom.scss";
 import "../node_modules/font-awesome/css/font-awesome.min.css";
 import FirebaseConfig from "./config/firebase-config";
 import { Provider } from "react-redux";
-import { store } from "./store/index";
+import { store } from "./redux/store/index";
 
 firebase.initializeApp(FirebaseConfig);
 
