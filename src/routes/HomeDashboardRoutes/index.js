@@ -140,31 +140,33 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div className="home-page-div">
-        <HomePageDashboard
-          sound={this.sound}
-          handleArrayUpdate={this.handleArrayUpdate}
-          handleSongClick={this.handleSongClick}
-        />
+      <div className="home-container">
+        <div className="home-page-div">
+          <HomePageDashboard
+            sound={this.sound}
+            handleArrayUpdate={this.handleArrayUpdate}
+            handleSongClick={this.handleSongClick}
+          />
 
-        {/* Music Bar Div That Contains the music bar elements */}
+          {/* Music Bar Div That Contains the music bar elements */}
 
-        <div className="music-bar">
-          <MusicBarButtons
-            isPlaying={this.state.isPlaying}
-            playPrevious={this.handlePlayPrevious}
-            playPauseAudio={this.handlePlayPauseAudio}
-            playNext={this.handlePlayNext}
-          />
-          <MusicSeekBar
-            duration={this.sound._duration}
-            currentDuration={this.state.currentDuration}
-            adjustSeek={this.handleAdjustSeek}
-          />
-          <MusicVolumeBar
-            volume={Howler._volume}
-            adjustAudio={this.handleAdjustAudio}
-          />
+          <div className="music-bar">
+            <MusicBarButtons
+              isPlaying={this.state.isPlaying}
+              playPrevious={this.handlePlayPrevious}
+              playPauseAudio={this.handlePlayPauseAudio}
+              playNext={this.handlePlayNext}
+            />
+            <MusicSeekBar
+              duration={this.sound._duration}
+              currentDuration={this.state.currentDuration}
+              adjustSeek={this.handleAdjustSeek}
+            />
+            <MusicVolumeBar
+              volume={Howler._volume}
+              adjustAudio={this.handleAdjustAudio}
+            />
+          </div>
         </div>
       </div>
     );

@@ -67,7 +67,7 @@ class UploadSong extends React.Component {
     if (
       this.props.userObject.userData.uId !== firebase.auth().currentUser.uid
     ) {
-      return <p>You Can't Upload The Songs</p>;
+      return <p />;
     }
 
     return (

@@ -1,12 +1,14 @@
 @import "../../utils/styles/colorConstants.scss";
 
-// body {
-//   background-image: url("../../assets/images/home-page-bg.jpg");
-//   background-repeat: no-repeat;
-//   background-position: center center;
-//   background-position: right;
-//   background-size: cover;
-// }
+.home-container {
+  min-width: 100vw;
+  min-height: 100vh;
+  background-image: url("../../assets/images/home-page-bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-position: right;
+  background-size: cover;
+}
 
 .music-bar {
   background-color: $MUSIC_BAR_BG_COLOR;
