@@ -54,7 +54,7 @@ class AddPlaylist extends React.Component {
     }
     return (
       <div className="button-class">
-        <button onClick={() => this.toggle}>Add Playlist</button>
+        <button onClick={this.toggle}>Add Playlist</button>
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}

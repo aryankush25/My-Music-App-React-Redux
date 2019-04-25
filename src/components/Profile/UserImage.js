@@ -29,7 +29,6 @@ class UserImage extends React.Component {
       },
       error => {
         this.handleLoadingStateChange(false);
-        console.log(error);
       },
       () => {
         uploadTask.snapshot.ref.getDownloadURL().then(async url => {
@@ -37,7 +36,6 @@ class UserImage extends React.Component {
           await user.updateProfile({
             photoURL: url
           });
-          console.log(url);
           this.props.getCurrentUserData();
           this.handleLoadingStateChange(false);
         });

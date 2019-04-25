@@ -51,7 +51,10 @@ class HomePageDashboard extends React.Component {
           <div className="header-div-left">
             <p className="friends-logo">FRIENDS</p>
           </div>
-          <Users handleClickedUser={this.handleClickedUser} />
+          <Users
+            handleClickedUser={this.handleClickedUser}
+            userId={this.state.clickedUserObject.userId}
+          />
         </div>
 
         <div className="col-8 middle-col">

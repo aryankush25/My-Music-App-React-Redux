@@ -1,6 +1,10 @@
 import React from "react";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import "./style.scss";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import "firebase/auth";
+import "firebase/storage";
 
 class UserInfo extends React.Component {
   constructor(props) {
@@ -11,21 +15,47 @@ class UserInfo extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.fetchUsers();
+  }
+
   name = "";
 
   handleSubmitName = async e => {
     e.preventDefault();
     this.handleLoadingStateChange(true);
-    console.log(this.name);
     var user = await currentUser();
     await user.updateProfile({
       displayName: this.name
     });
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(this.userId)
+      .update({
+        userName: this.name
+      });
+
     this.setState({
       showName: true
     });
     this.props.getCurrentUserData();
     this.handleLoadingStateChange(false);
+  };
+
+  fetchUsers = () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.forEach(user => {
+          if (firebase.auth().currentUser.uid === user.data().uId) {
+            this.userId = user.id;
+          }
+        });
+      });
   };
 
   handleChangeName = event => {

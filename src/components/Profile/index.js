@@ -29,7 +29,6 @@ class Profile extends React.Component {
 
   getCurrentUserData = async () => {
     var currentUserData = await currentUser();
-    console.log(currentUserData);
     this.setState({
       displayName: currentUserData.displayName,
       email: currentUserData.email,
