@@ -7,7 +7,7 @@
 .songs-div {
   justify-content: center;
   overflow-y: auto;
-  height: 88%;
+  height: 94%;
   margin: 0;
 }
 
@@ -21,12 +21,6 @@
 
 .song-div button {
   border-radius: 0px;
-}
-
-.current-address {
-  margin-left: 20px;
-  color: $SOLID_HEADING_COLOR;
-  height: 2%;
 }
 
 .song-logo {
@@ -54,10 +48,20 @@
   margin-top: 25%;
 }
 
-.filesubmit {
-  justify-content: center;
+.songs-header-row {
+  display: flex;
+}
+
+.current-address {
+  margin-left: 20px;
+  color: $SOLID_HEADING_COLOR;
   height: 7.5%;
-  margin: 0;
+}
+
+.filesubmit {
+  flex: 1;
+  height: 7.5%;
+  margin-left: 50%;
 }
 
 .filesubmit input {
@@ -70,5 +74,5 @@
 .filesubmit button {
   border-radius: 0px;
   height: 100%;
-  width: 30%;
+  width: 100%;
 }

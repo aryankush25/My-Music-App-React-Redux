@@ -15,8 +15,6 @@ class AddPlaylist extends React.Component {
     this.toggle = this.toggle.bind(this);
   }
 
-  playlistName = "";
-
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal
@@ -56,13 +54,7 @@ class AddPlaylist extends React.Component {
     }
     return (
       <div className="button-class">
-        <button
-          onClick={() => {
-            this.toggle();
-          }}
-        >
-          Add Playlist
-        </button>
+        <button onClick={() => this.toggle}>Add Playlist</button>
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}
