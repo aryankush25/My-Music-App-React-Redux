@@ -3,12 +3,31 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "./style.scss";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 class AddPlaylist extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  playlistName = "";
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
+
   handleAddPlaylist = async () => {
     var userObject = this.props.userObject.userData;
     userObject.playlists.push({
-      playlist: []
+      playlist: [],
+      playlistName: this.playlistName
     });
 
     this.props.handleLoadingStateChange(true);
@@ -37,37 +56,45 @@ class AddPlaylist extends React.Component {
     }
     return (
       <div className="button-class">
-        {/* <button onClick={() => this.handleAddPlaylist()}>Add Playlist</button> */}
         <button
-          type="button"
-          className="btn btn-info btn-lg"
-          data-toggle="modal"
-          data-target="#myModal"
+          onClick={() => {
+            this.toggle();
+          }}
         >
-          Open Modal
+          Add Playlist
         </button>
-        <div className="modal fade" id="myModal" role="dialog">
-          <div className="modal-dialog">
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal" />
-                <h4 className="modal-title">Modal Header</h4>
-              </div>
-              <div className="modal-body">
-                <p>Some text in the modal.</p>
-              </div>
-              <div className="modal-footer">
-                <button
-                  type="button"
-                  className="btn btn-default"
-                  data-dismiss="modal"
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Modal
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>Enter Name Of Playlist</ModalHeader>
+          <ModalBody>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Enter New Playlist Name"
+              required
+              onChange={event => {
+                this.playlistName = event.target.value;
+              }}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="info"
+              onClick={() => {
+                this.toggle();
+                this.handleAddPlaylist();
+              }}
+            >
+              Add
+            </Button>{" "}
+            <Button color="danger" onClick={this.toggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }
