@@ -84,8 +84,10 @@ class AddPlaylist extends React.Component {
             <Button
               color="info"
               onClick={() => {
-                this.toggle();
-                this.handleAddPlaylist();
+                if (this.playlistName !== "") {
+                  this.toggle();
+                  this.handleAddPlaylist();
+                }
               }}
             >
               Add
