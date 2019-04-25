@@ -15,6 +15,7 @@ const DeletePlaylist = props => {
       className="d-inline playlist-cross"
       onClick={() => props.handleDeletePlaylist(props.index)}
     >
+      {"  "}
       <FontAwesomeIcon icon={faTimesCircle} />
     </div>
   );
@@ -30,7 +31,7 @@ const Playlist = props => {
           }}
           className="d-inline playlist-text"
         >
-          Playlist {index + 1}
+          {playlist.playlistName}
         </div>
         <DeletePlaylist
           userObject={props.userObject}

@@ -103,18 +103,23 @@ class SongCard extends React.Component {
   render() {
     return (
       <div className="middle-songs-container">
-        <p className="current-address">
-          {this.props.userObject.userData.userName} > Playlist{" "}
-          {this.props.index + 1}
-        </p>
+        <div className="songs-header-row">
+          <div className="current-address">
+            <p>
+              {this.props.userObject.userData.userName} > Playlist{" "}
+              {this.props.index + 1}
+            </p>
+          </div>
+          <UploadSong
+            userObject={this.props.userObject}
+            songsArray={this.props.songsArray}
+            index={this.props.index}
+            userId={this.props.userId}
+            handleLoadingStateChange={this.props.handleLoadingStateChange}
+          />
+        </div>
+
         <div className="row songs-div">{this.songsdiv}</div>
-        <UploadSong
-          userObject={this.props.userObject}
-          songsArray={this.props.songsArray}
-          index={this.props.index}
-          userId={this.props.userId}
-          handleLoadingStateChange={this.props.handleLoadingStateChange}
-        />
       </div>
     );
   }

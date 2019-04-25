@@ -38,6 +38,7 @@ class UserImage extends React.Component {
             photoURL: url
           });
           console.log(url);
+          this.props.getCurrentUserData();
           this.handleLoadingStateChange(false);
         });
       }

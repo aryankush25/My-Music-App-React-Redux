@@ -11,6 +11,7 @@ const createUser = async (uId, userName) => {
       userName: userName,
       playlists: [
         {
+          playlistName: "Default Playlist",
           playlist: [
             {
               name: "Vande Mataram - RAW.mp3",
