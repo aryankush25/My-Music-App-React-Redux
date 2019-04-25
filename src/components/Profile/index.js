@@ -1,14 +1,23 @@
 import React from "react";
 import signOutUser from "../../services/firebaseAuth/signOutUser";
 import currentUser from "../../services/firebaseAuth/currentUser";
+import UserImage from "./UserImage";
+import UserInfo from "./UserInfo";
 import "./style.scss";
 
 class Profile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Aryan"
+      displayName: "",
+      email: "",
+      phoneNumber: "",
+      photoURL: ""
     };
+  }
+
+  componentDidMount() {
+    this.getCurrentUserData();
   }
 
   handleSignOut = async () => {
@@ -17,19 +26,35 @@ class Profile extends React.Component {
     this.props.history.push("/login");
   };
 
-  func = async () => {
+  getCurrentUserData = async () => {
     var currentUserData = await currentUser();
     console.log(currentUserData);
+    this.setState({
+      displayName: currentUserData.displayName,
+      email: currentUserData.email,
+      phoneNumber: currentUserData.phoneNumber,
+      photoURL: currentUserData.photoURL
+    });
   };
 
   render() {
-    this.func();
     return (
       <div className="profile-container">
-        <h1>Profile</h1>
-        <button className="btn btn-info" onClick={this.handleSignOut}>
-          Logout
-        </button>
+        <div className="mini-profile-container">
+          <div className="card">
+            <div className="card-header login-card-header">
+              <h1>User Profile</h1>
+              <UserImage photoURL={this.state.photoURL} />
+            </div>
+            <UserInfo
+              displayName={this.state.displayName}
+              phoneNumber={this.state.phoneNumber}
+              email={this.state.email}
+              handleSignOut={this.handleSignOut}
+              getCurrentUserData={this.getCurrentUserData}
+            />
+          </div>
+        </div>
       </div>
     );
   }
