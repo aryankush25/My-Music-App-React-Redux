@@ -9,3 +9,78 @@
   background-position: right;
   background-size: cover;
 }
+
+.mini-profile-container {
+  padding: 3% 5% 3% 3%;
+}
+
+.login-card-header {
+  text-align: center;
+}
+
+.card-image {
+  margin-top: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 15px;
+  padding-top: 0px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  text-align: center;
+  background-color: BORDER_COLOR_PROFILE_PIC;
+  border: 2px solid $BORDER_COLOR_PROFILE_PIC;
+  overflow: hidden;
+}
+
+.set-image {
+  margin-top: 90px;
+}
+
+.card-image input {
+  height: inherit;
+  width: inherit;
+  z-index: 1;
+  opacity: 0;
+  position: absolute;
+  width: 50px;
+}
+
+.card-image input:hover {
+  cursor: pointer;
+}
+
+.card-image img,
+.card-image a {
+  width: inherit;
+  height: inherit;
+  border-radius: 50%;
+}
+
+.change-image {
+  margin-top: -50px;
+  font-size: 15px;
+  color: $INVALID_FORM_BG_COLOR;
+}
+
+.change-image:hover {
+  font-size: 17px;
+  cursor: pointer;
+}
+
+.card-email-logout {
+  padding: 30px;
+}
+
+.profile-card-body {
+  padding: 2rem;
+}
+
+.profile-card-body button {
+  margin-top: 40px;
+  width: 100%;
+}
+
+.profile-card-body h5 {
+  color: $SONG_DIV_BG_COLOR;
+}
