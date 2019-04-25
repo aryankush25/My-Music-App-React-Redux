@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import signOutUser from "../../services/firebaseAuth/signOutUser";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import UserImage from "./UserImage";
@@ -53,6 +54,9 @@ class Profile extends React.Component {
               handleSignOut={this.handleSignOut}
               getCurrentUserData={this.getCurrentUserData}
             />
+            <Link to="/home" className="btn btn-md btn-info">
+              Back To Home
+            </Link>
           </div>
         </div>
       </div>
