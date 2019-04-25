@@ -3,8 +3,24 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 class UploadSong extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false
+    };
+
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle() {
+    this.setState(prevState => ({
+      modal: !prevState.modal
+    }));
+  }
+
   selectedFile = "";
   filePresent = true;
   handleOnChange = event => {
@@ -18,7 +34,7 @@ class UploadSong extends React.Component {
     });
   };
 
-  handleOnClick = async () => {
+  handleAddSong = async () => {
     if (this.filePresent === false) {
       const uploadTask = firebase
         .storage()
@@ -72,15 +88,40 @@ class UploadSong extends React.Component {
 
     return (
       <div className="filesubmit">
-        <input
-          type="file"
-          className="file-select btn btn-md btn-danger"
-          accept="audio/*"
-          onChange={this.handleOnChange}
-        />
-        <button className="btn btn-md btn-info" onClick={this.handleOnClick}>
-          Upload
+        <button className="btn btn-md btn-danger" onClick={this.toggle}>
+          Upload Song
         </button>
+        <Modal
+          isOpen={this.state.modal}
+          toggle={this.toggle}
+          className={this.props.className}
+        >
+          <ModalHeader toggle={this.toggle}>Upload Song</ModalHeader>
+          <ModalBody>
+            <input
+              type="file"
+              className="form-control btn btn-sm btn-danger"
+              accept="audio/*"
+              onChange={this.handleOnChange}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              color="info"
+              onClick={() => {
+                if (this.selectedFile !== "") {
+                  this.toggle();
+                  this.handleAddSong();
+                }
+              }}
+            >
+              Upload
+            </Button>{" "}
+            <Button color="danger" onClick={this.toggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }

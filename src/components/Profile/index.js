@@ -45,7 +45,10 @@ class Profile extends React.Component {
           <div className="card">
             <div className="card-header login-card-header">
               <h1>User Profile</h1>
-              <UserImage photoURL={this.state.photoURL} />
+              <UserImage
+                photoURL={this.state.photoURL}
+                getCurrentUserData={this.getCurrentUserData}
+              />
             </div>
             <UserInfo
               displayName={this.state.displayName}

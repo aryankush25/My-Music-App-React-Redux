@@ -28,7 +28,7 @@
   height: 150px;
   border-radius: 50%;
   text-align: center;
-  background-color: BORDER_COLOR_PROFILE_PIC;
+  background-color: $BORDER_COLOR_PROFILE_PIC;
   border: 2px solid $BORDER_COLOR_PROFILE_PIC;
   overflow: hidden;
 }
@@ -46,6 +46,7 @@
   width: 50px;
 }
 
+.card-image,
 .card-image input:hover {
   cursor: pointer;
 }
