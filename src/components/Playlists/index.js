@@ -4,7 +4,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "./style.scss";
 import AddPlaylist from "./AddPlaylist";
-import Playlist from "./UserPlaylist";
+import Playlist from "./Playlist";
 
 class Playlists extends React.Component {
   constructor(props) {
