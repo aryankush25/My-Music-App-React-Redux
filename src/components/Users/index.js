@@ -43,7 +43,7 @@ class Playlists extends React.Component {
 
     this.state = {
       isLoading: true,
-      usersArray: []
+      userArray: []
     };
   }
 
@@ -81,7 +81,6 @@ class Playlists extends React.Component {
         </div>
       );
     }
-
     return (
       <div className="small-div-right">
         <UsersData
