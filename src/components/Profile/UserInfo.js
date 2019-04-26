@@ -5,6 +5,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
 import "firebase/storage";
+import ShowLoadingComponent from "../ShowLoadingComponent";
 
 class UserInfo extends React.Component {
   constructor(props) {
@@ -69,45 +70,37 @@ class UserInfo extends React.Component {
   };
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center loader-songs ">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="card-body profile-card-body">
-        <div>
-          <label className="form-lable">Name:</label>
-          <h5>{this.props.displayName}</h5>
-          <form onSubmit={this.handleSubmitName}>
-            <input
-              type="text"
-              id="inputName"
-              className="form-control"
-              placeholder="Enter New Name"
-              required
-              onChange={this.handleChangeName}
-            />
-          </form>
-        </div>
+      <ShowLoadingComponent isLoading={this.state.isLoading}>
+        <div className="card-body profile-card-body">
+          <div>
+            <label className="form-lable">Name:</label>
+            <h5>{this.props.displayName}</h5>
+            <form onSubmit={this.handleSubmitName}>
+              <input
+                type="text"
+                id="inputName"
+                className="form-control"
+                placeholder="Enter New Name"
+                required
+                onChange={this.handleChangeName}
+              />
+            </form>
+          </div>
 
-        <div>
-          <label className="form-lable">Email:</label>
-          <h5> {this.props.email} </h5>
-        </div>
+          <div>
+            <label className="form-lable">Email:</label>
+            <h5> {this.props.email} </h5>
+          </div>
 
-        <button
-          className="btn btn-md btn-info"
-          onClick={this.props.handleSignOut}
-        >
-          Sign Out
-        </button>
-      </div>
+          <button
+            className="btn btn-md btn-info"
+            onClick={this.props.handleSignOut}
+          >
+            Sign Out
+          </button>
+        </div>
+      </ShowLoadingComponent>
     );
   }
 }

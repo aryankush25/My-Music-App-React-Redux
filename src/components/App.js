@@ -15,6 +15,11 @@ class App extends Component {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        window.localStorage.setItem("musicAppSignedIn", true);
+      } else {
+        window.localStorage.setItem("musicAppSignedIn", false);
+      }
       this.handleState();
     });
   }

@@ -5,6 +5,7 @@ import "firebase/firestore";
 import "./style.scss";
 import AddPlaylist from "./AddPlaylist";
 import Playlist from "./Playlist";
+import ShowLoadingComponent from "../ShowLoadingComponent";
 
 class Playlists extends React.Component {
   constructor(props) {
@@ -72,29 +73,23 @@ class Playlists extends React.Component {
   };
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center loader-songs ">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <div className="small-div-right">
-        <Playlist
-          userObject={this.props.userObject}
-          playlistsArray={this.props.userObject.userData.playlists}
-          handleSongsArray={this.props.handleSongsArray}
-          handleDeletePlaylist={this.handleDeletePlaylist}
-        />
-        <AddPlaylist
-          userObject={this.props.userObject}
-          handleLoadingStateChange={this.handleLoadingStateChange}
-        />
-      </div>
+      <ShowLoadingComponent isLoading={this.state.isLoading}>
+        <div className="small-div-right">
+          <div className="playlists-container">
+            <Playlist
+              userObject={this.props.userObject}
+              playlistsArray={this.props.userObject.userData.playlists}
+              handleSongsArray={this.props.handleSongsArray}
+              handleDeletePlaylist={this.handleDeletePlaylist}
+            />
+          </div>
+          <AddPlaylist
+            userObject={this.props.userObject}
+            handleLoadingStateChange={this.handleLoadingStateChange}
+          />
+        </div>
+      </ShowLoadingComponent>
     );
   }
 }

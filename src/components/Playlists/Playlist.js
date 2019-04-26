@@ -6,14 +6,14 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const DeletePlaylist = props => {
-  if (props.userObject.userData.uId !== firebase.auth().currentUser.uid) {
-    return <p />;
+  if (props.showDisableBtn) {
+    return null;
   }
 
   return (
     <div
       className="d-inline playlist-cross"
-      onClick={() => props.handleDeletePlaylist(props.index)}
+      onClick={props.handleDeletePlaylist}
     >
       {"  "}
       <FontAwesomeIcon icon={faTimesCircle} />
@@ -22,7 +22,7 @@ const DeletePlaylist = props => {
 };
 
 const Playlist = props => {
-  const playlistDiv = props.playlistsArray.map((playlist, index) => {
+  return props.playlistsArray.map((playlist, index) => {
     return (
       <div key={index} className="playlist-element">
         <div
@@ -34,15 +34,14 @@ const Playlist = props => {
           {playlist.playlistName}
         </div>
         <DeletePlaylist
-          userObject={props.userObject}
-          index={index}
-          handleDeletePlaylist={props.handleDeletePlaylist}
+          showDisableBtn={
+            props.userObject.userData.uId !== firebase.auth().currentUser.uid
+          }
+          handleDeletePlaylist={() => props.handleDeletePlaylist(index)}
         />
       </div>
     );
   });
-
-  return <div className="playlists-container">{playlistDiv}</div>;
 };
 
 export default Playlist;

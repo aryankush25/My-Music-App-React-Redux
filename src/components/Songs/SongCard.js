@@ -37,11 +37,11 @@ const SongsCard = props => {
         </div>
 
         <DeleteButton
-          handleSongDelete={() => props.handleSongDelete(index)}
           userObject={props.userObject}
           showDisableBtn={
             props.userObject.userData.uId !== firebase.auth().currentUser.uid
           }
+          handleSongDelete={() => props.handleSongDelete(index)}
         />
       </div>
     );

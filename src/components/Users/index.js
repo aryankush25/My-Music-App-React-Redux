@@ -6,42 +6,32 @@ import "firebase/storage";
 import "./style.scss";
 import ShowLoadingComponent from "../ShowLoadingComponent";
 
-const UserDiv = props => {
-  return (
-    <div
-      key={props.index}
-      style={{ backgroundColor: props.bgColor }}
-      onClick={props.handleClickedUser}
-    >
-      <div className="user-element"> {props.userName} </div>
-    </div>
-  );
-};
-
 const UsersData = props => {
   return props.userArray.map((user, index) => {
     if (firebase.auth().currentUser.uid === user.userData.uId) {
       return (
-        <UserDiv
-          index={index}
-          handleClickedUser={() => props.handleClickedUser(user)}
-          userName={user.userData.userName}
-          bgColor={"#77c4d3"}
-        />
+        <div
+          key={index}
+          style={{ backgroundColor: "#77c4d3" }}
+          onClick={() => props.handleClickedUser(user)}
+        >
+          <div className="user-element"> {user.userData.userName} </div>
+        </div>
       );
     }
     return (
-      <UserDiv
-        index={index}
-        handleClickedUser={() => props.handleClickedUser(user)}
-        userName={user.userData.userName}
-        bgColor={""}
-      />
+      <div
+        key={index}
+        style={{ backgroundColor: "" }}
+        onClick={() => props.handleClickedUser(user)}
+      >
+        <div className="user-element"> {user.userData.userName} </div>
+      </div>
     );
   });
 };
 
-class Playlists extends React.Component {
+class Users extends React.Component {
   constructor(props) {
     super(props);
 
@@ -78,7 +68,7 @@ class Playlists extends React.Component {
   render() {
     return (
       <ShowLoadingComponent isLoading={this.state.isLoading}>
-        <div className="small-div-right">
+        <div className="small-div-left">
           <UsersData
             userArray={this.state.userArray}
             handleClickedUser={this.props.handleClickedUser}
@@ -89,4 +79,4 @@ class Playlists extends React.Component {
   }
 }
 
-export default Playlists;
+export default Users;
