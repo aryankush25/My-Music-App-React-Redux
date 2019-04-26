@@ -80,10 +80,8 @@ class UploadSong extends React.Component {
   };
 
   render() {
-    if (
-      this.props.userObject.userData.uId !== firebase.auth().currentUser.uid
-    ) {
-      return <p />;
+    if (this.props.showDisableBtn) {
+      return null;
     }
 
     return (

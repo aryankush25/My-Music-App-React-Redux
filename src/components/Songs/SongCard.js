@@ -7,17 +7,45 @@ import "firebase/storage";
 import "./style.scss";
 
 const DeleteButton = props => {
-  if (props.userObject.userData.uId !== firebase.auth().currentUser.uid) {
-    return <p />;
+  if (props.showDisableBtn) {
+    return null;
   }
   return (
-    <button
-      className="btn btn-md btn-info"
-      onClick={() => props.handleSongDelete(props.index)}
-    >
+    <button className="btn btn-md btn-info" onClick={props.handleSongDelete}>
       Delete
     </button>
   );
+};
+
+const SongsCard = props => {
+  return props.songsArray.map((song, index) => {
+    return (
+      <div
+        className="card song-div"
+        key={index}
+        onClick={() => {
+          props.handleSongClick(index);
+        }}
+      >
+        <div className="song-logo">
+          {song.name ? song.name.trim().charAt(0) : "?"}
+        </div>
+        <div className="card-body">
+          <p className="card-text">
+            {song.name ? song.name.trim() : "NO NAME"}
+          </p>
+        </div>
+
+        <DeleteButton
+          userObject={props.userObject}
+          showDisableBtn={
+            props.userObject.userData.uId !== firebase.auth().currentUser.uid
+          }
+          handleSongDelete={() => props.handleSongDelete(index)}
+        />
+      </div>
+    );
+  });
 };
 
 class SongCard extends React.Component {
@@ -27,46 +55,6 @@ class SongCard extends React.Component {
       songsTempArrayUrl.push(doc.url);
     });
     this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
-  }
-
-  shouldComponentUpdate(nextProps) {
-    if (this.props.songsArray !== nextProps.songsArray) {
-      var songsTempArrayUrl = [];
-      nextProps.songsArray.forEach(doc => {
-        songsTempArrayUrl.push(doc.url);
-      });
-      nextProps.handleArrayUpdate(nextProps.songsArray, songsTempArrayUrl);
-
-      this.songsdiv = nextProps.songsArray.map((song, index) => {
-        return (
-          <div
-            className="card song-div"
-            key={index}
-            onClick={() => {
-              nextProps.handleSongClick(index);
-            }}
-          >
-            <div className="song-logo">
-              {song.name ? song.name.trim().charAt(0) : "?"}
-            </div>
-            <div className="card-body">
-              <p className="card-text">
-                {song.name ? song.name.trim() : "NO NAME"}
-              </p>
-            </div>
-
-            <DeleteButton
-              handleSongDelete={this.handleSongDelete}
-              index={index}
-              userObject={this.props.userObject}
-            />
-          </div>
-        );
-      });
-
-      return true;
-    }
-    return false;
   }
 
   handleSongDelete = async index => {
@@ -115,11 +103,21 @@ class SongCard extends React.Component {
             songsArray={this.props.songsArray}
             index={this.props.index}
             userId={this.props.userId}
+            showDisableBtn={
+              this.props.userObject.userData.uId !==
+              firebase.auth().currentUser.uid
+            }
             handleLoadingStateChange={this.props.handleLoadingStateChange}
           />
         </div>
-
-        <div className="row songs-div">{this.songsdiv}</div>
+        <div className="row songs-div">
+          <SongsCard
+            songsArray={this.props.songsArray}
+            userObject={this.props.userObject}
+            handleSongClick={this.props.handleSongClick}
+            handleSongDelete={this.handleSongDelete}
+          />
+        </div>
       </div>
     );
   }

@@ -1,11 +1,10 @@
 import React from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
-class AddPlaylist extends React.Component {
+class EditPlaylist extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -21,52 +20,43 @@ class AddPlaylist extends React.Component {
     }));
   }
 
-  handleAddPlaylist = async () => {
-    var userObject = this.props.userObject.userData;
-    userObject.playlists.push({
-      playlist: [],
-      playlistName: this.playlistName
-    });
-
-    this.props.handleLoadingStateChange(true);
-
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userObject.userId)
-      .update({
-        playlists: userObject.playlists
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch(error => {
-        console.error("Error writing document: ", error);
-      });
-    this.props.handleLoadingStateChange(false);
-  };
+  newPlaylistName = "";
 
   render() {
     if (this.props.showDisableBtn) {
       return null;
     }
+
     return (
-      <div className="button-class">
-        <button onClick={this.toggle}>Add Playlist</button>
+      <div className="d-inline" onClick={this.toggle}>
+        <div className="d-inline playlist-cross">
+          {" "}
+          <FontAwesomeIcon icon={faEdit} />
+        </div>
+
         <Modal
           isOpen={this.state.modal}
           toggle={this.toggle}
           className={this.props.className}
         >
-          <ModalHeader toggle={this.toggle}>Enter Name Of Playlist</ModalHeader>
+          <ModalHeader toggle={this.toggle}>
+            Edit Playlist / Delete Playlist
+          </ModalHeader>
           <ModalBody>
+            <button
+              className="btn btn-md btn-danger delete-playlist"
+              onClick={this.props.handleDeletePlaylist}
+            >
+              Delete Playlist
+            </button>
+
             <input
               type="text"
               className="form-control"
               placeholder="Enter New Playlist Name"
               required
               onChange={event => {
-                this.playlistName = event.target.value;
+                this.newPlaylistName = event.target.value;
               }}
             />
           </ModalBody>
@@ -74,13 +64,16 @@ class AddPlaylist extends React.Component {
             <Button
               color="info"
               onClick={() => {
-                if (this.playlistName !== "") {
+                if (this.newPlaylistName !== "") {
                   this.toggle();
-                  this.handleAddPlaylist();
+                  this.props.handleEditPlaylist(
+                    this.props.index,
+                    this.newPlaylistName
+                  );
                 }
               }}
             >
-              Add
+              Change Name
             </Button>{" "}
             <Button color="danger" onClick={this.toggle}>
               Cancel
@@ -92,4 +85,4 @@ class AddPlaylist extends React.Component {
   }
 }
 
-export default AddPlaylist;
+export default EditPlaylist;
