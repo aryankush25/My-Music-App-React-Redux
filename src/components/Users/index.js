@@ -4,37 +4,41 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import ShowLoadingComponent from "../ShowLoadingComponent";
+
+const UserDiv = props => {
+  return (
+    <div
+      key={props.index}
+      style={{ backgroundColor: props.bgColor }}
+      onClick={props.handleClickedUser}
+    >
+      <div className="user-element"> {props.userName} </div>
+    </div>
+  );
+};
 
 const UsersData = props => {
-  const userDiv = props.userArray.map((user, index) => {
+  return props.userArray.map((user, index) => {
     if (firebase.auth().currentUser.uid === user.userData.uId) {
       return (
-        <div
-          to="#"
-          key={index}
-          style={{ backgroundColor: "#77c4d3" }}
-          onClick={() => {
-            props.handleClickedUser(user);
-          }}
-        >
-          <div className="user-element"> {user.userData.userName} </div>
-        </div>
+        <UserDiv
+          index={index}
+          handleClickedUser={() => props.handleClickedUser(user)}
+          userName={user.userData.userName}
+          bgColor={"#77c4d3"}
+        />
       );
     }
     return (
-      <div
-        to="#"
-        key={index}
-        onClick={() => {
-          props.handleClickedUser(user);
-        }}
-      >
-        <div className="user-element"> {user.userData.userName} </div>
-      </div>
+      <UserDiv
+        index={index}
+        handleClickedUser={() => props.handleClickedUser(user)}
+        userName={user.userData.userName}
+        bgColor={""}
+      />
     );
   });
-
-  return <div>{userDiv}</div>;
 };
 
 class Playlists extends React.Component {
@@ -72,22 +76,15 @@ class Playlists extends React.Component {
   };
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center loader-songs ">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
     return (
-      <div className="small-div-right">
-        <UsersData
-          userArray={this.state.userArray}
-          handleClickedUser={this.props.handleClickedUser}
-        />
-      </div>
+      <ShowLoadingComponent isLoading={this.state.isLoading}>
+        <div className="small-div-right">
+          <UsersData
+            userArray={this.state.userArray}
+            handleClickedUser={this.props.handleClickedUser}
+          />
+        </div>
+      </ShowLoadingComponent>
     );
   }
 }

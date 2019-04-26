@@ -3,20 +3,8 @@ import NavBar from "../NavBar/";
 import Playlists from "../Playlists/";
 import Songs from "../Songs/";
 import Users from "../Users/";
+import ShowLoadingComponent from "../ShowLoadingComponent";
 import "./style.scss";
-
-const ShowLoadingComponent = props => {
-  if (props.isLoading) {
-    return (
-      <div className="d-flex justify-content-center loader-songs ">
-        <div className="spinner-border" role="status">
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
-    );
-  }
-  return props.children;
-};
 
 class HomePageDashboard extends React.Component {
   constructor(props) {
