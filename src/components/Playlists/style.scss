@@ -31,12 +31,6 @@ a {
   font-style: italic;
 }
 
-// .playlist-text {
-// }
-
-// .playlist-cross {
-// }
-
 .playlist-text:hover {
   color: $HOVER_COLOR;
 }
@@ -61,4 +55,9 @@ a {
 
 .button-class:hover {
   background-color: $INVALID_FORM_BG_COLOR;
+}
+
+.delete-playlist {
+  margin-bottom: 20px;
+  width: 100%;
 }

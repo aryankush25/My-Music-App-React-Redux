@@ -10,7 +10,6 @@ import ShowLoadingComponent from "../ShowLoadingComponent";
 class Playlists extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       isLoading: false
     };
@@ -27,7 +26,6 @@ class Playlists extends React.Component {
     if (this.state.isLoading !== nextState.isLoading) {
       return true;
     }
-
     if (this.props.userObject !== nextProps.userObject) {
       nextProps.handleSongsArray(
         nextProps.userObject.userData.playlists[0].playlist,
@@ -38,18 +36,41 @@ class Playlists extends React.Component {
     return false;
   }
 
+  handleEditPlaylist = async (index, newPlaylistName) => {
+    var userObject = this.props.userObject.userData.playlists;
+    var newPlaylists = [];
+    for (var i = 0; i < userObject.length; i++) {
+      newPlaylists.push(userObject[i]);
+      if (i === index) {
+        newPlaylists[i].playlistName = newPlaylistName;
+      }
+    }
+    this.handleLoadingStateChange(true);
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userObject.userId)
+      .update({
+        playlists: newPlaylists
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+      });
+    this.handleLoadingStateChange(false);
+  };
+
   handleDeletePlaylist = async index => {
     var userObject = this.props.userObject.userData.playlists;
     var newPlaylists = [];
-
     for (var i = 0; i < userObject.length; i++) {
       if (i !== index) {
         newPlaylists.push(userObject[i]);
       }
     }
-
     this.handleLoadingStateChange(true);
-
     await firebase
       .firestore()
       .collection("users")
@@ -82,9 +103,14 @@ class Playlists extends React.Component {
               playlistsArray={this.props.userObject.userData.playlists}
               handleSongsArray={this.props.handleSongsArray}
               handleDeletePlaylist={this.handleDeletePlaylist}
+              handleEditPlaylist={this.handleEditPlaylist}
             />
           </div>
           <AddPlaylist
+            showDisableBtn={
+              this.props.userObject.userData.uId !==
+              firebase.auth().currentUser.uid
+            }
             userObject={this.props.userObject}
             handleLoadingStateChange={this.handleLoadingStateChange}
           />

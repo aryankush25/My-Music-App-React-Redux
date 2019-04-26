@@ -1,25 +1,8 @@
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 import "./style.scss";
 import firebase from "firebase/app";
 import "firebase/auth";
-
-const DeletePlaylist = props => {
-  if (props.showDisableBtn) {
-    return null;
-  }
-
-  return (
-    <div
-      className="d-inline playlist-cross"
-      onClick={props.handleDeletePlaylist}
-    >
-      {"  "}
-      <FontAwesomeIcon icon={faTimesCircle} />
-    </div>
-  );
-};
+import EditPlaylist from "./EditPlaylist";
 
 const Playlist = props => {
   return props.playlistsArray.map((playlist, index) => {
@@ -33,11 +16,13 @@ const Playlist = props => {
         >
           {playlist.playlistName}
         </div>
-        <DeletePlaylist
+        <EditPlaylist
           showDisableBtn={
             props.userObject.userData.uId !== firebase.auth().currentUser.uid
           }
+          index={index}
           handleDeletePlaylist={() => props.handleDeletePlaylist(index)}
+          handleEditPlaylist={props.handleEditPlaylist}
         />
       </div>
     );
