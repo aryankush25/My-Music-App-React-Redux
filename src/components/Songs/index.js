@@ -1,6 +1,7 @@
 import React from "react";
 import SongCard from "./SongCard";
 import "./style.scss";
+import ShowLoadingComponent from "../ShowLoadingComponent";
 
 class Songs extends React.Component {
   constructor(props) {
@@ -19,27 +20,19 @@ class Songs extends React.Component {
   };
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center loader-songs ">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
-
     return (
-      <SongCard
-        userObject={this.props.userObject}
-        songsArray={this.props.songsArray}
-        index={this.props.index}
-        userId={this.props.userId}
-        handleClickedUser={this.props.handleClickedUser}
-        handleSongClick={this.props.handleSongClick}
-        handleArrayUpdate={this.props.handleArrayUpdate}
-        handleLoadingStateChange={this.handleLoadingStateChange}
-      />
+      <ShowLoadingComponent isLoading={this.state.isLoading}>
+        <SongCard
+          userObject={this.props.userObject}
+          songsArray={this.props.songsArray}
+          index={this.props.index}
+          userId={this.props.userId}
+          handleClickedUser={this.props.handleClickedUser}
+          handleSongClick={this.props.handleSongClick}
+          handleArrayUpdate={this.props.handleArrayUpdate}
+          handleLoadingStateChange={this.handleLoadingStateChange}
+        />
+      </ShowLoadingComponent>
     );
   }
 }

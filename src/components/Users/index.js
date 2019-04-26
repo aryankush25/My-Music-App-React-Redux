@@ -4,18 +4,16 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import ShowLoadingComponent from "../ShowLoadingComponent";
 
 const UsersData = props => {
-  const userDiv = props.userArray.map((user, index) => {
+  return props.userArray.map((user, index) => {
     if (firebase.auth().currentUser.uid === user.userData.uId) {
       return (
         <div
-          to="#"
           key={index}
           style={{ backgroundColor: "#77c4d3" }}
-          onClick={() => {
-            props.handleClickedUser(user);
-          }}
+          onClick={() => props.handleClickedUser(user)}
         >
           <div className="user-element"> {user.userData.userName} </div>
         </div>
@@ -23,21 +21,17 @@ const UsersData = props => {
     }
     return (
       <div
-        to="#"
         key={index}
-        onClick={() => {
-          props.handleClickedUser(user);
-        }}
+        style={{ backgroundColor: "" }}
+        onClick={() => props.handleClickedUser(user)}
       >
         <div className="user-element"> {user.userData.userName} </div>
       </div>
     );
   });
-
-  return <div>{userDiv}</div>;
 };
 
-class Playlists extends React.Component {
+class Users extends React.Component {
   constructor(props) {
     super(props);
 
@@ -72,24 +66,17 @@ class Playlists extends React.Component {
   };
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center loader-songs ">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
     return (
-      <div className="small-div-right">
-        <UsersData
-          userArray={this.state.userArray}
-          handleClickedUser={this.props.handleClickedUser}
-        />
-      </div>
+      <ShowLoadingComponent isLoading={this.state.isLoading}>
+        <div className="small-div-left">
+          <UsersData
+            userArray={this.state.userArray}
+            handleClickedUser={this.props.handleClickedUser}
+          />
+        </div>
+      </ShowLoadingComponent>
     );
   }
 }
 
-export default Playlists;
+export default Users;

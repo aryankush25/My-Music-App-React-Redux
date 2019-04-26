@@ -3,6 +3,7 @@ import NavBar from "../NavBar/";
 import Playlists from "../Playlists/";
 import Songs from "../Songs/";
 import Users from "../Users/";
+import ShowLoadingComponent from "../ShowLoadingComponent";
 import "./style.scss";
 
 class HomePageDashboard extends React.Component {
@@ -30,20 +31,6 @@ class HomePageDashboard extends React.Component {
     });
   };
 
-  checkUserLoaded = component => {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center loader-songs ">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    } else {
-      return component;
-    }
-  };
-
   render() {
     return (
       <div className="row upper-div">
@@ -51,12 +38,16 @@ class HomePageDashboard extends React.Component {
           <div className="header-div-left">
             <p className="friends-logo">FRIENDS</p>
           </div>
-          <Users handleClickedUser={this.handleClickedUser} />
+          <Users
+            handleClickedUser={this.handleClickedUser}
+            userId={this.state.clickedUserObject.userId}
+          />
         </div>
 
         <div className="col-8 middle-col">
           <NavBar sound={this.props.sound} />
-          {this.checkUserLoaded(
+
+          <ShowLoadingComponent isLoading={this.state.isLoading}>
             <Songs
               handleClickedUser={this.handleClickedUser}
               userObject={this.state.clickedUserObject}
@@ -66,19 +57,19 @@ class HomePageDashboard extends React.Component {
               handleArrayUpdate={this.props.handleArrayUpdate}
               handleSongClick={this.props.handleSongClick}
             />
-          )}
+          </ShowLoadingComponent>
         </div>
 
         <div className="col right-col">
           <div className="header-div-right">
             <p className="playlist-logo">PLAYLISTS</p>
           </div>
-          {this.checkUserLoaded(
+          <ShowLoadingComponent isLoading={this.state.isLoading}>
             <Playlists
               userObject={this.state.clickedUserObject}
               handleSongsArray={this.handleSongsArray}
             />
-          )}
+          </ShowLoadingComponent>
         </div>
       </div>
     );
