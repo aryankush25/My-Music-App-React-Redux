@@ -8,8 +8,7 @@ class Songs extends React.Component {
     super(props);
 
     this.state = {
-      isLoading: false,
-      songsArray: []
+      isLoading: false
     };
   }
 

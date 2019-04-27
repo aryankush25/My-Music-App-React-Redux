@@ -11,7 +11,7 @@ const DeleteButton = props => {
     return null;
   }
   return (
-    <button className="btn btn-md btn-info" onClick={props.handleSongDelete}>
+    <button className="btn btn-md btn-danger" onClick={props.handleSongDelete}>
       Delete
     </button>
   );
@@ -20,13 +20,7 @@ const DeleteButton = props => {
 const SongsCard = props => {
   return props.songsArray.map((song, index) => {
     return (
-      <div
-        className="card song-div"
-        key={index}
-        onClick={() => {
-          props.handleSongClick(index);
-        }}
-      >
+      <div className="card song-div" key={index}>
         <div className="song-logo">
           {song.name ? song.name.trim().charAt(0) : "?"}
         </div>
@@ -35,14 +29,26 @@ const SongsCard = props => {
             {song.name ? song.name.trim() : "NO NAME"}
           </p>
         </div>
-
-        <DeleteButton
-          userObject={props.userObject}
-          showDisableBtn={
-            props.userObject.userData.uId !== firebase.auth().currentUser.uid
-          }
-          handleSongDelete={() => props.handleSongDelete(index)}
-        />
+        <div className="overlay">
+          <div className="song-buttons">
+            <button
+              className="btn btn-md btn-info"
+              onClick={() => {
+                props.handleSongClick(index);
+              }}
+            >
+              Play
+            </button>
+            <DeleteButton
+              userObject={props.userObject}
+              showDisableBtn={
+                props.userObject.userData.uId !==
+                firebase.auth().currentUser.uid
+              }
+              handleSongDelete={() => props.handleSongDelete(index)}
+            />
+          </div>
+        </div>
       </div>
     );
   });
@@ -50,11 +56,27 @@ const SongsCard = props => {
 
 class SongCard extends React.Component {
   componentDidMount() {
+    this.handleArrayUpdateWithSongsArray();
+  }
+
+  handleArrayUpdateWithSongsArray() {
     var songsTempArrayUrl = [];
     this.props.songsArray.forEach(doc => {
       songsTempArrayUrl.push(doc.url);
     });
     this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
+  }
+
+  shouldComponentUpdate(nextprops) {
+    if (nextprops.songsArray !== this.props.songsArray) {
+      var songsTempArrayUrl = [];
+      nextprops.songsArray.forEach(doc => {
+        songsTempArrayUrl.push(doc.url);
+      });
+      nextprops.handleArrayUpdate(nextprops.songsArray, songsTempArrayUrl);
+      return true;
+    }
+    return false;
   }
 
   handleSongDelete = async index => {

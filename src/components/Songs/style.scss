@@ -15,12 +15,13 @@
   margin: 10px;
   border: 2px solid $HOVER_COLOR;
   max-width: 15rem;
-  max-height: 18rem;
+  max-height: 16rem;
   border-radius: 0;
 }
 
 .song-div button {
   border-radius: 0px;
+  width: 100%;
 }
 
 .song-logo {
@@ -30,12 +31,6 @@
   text-align: center;
   font-weight: 100;
   color: $SONG_DIV_TEXT_COLOR;
-}
-
-.song-div:hover {
-  border: 2px solid $SONG_DIV_BG_COLOR;
-  background-color: $HOVER_COLOR_BG;
-  cursor: pointer;
 }
 
 .card-text {
@@ -75,4 +70,26 @@
   border-radius: 0px;
   height: 100%;
   width: 100%;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  background-color: #313638;
+  overflow: hidden;
+  width: 100%;
+  height: 0;
+  transition: 0.5s ease;
+  opacity: 0.97;
+}
+
+.song-div:hover .overlay {
+  bottom: 0;
+  height: 100%;
+}
+
+.song-buttons {
+  margin-top: 67%;
 }
