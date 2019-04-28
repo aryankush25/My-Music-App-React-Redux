@@ -16,6 +16,8 @@
   border: 2px solid $HOVER_COLOR;
   max-width: 15rem;
   max-height: 15rem;
+  min-width: 15rem;
+  min-height: 15rem;
   border-radius: 0;
 }
 
@@ -34,7 +36,10 @@
 }
 
 .song-logo img {
-  width: 100%;
+  max-width: 14.6rem;
+  max-height: 14.6rem;
+  min-width: 14.6rem;
+  min-height: 14.6rem;
 }
 
 .card-text {
@@ -95,13 +100,28 @@
   height: 100%;
 }
 
-.song-buttons {
-  margin-top: 68%;
-}
-
 .song-card-body {
   z-index: 2;
   background-color: $OPAQUE_COLOR;
   color: $PURE_WHITE_COLOR;
   opacity: 0.8;
+}
+
+.song-info-div {
+  text-align: center;
+  height: 52%;
+  color: $PURE_WHITE_COLOR;
+  padding: 0;
+  margin: 0;
+  font-size: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.song-info-div h6 {
+  margin-top: 2px;
+}
+
+.song-buttons {
+  height: 48%;
 }
