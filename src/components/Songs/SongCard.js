@@ -17,14 +17,27 @@ const DeleteButton = props => {
   );
 };
 
+const SongImage = props => {
+  if (props.songImage === "") {
+    return (
+      <div className="song-logo">
+        {props.songName ? props.songName.trim().charAt(0) : "?"}
+      </div>
+    );
+  }
+  return (
+    <div className="song-logo">
+      <img src={props.songImage} alt="Song-Img" />
+    </div>
+  );
+};
+
 const SongsCard = props => {
   return props.songsArray.map((song, index) => {
     return (
       <div className="card song-div" key={index}>
-        <div className="song-logo">
-          {song.name ? song.name.trim().charAt(0) : "?"}
-        </div>
-        <div className="card-body">
+        <SongImage songImage={song.imageUrl} songName={song.name} />
+        <div className="card-body song-card-body">
           <p className="card-text">
             {song.name ? song.name.trim() : "NO NAME"}
           </p>
@@ -56,10 +69,6 @@ const SongsCard = props => {
 
 class SongCard extends React.Component {
   componentDidMount() {
-    this.handleArrayUpdateWithSongsArray();
-  }
-
-  handleArrayUpdateWithSongsArray() {
     var songsTempArrayUrl = [];
     this.props.songsArray.forEach(doc => {
       songsTempArrayUrl.push(doc.url);

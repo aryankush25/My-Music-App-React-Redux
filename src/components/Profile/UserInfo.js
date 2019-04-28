@@ -94,7 +94,7 @@ class UserInfo extends React.Component {
           </div>
 
           <button
-            className="btn btn-md btn-info"
+            className="btn btn-md btn-danger"
             onClick={this.props.handleSignOut}
           >
             Sign Out

@@ -11,7 +11,6 @@ class UploadSong extends React.Component {
     this.state = {
       modal: false
     };
-
     this.toggle = this.toggle.bind(this);
   }
 
@@ -22,8 +21,12 @@ class UploadSong extends React.Component {
   }
 
   selectedFile = "";
+  songGenre = "";
+  songRatings = "";
+  songImageurl = "";
+
   filePresent = true;
-  handleOnChange = event => {
+  handleOnChangeUpalodSong = event => {
     this.selectedFile = event.target.files[0];
     this.filePresent = false;
 
@@ -33,6 +36,15 @@ class UploadSong extends React.Component {
       }
     });
   };
+
+  handleOnChangeGenre = event => {
+    this.songGenre = event.target.value;
+  };
+
+  handleOnChangeSongImageUrl = event =>
+    (this.songImageurl = event.target.value);
+
+  handleOnChangeRatings = event => (this.songRatings = event.target.value);
 
   handleAddSong = async () => {
     if (this.filePresent === false) {
@@ -56,7 +68,10 @@ class UploadSong extends React.Component {
             var userObject = this.props.userObject.userData;
             userObject.playlists[this.props.index].playlist.push({
               name: this.selectedFile.name,
-              url: url
+              url: url,
+              genre: this.songGenre,
+              ratings: this.songRatings,
+              imageUrl: this.songImageurl
             });
 
             await firebase
@@ -96,12 +111,68 @@ class UploadSong extends React.Component {
         >
           <ModalHeader toggle={this.toggle}>Upload Song</ModalHeader>
           <ModalBody>
-            <input
-              type="file"
-              className="form-control btn btn-sm btn-danger"
-              accept="audio/*"
-              onChange={this.handleOnChange}
-            />
+            <div>
+              <label className="form-lable">Song</label>
+              <input
+                type="file"
+                className="form-control btn btn-sm btn-info"
+                accept="audio/*"
+                required
+                autoFocus
+                onChange={this.handleOnChangeUpalodSong}
+              />
+            </div>
+
+            <div>
+              <label className="form-lable">Genre</label>
+              <select
+                className="form-control"
+                placeholder="Select Genre"
+                required
+                autoFocus
+                onChange={this.handleOnChangeGenre}
+              >
+                <option default>Bollywood Music</option>
+                <option>EDM</option>
+                <option>Rock Music</option>
+                <option>Jazz</option>
+                <option>Dubstep</option>
+                <option>Rhythm and Blues</option>
+                <option>Classical Music</option>
+                <option>Indie Rock</option>
+                <option>Pop Music</option>
+                <option>Others</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="form-lable">Song Image URL</label>
+              <input
+                type="url"
+                className="form-control"
+                placeholder="Enter Song Image URL"
+                required
+                autoFocus
+                onChange={this.handleOnChangeSongImageUrl}
+              />
+            </div>
+
+            <div>
+              <label className="form-lable">Ratings</label>
+              <select
+                className="form-control"
+                placeholder="Select Ratings"
+                required
+                autoFocus
+                onChange={this.handleOnChangeRatings}
+              >
+                <option default>5</option>
+                <option>4</option>
+                <option>3</option>
+                <option>2</option>
+                <option>1</option>
+              </select>
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button

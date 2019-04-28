@@ -39,8 +39,8 @@ class HomePageDashboard extends React.Component {
             <p className="friends-logo">FRIENDS</p>
           </div>
           <Users
-            handleClickedUser={this.handleClickedUser}
             userId={this.state.clickedUserObject.userId}
+            handleClickedUser={this.handleClickedUser}
           />
         </div>
 
@@ -49,7 +49,6 @@ class HomePageDashboard extends React.Component {
 
           <ShowLoadingComponent isLoading={this.state.isLoading}>
             <Songs
-              handleClickedUser={this.handleClickedUser}
               userObject={this.state.clickedUserObject}
               songsArray={this.state.songsArray}
               index={this.state.index}
