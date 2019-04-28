@@ -11,38 +11,57 @@ const DeleteButton = props => {
     return null;
   }
   return (
-    <button className="btn btn-md btn-info" onClick={props.handleSongDelete}>
+    <button className="btn btn-md btn-danger" onClick={props.handleSongDelete}>
       Delete
     </button>
+  );
+};
+
+const SongImage = props => {
+  if (props.songImage === "") {
+    return (
+      <div className="song-logo">
+        {props.songName ? props.songName.trim().charAt(0) : "?"}
+      </div>
+    );
+  }
+  return (
+    <div className="song-logo">
+      <img src={props.songImage} alt="Song-Img" />
+    </div>
   );
 };
 
 const SongsCard = props => {
   return props.songsArray.map((song, index) => {
     return (
-      <div
-        className="card song-div"
-        key={index}
-        onClick={() => {
-          props.handleSongClick(index);
-        }}
-      >
-        <div className="song-logo">
-          {song.name ? song.name.trim().charAt(0) : "?"}
-        </div>
-        <div className="card-body">
+      <div className="card song-div" key={index}>
+        <SongImage songImage={song.imageUrl} songName={song.name} />
+        <div className="card-body song-card-body">
           <p className="card-text">
             {song.name ? song.name.trim() : "NO NAME"}
           </p>
         </div>
-
-        <DeleteButton
-          userObject={props.userObject}
-          showDisableBtn={
-            props.userObject.userData.uId !== firebase.auth().currentUser.uid
-          }
-          handleSongDelete={() => props.handleSongDelete(index)}
-        />
+        <div className="overlay">
+          <div className="song-buttons">
+            <button
+              className="btn btn-md btn-info"
+              onClick={() => {
+                props.handleSongClick(index);
+              }}
+            >
+              Play
+            </button>
+            <DeleteButton
+              userObject={props.userObject}
+              showDisableBtn={
+                props.userObject.userData.uId !==
+                firebase.auth().currentUser.uid
+              }
+              handleSongDelete={() => props.handleSongDelete(index)}
+            />
+          </div>
+        </div>
       </div>
     );
   });
@@ -55,6 +74,18 @@ class SongCard extends React.Component {
       songsTempArrayUrl.push(doc.url);
     });
     this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
+  }
+
+  shouldComponentUpdate(nextprops) {
+    if (nextprops.songsArray !== this.props.songsArray) {
+      var songsTempArrayUrl = [];
+      nextprops.songsArray.forEach(doc => {
+        songsTempArrayUrl.push(doc.url);
+      });
+      nextprops.handleArrayUpdate(nextprops.songsArray, songsTempArrayUrl);
+      return true;
+    }
+    return false;
   }
 
   handleSongDelete = async index => {
