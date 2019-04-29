@@ -1,10 +1,12 @@
 import React from "react";
 import UploadSong from "./UploadSong";
+import EditButton from "./EditButton";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import StarRatings from "react-star-ratings";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -32,42 +34,69 @@ const SongImage = props => {
   );
 };
 
-const SongsCard = props => {
-  return props.songsArray.map((song, index) => {
-    return (
-      <div className="card song-div" key={index}>
-        <SongImage songImage={song.imageUrl} songName={song.name} />
-        <div className="card-body song-card-body">
-          <p className="card-text">
-            {song.name ? song.name.trim() : "NO NAME"}
-          </p>
-        </div>
-        <div className="overlay">
-          <div className="song-buttons">
-            <button
-              className="btn btn-md btn-info"
-              onClick={() => {
-                props.handleSongClick(index);
-              }}
-            >
-              Play
-            </button>
-            <DeleteButton
-              userObject={props.userObject}
-              showDisableBtn={
-                props.userObject.userData.uId !==
-                firebase.auth().currentUser.uid
-              }
-              handleSongDelete={() => props.handleSongDelete(index)}
-            />
+class SingleSongCard extends React.Component {
+  render() {
+    return this.props.songsArray.map((song, index) => {
+      return (
+        <div className="card song-div" key={index}>
+          <SongImage songImage={song.imageUrl} songName={song.name} />
+          <div className="card-body song-card-body">
+            <p className="card-text">
+              {song.name ? song.name.trim() : "NO NAME"}
+            </p>
+          </div>
+          <div className="overlay">
+            <div className="song-info-div">
+              <h6> {song.name} </h6>
+              <p> {song.genre} </p>
+              <div>
+                <StarRatings
+                  rating={song.ratings}
+                  starRatedColor="blue"
+                  numberOfStars={5}
+                  name="rating"
+                  starDimension="20px"
+                  starSpacing="5px"
+                />
+              </div>
+            </div>
+            <div className="test-class song-buttons">
+              <button
+                className="btn btn-md btn-info"
+                onClick={() => {
+                  this.props.handleSongClick(index);
+                }}
+              >
+                Play
+              </button>
+              <DeleteButton
+                showDisableBtn={
+                  this.props.userObject.userData.uId !==
+                  firebase.auth().currentUser.uid
+                }
+                handleSongDelete={() => this.props.handleSongDelete(index)}
+              />
+              <EditButton
+                showDisableBtn={
+                  this.props.userObject.userData.uId !==
+                  firebase.auth().currentUser.uid
+                }
+                songImage={song.imageUrl}
+                songName={song.name}
+                songGenre={song.genre}
+                songRating={song.ratings}
+                index={index}
+                handleSongEdit={this.props.handleSongEdit}
+              />
+            </div>
           </div>
         </div>
-      </div>
-    );
-  });
-};
+      );
+    });
+  }
+}
 
-class SongCard extends React.Component {
+class SongsCard extends React.Component {
   componentDidMount() {
     var songsTempArrayUrl = [];
     this.props.songsArray.forEach(doc => {
@@ -119,14 +148,49 @@ class SongCard extends React.Component {
     this.props.handleLoadingStateChange(false);
   };
 
+  handleSongEdit = async (index, name, imageUrl, genre, ratings) => {
+    var playlistObject = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist;
+
+    if (genre !== "") playlistObject[index].genre = genre;
+
+    if (name !== "") playlistObject[index].name = name;
+
+    if (imageUrl !== "") playlistObject[index].imageUrl = imageUrl;
+
+    if (ratings !== "") playlistObject[index].ratings = ratings;
+
+    var newPlaylistObject = this.props.userObject.userData.playlists;
+    newPlaylistObject[this.props.index].playlist = playlistObject;
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userId)
+      .update({
+        playlists: newPlaylistObject
+      })
+      .then(() => {
+        console.log("Document successfully written!");
+      })
+      .catch(error => {
+        console.error("Error writing document: ", error);
+      });
+    this.props.handleLoadingStateChange(false);
+  };
+
   render() {
     return (
       <div className="middle-songs-container">
         <div className="songs-header-row">
           <div className="current-address">
             <p>
-              {this.props.userObject.userData.userName} > Playlist{" "}
-              {this.props.index + 1}
+              {this.props.userObject.userData.userName} >{" "}
+              {
+                this.props.userObject.userData.playlists[this.props.index]
+                  .playlistName
+              }
             </p>
           </div>
           <UploadSong
@@ -142,11 +206,12 @@ class SongCard extends React.Component {
           />
         </div>
         <div className="row songs-div">
-          <SongsCard
+          <SingleSongCard
             songsArray={this.props.songsArray}
             userObject={this.props.userObject}
             handleSongClick={this.props.handleSongClick}
             handleSongDelete={this.handleSongDelete}
+            handleSongEdit={this.handleSongEdit}
           />
         </div>
       </div>
@@ -154,4 +219,4 @@ class SongCard extends React.Component {
   }
 }
 
-export default SongCard;
+export default SongsCard;
