@@ -12,7 +12,7 @@ import createUser from "../../services/firebaseFirestore/createUser";
 import {
   AUTH_WEAK_PASS,
   WEAK_PASS
-} from "../../utils/ConstantKeywords/errorConstants";
+} from "../../utils/constantKeywords123/errorConstants";
 
 class RegisterFormDiv extends React.Component {
   constructor(props) {

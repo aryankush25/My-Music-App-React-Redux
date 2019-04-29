@@ -7,7 +7,7 @@ import signInUser from "../../services/firebaseAuth/signInUser";
 import {
   AUTH_WRONG_PASS,
   WRONG_PASS
-} from "../../utils/ConstantKeywords/errorConstants";
+} from "../../utils/constantKeywords123/errorConstants";
 
 class LoginFormDiv extends React.Component {
   constructor(props) {
