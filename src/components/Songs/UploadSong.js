@@ -2,6 +2,8 @@ import React from "react";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/storage";
+import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
+import uploadSong from "../../services/firebaseStorage/uploadSong";
 import "./style.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
@@ -63,11 +65,7 @@ class UploadSong extends React.Component {
 
   handleAddSong = async () => {
     if (this.filePresent === false) {
-      const uploadTask = firebase
-        .storage()
-        .ref()
-        .child(`Music/${this.selectedFile.name}`)
-        .put(this.selectedFile);
+      const uploadTask = uploadSong(this.selectedFile);
 
       uploadTask.on(
         "state_changed",
@@ -82,26 +80,20 @@ class UploadSong extends React.Component {
           uploadTask.snapshot.ref.getDownloadURL().then(async url => {
             var userObject = this.props.userObject.userData;
             userObject.playlists[this.props.index].playlist.push({
-              name: this.selectedFile.name,
+              name: this.state.songName,
               url: url,
               genre: this.songGenre,
               ratings: this.songRatings,
               imageUrl: this.songImageurl
             });
 
-            await firebase
-              .firestore()
-              .collection("users")
-              .doc(this.props.userId)
-              .update({
-                playlists: userObject.playlists
-              })
-              .then(() => {
-                console.log("Document successfully written!");
-              })
-              .catch(error => {
-                console.error("Error writing document: ", error);
-              });
+            try {
+              await updatePlaylist(this.props.userId, userObject.playlists);
+              console.log("Document successfully written!");
+            } catch (error) {
+              console.error("Error writing document: ", error);
+            }
+
             this.props.handleLoadingStateChange(false);
           });
         }

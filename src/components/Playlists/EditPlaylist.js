@@ -20,6 +20,13 @@ class EditPlaylist extends React.Component {
     }));
   }
 
+  handleSubmitButton = () => {
+    if (this.newPlaylistName !== "") {
+      this.toggle();
+      this.props.handleEditPlaylist(this.props.index, this.newPlaylistName);
+    }
+  };
+
   newPlaylistName = "";
 
   render() {
@@ -61,18 +68,7 @@ class EditPlaylist extends React.Component {
             />
           </ModalBody>
           <ModalFooter>
-            <Button
-              color="info"
-              onClick={() => {
-                if (this.newPlaylistName !== "") {
-                  this.toggle();
-                  this.props.handleEditPlaylist(
-                    this.props.index,
-                    this.newPlaylistName
-                  );
-                }
-              }}
-            >
+            <Button color="info" onClick={this.handleSubmitButton}>
               Change Name
             </Button>{" "}
             <Button color="danger" onClick={this.toggle}>

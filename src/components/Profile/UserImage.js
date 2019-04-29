@@ -1,10 +1,7 @@
 import React from "react";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import "./style.scss";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import "firebase/storage";
+import uploadImage from "../../services/firebaseStorage/uploadImage";
 
 class UserImage extends React.Component {
   constructor(props) {
@@ -16,11 +13,7 @@ class UserImage extends React.Component {
 
   handleSetImage = event => {
     const selectedFile = event.target.files[0];
-    const uploadTask = firebase
-      .storage()
-      .ref()
-      .child(`UserImages/${selectedFile.name}`)
-      .put(selectedFile);
+    const uploadTask = uploadImage(selectedFile);
 
     uploadTask.on(
       "state_changed",

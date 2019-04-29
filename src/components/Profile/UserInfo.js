@@ -1,11 +1,9 @@
 import React from "react";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import "./style.scss";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import "firebase/storage";
 import ShowLoadingComponent from "../ShowLoadingComponent";
+import updateUser from "../../services/firebaseFirestore/updateUser";
+import fetchUsers from "../../services/firebaseFirestore/fetchUsers";
 
 class UserInfo extends React.Component {
   constructor(props) {
@@ -30,13 +28,7 @@ class UserInfo extends React.Component {
       displayName: this.name
     });
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.userId)
-      .update({
-        userName: this.name
-      });
+    await updateUser(this.userId, this.name);
 
     this.setState({
       showName: true
@@ -45,18 +37,15 @@ class UserInfo extends React.Component {
     this.handleLoadingStateChange(false);
   };
 
-  fetchUsers = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(user => {
-          if (firebase.auth().currentUser.uid === user.data().uId) {
-            this.userId = user.id;
-          }
-        });
-      });
+  fetchUsers = async () => {
+    var querySnapshot = await fetchUsers();
+    var userId = await currentUser().uid;
+
+    querySnapshot.forEach(user => {
+      if (userId === user.data().uId) {
+        this.userId = user.id;
+      }
+    });
   };
 
   handleChangeName = event => {
@@ -85,6 +74,7 @@ class UserInfo extends React.Component {
                 required
                 onChange={this.handleChangeName}
               />
+              <button className="btn btn-md btn-danger">Submit</button>
             </form>
           </div>
 

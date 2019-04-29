@@ -4,6 +4,7 @@ import signOutUser from "../../services/firebaseAuth/signOutUser";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import UserImage from "./UserImage";
 import UserInfo from "./UserInfo";
+import setLocalStorage from "../../services/localStorage/setLocalStorage";
 import "./style.scss";
 
 class Profile extends React.Component {
@@ -23,7 +24,7 @@ class Profile extends React.Component {
 
   handleSignOut = async () => {
     await signOutUser();
-    window.localStorage.setItem("musicAppSignedIn", false);
+    setLocalStorage(false);
     this.props.history.push("/login");
   };
 

@@ -1,14 +1,12 @@
 import React from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
 import "./style.scss";
 import ShowLoadingComponent from "../ShowLoadingComponent";
+import fetchUsersCollections from "../../services/firebaseFirestore/fetchUsersCollections";
+import currentUser from "../../services/firebaseAuth/currentUser";
 
 const UsersData = props => {
   return props.userArray.map((user, index) => {
-    if (firebase.auth().currentUser.uid === user.userData.uId) {
+    if (props.currentUserId === user.userData.uId) {
       return (
         <div
           key={index}
@@ -45,24 +43,26 @@ class Users extends React.Component {
     this.fetchUsers();
   }
 
-  fetchUsers = () => {
-    firebase
-      .firestore()
-      .collection("users")
-      .onSnapshot(querySnapshot => {
-        var userArray = [];
-        querySnapshot.forEach(user => {
-          var obj = { userData: user.data(), userId: user.id };
-          userArray.push(obj);
-          if (firebase.auth().currentUser.uid === user.data().uId) {
-            this.props.handleClickedUser(obj);
-          }
-        });
-        this.setState({
-          isLoading: false,
-          userArray: userArray
-        });
+  currentUserId = "";
+
+  fetchUsers = async () => {
+    this.currentUserId = await currentUser().uid;
+    var userSnapshot = await fetchUsersCollections();
+
+    userSnapshot.onSnapshot(querySnapshot => {
+      var userArray = [];
+      querySnapshot.forEach(user => {
+        var obj = { userData: user.data(), userId: user.id };
+        userArray.push(obj);
+        if (this.currentUserId === user.data().uId) {
+          this.props.handleClickedUser(obj);
+        }
       });
+      this.setState({
+        isLoading: false,
+        userArray: userArray
+      });
+    });
   };
 
   render() {
@@ -71,6 +71,7 @@ class Users extends React.Component {
         <div className="small-div-left">
           <UsersData
             userArray={this.state.userArray}
+            currentUserId={this.currentUserId}
             handleClickedUser={this.props.handleClickedUser}
           />
         </div>

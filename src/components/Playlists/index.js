@@ -1,11 +1,10 @@
 import React from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
 import "./style.scss";
 import AddPlaylist from "./AddPlaylist";
 import Playlist from "./Playlist";
 import ShowLoadingComponent from "../ShowLoadingComponent";
+import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
+import currentUser from "../../services/firebaseAuth/currentUser";
 
 class Playlists extends React.Component {
   constructor(props) {
@@ -20,6 +19,7 @@ class Playlists extends React.Component {
       this.props.userObject.userData.playlists[0].playlist,
       0
     );
+    this.fetchCurrentUser();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -36,6 +36,16 @@ class Playlists extends React.Component {
     return false;
   }
 
+  currentUser = "";
+
+  fetchCurrentUser = async () => {
+    this.handleLoadingStateChange(true);
+
+    this.currentUser = await currentUser().uid;
+
+    this.handleLoadingStateChange(false);
+  };
+
   handleEditPlaylist = async (index, newPlaylistName) => {
     var userObject = this.props.userObject.userData.playlists;
     var newPlaylists = [];
@@ -46,19 +56,14 @@ class Playlists extends React.Component {
       }
     }
     this.handleLoadingStateChange(true);
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userObject.userId)
-      .update({
-        playlists: newPlaylists
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch(error => {
-        console.error("Error writing document: ", error);
-      });
+
+    try {
+      await updatePlaylist(this.props.userObject.userId, newPlaylists);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
     this.handleLoadingStateChange(false);
   };
 
@@ -71,19 +76,14 @@ class Playlists extends React.Component {
       }
     }
     this.handleLoadingStateChange(true);
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userObject.userId)
-      .update({
-        playlists: newPlaylists
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch(error => {
-        console.error("Error writing document: ", error);
-      });
+
+    try {
+      await updatePlaylist(this.props.userObject.userId, newPlaylists);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
     this.handleLoadingStateChange(false);
   };
 
@@ -108,8 +108,7 @@ class Playlists extends React.Component {
           </div>
           <AddPlaylist
             showDisableBtn={
-              this.props.userObject.userData.uId !==
-              firebase.auth().currentUser.uid
+              this.props.userObject.userData.uId !== this.currentUser
             }
             userObject={this.props.userObject}
             handleLoadingStateChange={this.handleLoadingStateChange}

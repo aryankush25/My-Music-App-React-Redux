@@ -1,9 +1,6 @@
 import React from "react";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "./style.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
 
 class AddPlaylist extends React.Component {
   constructor(props) {
@@ -30,19 +27,13 @@ class AddPlaylist extends React.Component {
 
     this.props.handleLoadingStateChange(true);
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userObject.userId)
-      .update({
-        playlists: userObject.playlists
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch(error => {
-        console.error("Error writing document: ", error);
-      });
+    try {
+      await updatePlaylist(this.props.userObject.userId, userObject.playlists);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
     this.props.handleLoadingStateChange(false);
   };
 
