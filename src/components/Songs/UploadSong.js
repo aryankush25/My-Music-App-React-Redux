@@ -9,31 +9,46 @@ class UploadSong extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      songName: ""
     };
     this.toggle = this.toggle.bind(this);
   }
 
   toggle() {
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      songName: ""
     }));
   }
 
   selectedFile = "";
   songGenre = "";
-  songRatings = "";
+  songRatings = 0;
   songImageurl = "";
+  buttonIsDisable = true;
 
   filePresent = true;
   handleOnChangeUpalodSong = event => {
     this.selectedFile = event.target.files[0];
     this.filePresent = false;
+    this.setState({
+      songName: this.selectedFile.name
+    });
 
     this.props.songsArray.forEach(doc => {
       if (doc.name === this.selectedFile.name) {
         this.filePresent = true;
       }
+    });
+    if (this.filePresent === false) {
+      this.buttonIsDisable = false;
+    }
+  };
+
+  handleOnChangeSongName = event => {
+    this.setState({
+      songName: event.target.value
     });
   };
 
@@ -94,6 +109,13 @@ class UploadSong extends React.Component {
     }
   };
 
+  handleOnClickUpload = () => {
+    if (this.selectedFile !== "") {
+      this.toggle();
+      this.handleAddSong();
+    }
+  };
+
   render() {
     if (this.props.showDisableBtn) {
       return null;
@@ -120,6 +142,19 @@ class UploadSong extends React.Component {
                 required
                 autoFocus
                 onChange={this.handleOnChangeUpalodSong}
+              />
+            </div>
+
+            <div>
+              <label className="form-lable">Name</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter New Song Name"
+                value={this.state.songName}
+                required
+                autoFocus
+                onChange={this.handleOnChangeSongName}
               />
             </div>
 
@@ -156,33 +191,12 @@ class UploadSong extends React.Component {
                 onChange={this.handleOnChangeSongImageUrl}
               />
             </div>
-
-            <div>
-              <label className="form-lable">Ratings</label>
-              <select
-                className="form-control"
-                placeholder="Select Ratings"
-                required
-                autoFocus
-                onChange={this.handleOnChangeRatings}
-              >
-                <option default>5</option>
-                <option>4</option>
-                <option>3</option>
-                <option>2</option>
-                <option>1</option>
-              </select>
-            </div>
           </ModalBody>
           <ModalFooter>
             <Button
               color="info"
-              onClick={() => {
-                if (this.selectedFile !== "") {
-                  this.toggle();
-                  this.handleAddSong();
-                }
-              }}
+              disabled={this.buttonIsDisable}
+              onClick={this.handleOnClickUpload}
             >
               Upload
             </Button>{" "}

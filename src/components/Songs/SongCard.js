@@ -6,6 +6,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import StarRatings from "react-star-ratings";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -33,54 +34,71 @@ const SongImage = props => {
   );
 };
 
-const SongsCard = props => {
-  return props.songsArray.map((song, index) => {
-    return (
-      <div className="card song-div" key={index}>
-        <SongImage songImage={song.imageUrl} songName={song.name} />
-        <div className="card-body song-card-body">
-          <p className="card-text">
-            {song.name ? song.name.trim() : "NO NAME"}
-          </p>
-        </div>
-        <div className="overlay">
-          <div className="song-info-div">
-            <h6> {song.name} </h6>
-            <p> Ratings: {song.ratings ? song.ratings : "Give Ratings"} </p>
-            <p> {song.genre} </p>
+class SingleSongCard extends React.Component {
+  render() {
+    return this.props.songsArray.map((song, index) => {
+      return (
+        <div className="card song-div" key={index}>
+          <SongImage songImage={song.imageUrl} songName={song.name} />
+          <div className="card-body song-card-body">
+            <p className="card-text">
+              {song.name ? song.name.trim() : "NO NAME"}
+            </p>
           </div>
-          <div className="song-buttons">
-            <button
-              className="btn btn-md btn-info"
-              onClick={() => {
-                props.handleSongClick(index);
-              }}
-            >
-              Play
-            </button>
-            <DeleteButton
-              showDisableBtn={
-                props.userObject.userData.uId !==
-                firebase.auth().currentUser.uid
-              }
-              handleSongDelete={() => props.handleSongDelete(index)}
-            />
-            <EditButton
-              showDisableBtn={
-                props.userObject.userData.uId !==
-                firebase.auth().currentUser.uid
-              }
-              index={index}
-              handleSongEdit={props.handleSongEdit}
-            />
-          </div>
-        </div>
-      </div>
-    );
-  });
-};
+          <div className="overlay">
+            <div className="song-info-div">
+              <h6> {song.name} </h6>
 
-class SongCard extends React.Component {
+              {/* <br /> */}
+              <p> {song.genre} </p>
+              <div>
+                <StarRatings
+                  rating={song.ratings}
+                  starRatedColor="blue"
+                  numberOfStars={5}
+                  name="rating"
+                  starDimension="20px"
+                  starSpacing="5px"
+                />
+              </div>
+            </div>
+            <div className="song-buttons">
+              <button
+                className="btn btn-md btn-info"
+                onClick={() => {
+                  this.props.handleSongClick(index);
+                }}
+              >
+                Play
+              </button>
+              <DeleteButton
+                showDisableBtn={
+                  this.props.userObject.userData.uId !==
+                  firebase.auth().currentUser.uid
+                }
+                handleSongDelete={() => this.props.handleSongDelete(index)}
+              />
+              <EditButton
+                showDisableBtn={
+                  this.props.userObject.userData.uId !==
+                  firebase.auth().currentUser.uid
+                }
+                songImage={song.imageUrl}
+                songName={song.name}
+                songGenre={song.genre}
+                songRating={song.ratings}
+                index={index}
+                handleSongEdit={this.props.handleSongEdit}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    });
+  }
+}
+
+class SongsCard extends React.Component {
   componentDidMount() {
     var songsTempArrayUrl = [];
     this.props.songsArray.forEach(doc => {
@@ -190,7 +208,7 @@ class SongCard extends React.Component {
           />
         </div>
         <div className="row songs-div">
-          <SongsCard
+          <SingleSongCard
             songsArray={this.props.songsArray}
             userObject={this.props.userObject}
             handleSongClick={this.props.handleSongClick}
@@ -203,4 +221,4 @@ class SongCard extends React.Component {
   }
 }
 
-export default SongCard;
+export default SongsCard;
