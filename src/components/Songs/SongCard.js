@@ -60,7 +60,7 @@ class SingleSongCard extends React.Component {
                 />
               </div>
             </div>
-            <div className="song-buttons">
+            <div className="test-class song-buttons">
               <button
                 className="btn btn-md btn-info"
                 onClick={() => {
