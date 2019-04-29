@@ -1,15 +1,23 @@
 import React from "react";
 import "./style.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import StarRatings from "react-star-ratings";
 
 class EditButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: false,
+      rating: 0
     };
     this.toggle = this.toggle.bind(this);
   }
+
+  changeRating = newRating => {
+    this.setState({
+      rating: newRating
+    });
+  };
 
   toggle() {
     this.setState(prevState => ({
@@ -20,7 +28,6 @@ class EditButton extends React.Component {
   songName = "";
   songGenre = "Bollywood Music";
   songImageurl = "";
-  songRatings = "5";
 
   handleOnChangeSongName = event => {
     this.songName = event.target.value;
@@ -32,8 +39,6 @@ class EditButton extends React.Component {
 
   handleOnChangeSongImageUrl = event =>
     (this.songImageurl = event.target.value);
-
-  handleOnChangeRatings = event => (this.songRatings = event.target.value);
 
   render() {
     if (this.props.showDisableBtn) {
@@ -98,21 +103,18 @@ class EditButton extends React.Component {
               />
             </div>
 
-            <div>
+            <div className="rating-div">
               <label className="form-lable">Ratings</label>
-              <select
-                className="form-control"
-                placeholder="Select Ratings"
-                required
-                autoFocus
-                onChange={this.handleOnChangeRatings}
-              >
-                <option default>5</option>
-                <option>4</option>
-                <option>3</option>
-                <option>2</option>
-                <option>1</option>
-              </select>
+              <br />
+              <StarRatings
+                rating={this.state.rating}
+                starRatedColor="blue"
+                changeRating={this.changeRating}
+                numberOfStars={5}
+                name="rating"
+                starDimension="20px"
+                starSpacing="5px"
+              />
             </div>
           </ModalBody>
           <ModalFooter>
@@ -125,11 +127,11 @@ class EditButton extends React.Component {
                   this.songName,
                   this.songImageurl,
                   this.songGenre,
-                  this.songRatings
+                  this.state.rating
                 );
               }}
             >
-              Upload
+              Change
             </Button>{" "}
             <Button color="danger" onClick={this.toggle}>
               Cancel
