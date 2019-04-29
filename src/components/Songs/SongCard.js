@@ -58,7 +58,7 @@ class SingleSongCard extends React.Component {
                   starSpacing="5px"
                 />
               </div>
-
+              <br />
               <p> {song.genre} </p>
             </div>
             <div className="song-buttons">
