@@ -65,7 +65,7 @@ class UserInfo extends React.Component {
           <div>
             <label className="form-lable">Name:</label>
             <h5>{this.props.displayName}</h5>
-            <form onSubmit={this.handleSubmitName}>
+            <form className="form-inline" onSubmit={this.handleSubmitName}>
               <input
                 type="text"
                 id="inputName"
@@ -74,7 +74,9 @@ class UserInfo extends React.Component {
                 required
                 onChange={this.handleChangeName}
               />
-              <button className="btn btn-md btn-danger">Submit</button>
+              <button className="btn btn-md btn-info change-name-button">
+                Change Name
+              </button>
             </form>
           </div>
 
@@ -84,7 +86,7 @@ class UserInfo extends React.Component {
           </div>
 
           <button
-            className="btn btn-md btn-danger"
+            className="btn btn-md btn-danger signout-button"
             onClick={this.props.handleSignOut}
           >
             Sign Out

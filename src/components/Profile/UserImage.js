@@ -36,6 +36,16 @@ class UserImage extends React.Component {
     );
   };
 
+  handleRemoveUserImage = async () => {
+    this.handleLoadingStateChange(true);
+    var user = await currentUser();
+    await user.updateProfile({
+      photoURL: ""
+    });
+    this.props.getCurrentUserData();
+    this.handleLoadingStateChange(false);
+  };
+
   handleLoadingStateChange = isLoading => {
     this.setState({
       isLoading: isLoading
@@ -63,14 +73,26 @@ class UserImage extends React.Component {
     }
 
     return (
-      <div className="card-image">
-        <a href={this.props.photoURL}>
-          <img src={this.props.photoURL} alt="User-Img" />
-        </a>
-        <div className="change-image">
-          <input type="file" accept="image/*" onChange={this.handleSetImage} />
-          Change Image
+      <div>
+        <div className="card-image">
+          <a href={this.props.photoURL}>
+            <img src={this.props.photoURL} alt="User-Img" />
+          </a>
+          <div className="change-image">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={this.handleSetImage}
+            />
+            Change Image
+          </div>
         </div>
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={this.handleRemoveUserImage}
+        >
+          Remove User Image
+        </button>
       </div>
     );
   }
