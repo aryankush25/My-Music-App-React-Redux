@@ -8,7 +8,7 @@ class EditButton extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      rating: 0
+      rating: this.props.songRating
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -63,6 +63,7 @@ class EditButton extends React.Component {
                 type="text"
                 className="form-control"
                 placeholder="Enter New Song Name"
+                value={this.props.songName}
                 required
                 autoFocus
                 onChange={this.handleOnChangeSongName}
@@ -74,11 +75,12 @@ class EditButton extends React.Component {
               <select
                 className="form-control"
                 placeholder="Select Genre"
+                value={this.props.songGenre}
                 required
                 autoFocus
                 onChange={this.handleOnChangeGenre}
               >
-                <option default>Bollywood Music</option>
+                <option>Bollywood Music</option>
                 <option>EDM</option>
                 <option>Rock Music</option>
                 <option>Jazz Music</option>
@@ -97,6 +99,7 @@ class EditButton extends React.Component {
                 type="url"
                 className="form-control"
                 placeholder="Enter Song Image URL"
+                value={this.props.songImage}
                 required
                 autoFocus
                 onChange={this.handleOnChangeSongImageUrl}

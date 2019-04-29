@@ -82,6 +82,10 @@ class SingleSongCard extends React.Component {
                   this.props.userObject.userData.uId !==
                   firebase.auth().currentUser.uid
                 }
+                songImage={song.imageUrl}
+                songName={song.name}
+                songGenre={song.genre}
+                songRating={song.ratings}
                 index={index}
                 handleSongEdit={this.props.handleSongEdit}
               />
