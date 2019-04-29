@@ -1,9 +1,9 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton/";
-import validateName from "../../utils/ValidationFunctions/validateName";
-import validateEmail from "../../utils/ValidationFunctions/validateEmail";
-import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import validateName from "../../utils/ValidationFunctions123/validateName";
+import validateEmail from "../../utils/ValidationFunctions123/validateEmail";
+import validatePassword from "../../utils/ValidationFunctions123/validatePassword";
 import signUpUser from "../../services/firebaseAuth/signUpUser";
 import signOutUser from "../../services/firebaseAuth/signOutUser";
 import currentUser from "../../services/firebaseAuth/currentUser";

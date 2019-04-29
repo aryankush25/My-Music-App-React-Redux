@@ -1,8 +1,8 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton/";
-import validateEmail from "../../utils/ValidationFunctions/validateEmail";
-import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import validateEmail from "../../utils/ValidationFunctions123/validateEmail";
+import validatePassword from "../../utils/ValidationFunctions123/validatePassword";
 import signInUser from "../../services/firebaseAuth/signInUser";
 import {
   AUTH_WRONG_PASS,
