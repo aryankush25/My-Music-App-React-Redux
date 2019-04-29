@@ -8,7 +8,7 @@ class EditButton extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      rating: this.props.songRating
+      rating: 0
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -21,7 +21,8 @@ class EditButton extends React.Component {
 
   toggle() {
     this.setState(prevState => ({
-      modal: !prevState.modal
+      modal: !prevState.modal,
+      rating: this.props.songRating
     }));
   }
 

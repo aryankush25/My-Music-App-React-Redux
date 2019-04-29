@@ -48,6 +48,9 @@ class SingleSongCard extends React.Component {
           <div className="overlay">
             <div className="song-info-div">
               <h6> {song.name} </h6>
+
+              {/* <br /> */}
+              <p> {song.genre} </p>
               <div>
                 <StarRatings
                   rating={song.ratings}
@@ -58,8 +61,6 @@ class SingleSongCard extends React.Component {
                   starSpacing="5px"
                 />
               </div>
-              <br />
-              <p> {song.genre} </p>
             </div>
             <div className="song-buttons">
               <button
