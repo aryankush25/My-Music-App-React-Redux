@@ -24,7 +24,7 @@ class UploadSong extends React.Component {
 
   selectedFile = "";
   songGenre = "";
-  songRatings = "";
+  songRatings = 0;
   songImageurl = "";
   buttonIsDisable = true;
 
