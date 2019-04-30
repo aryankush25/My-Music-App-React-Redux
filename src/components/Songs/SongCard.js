@@ -43,8 +43,15 @@ class LikeButton extends React.Component {
 
     this.state = {
       songLiked: false,
-      likesCount: 0
+      likesCount: this.props.likesCount
     };
+  }
+
+  componentWillReceiveProps(nextprops) {
+    this.setState({
+      songLiked: false,
+      likesCount: nextprops.likesCount
+    });
   }
 
   toggleLike = index => {
@@ -100,7 +107,7 @@ class SingleSongCard extends React.Component {
                   starDimension="20px"
                   starSpacing="5px"
                 />
-                <LikeButton index={index} />
+                <LikeButton index={index} likesCount={0} />
               </div>
             </div>
             <div className="test-class song-buttons">
