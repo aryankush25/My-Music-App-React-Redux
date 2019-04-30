@@ -163,6 +163,7 @@ class SongsCard extends React.Component {
 
     this.props.handleLoadingStateChange(true);
 
+    console.log(newPlaylistObject);
     try {
       await updatePlaylist(this.props.userId, newPlaylistObject);
       console.log("Document successfully written!");
