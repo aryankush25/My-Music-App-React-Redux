@@ -61,13 +61,16 @@ class RegisterFormDiv extends React.Component {
 
   handleSignUpUser = async () => {
     try {
+      window.localStorage.setItem("musicAppSiginingIn", true);
       await signUpUser(this.state.email, this.state.password);
       var user = await currentUser();
       if (user) {
         await updateUser(this.state.name);
         await createUser(user.uid, this.state.name);
         await signOutUser();
+
         window.localStorage.setItem("musicAppSignedIn", false);
+        window.localStorage.setItem("musicAppSiginingIn", false);
         this.props.history.push("/login");
       }
     } catch (error) {
