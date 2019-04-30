@@ -4,30 +4,47 @@ import ShowLoadingComponent from "../ShowLoadingComponent";
 import fetchUsersCollections from "../../services/firebaseFirestore/fetchUsersCollections";
 import currentUser from "../../services/firebaseAuth/currentUser";
 
-const UsersData = props => {
-  return props.userArray.map((user, index) => {
-    if (props.currentUserId === user.userData.uId) {
+class UsersData extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedUser: 0
+    };
+  }
+
+  handleOnClick = (user, index) => {
+    this.props.handleClickedUser(user);
+    this.setState({
+      selectedUser: index
+    });
+  };
+
+  render() {
+    return this.props.userArray.map((user, index) => {
+      if (this.props.currentUserId === user.userData.uId) {
+        return (
+          <div
+            key={index}
+            style={{ backgroundColor: "#77c4d3" }}
+            onClick={() => this.handleOnClick(user, index)}
+          >
+            <div className="user-element"> {user.userData.userName} </div>
+          </div>
+        );
+      }
       return (
         <div
           key={index}
-          style={{ backgroundColor: "#77c4d3" }}
-          onClick={() => props.handleClickedUser(user)}
+          className={this.state.selectedUser === index ? "selected-user" : ""}
+          style={{ backgroundColor: "" }}
+          onClick={() => this.handleOnClick(user, index)}
         >
           <div className="user-element"> {user.userData.userName} </div>
         </div>
       );
-    }
-    return (
-      <div
-        key={index}
-        style={{ backgroundColor: "" }}
-        onClick={() => props.handleClickedUser(user)}
-      >
-        <div className="user-element"> {user.userData.userName} </div>
-      </div>
-    );
-  });
-};
+    });
+  }
+}
 
 class Users extends React.Component {
   constructor(props) {
@@ -51,13 +68,22 @@ class Users extends React.Component {
 
     userSnapshot.onSnapshot(querySnapshot => {
       var userArray = [];
+      var currentObj = {};
       querySnapshot.forEach(user => {
         var obj = { userData: user.data(), userId: user.id };
-        userArray.push(obj);
+
+        if (this.currentUserId === user.data().uId) {
+          currentObj = obj;
+        } else {
+          userArray.push(obj);
+        }
         if (this.currentUserId === user.data().uId) {
           this.props.handleClickedUser(obj);
         }
       });
+
+      userArray.unshift(currentObj);
+
       this.setState({
         isLoading: false,
         userArray: userArray
