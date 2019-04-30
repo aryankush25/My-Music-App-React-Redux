@@ -8,6 +8,8 @@ import "firebase/storage";
 import "./style.scss";
 import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
 import StarRatings from "react-star-ratings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -35,6 +37,45 @@ const SongImage = props => {
   );
 };
 
+class LikeButton extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      songLiked: false,
+      likesCount: 0
+    };
+  }
+
+  toggleLike = index => {
+    console.log(index);
+    if (this.state.songLiked === true) {
+      this.setState({
+        songLiked: false,
+        likesCount: this.state.likesCount - 1
+      });
+    } else {
+      this.setState({
+        songLiked: true,
+        likesCount: this.state.likesCount + 1
+      });
+    }
+  };
+
+  render() {
+    return (
+      <span>
+        <FontAwesomeIcon
+          icon={faHeart}
+          className={this.state.songLiked ? "addColor" : ""}
+          onClick={() => this.toggleLike(this.props.index)}
+        />{" "}
+        {this.state.likesCount}
+      </span>
+    );
+  }
+}
+
 class SingleSongCard extends React.Component {
   render() {
     return this.props.songsArray.map((song, index) => {
@@ -50,7 +91,7 @@ class SingleSongCard extends React.Component {
             <div className="song-info-div">
               <h6> {song.name} </h6>
               <p> {song.genre} </p>
-              <div>
+              <div className="rating-like-buttons">
                 <StarRatings
                   rating={song.ratings}
                   starRatedColor="blue"
@@ -59,6 +100,7 @@ class SingleSongCard extends React.Component {
                   starDimension="20px"
                   starSpacing="5px"
                 />
+                <LikeButton index={index} />
               </div>
             </div>
             <div className="test-class song-buttons">
