@@ -1,9 +1,9 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton/";
-import validateName from "../../utils/ValidationFunctions/validateName";
-import validateEmail from "../../utils/ValidationFunctions/validateEmail";
-import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import validateName from "../../utils/validatedFunctions/validateName";
+import validateEmail from "../../utils/validatedFunctions/validateEmail";
+import validatePassword from "../../utils/validatedFunctions/validatePassword";
 import signUpUser from "../../services/firebaseAuth/signUpUser";
 import signOutUser from "../../services/firebaseAuth/signOutUser";
 import currentUser from "../../services/firebaseAuth/currentUser";
@@ -12,7 +12,7 @@ import createUser from "../../services/firebaseFirestore/createUser";
 import {
   AUTH_WEAK_PASS,
   WEAK_PASS
-} from "../../utils/ConstantKeywords/errorConstants";
+} from "../../utils/constantKeywords/errorConstants";
 
 class RegisterFormDiv extends React.Component {
   constructor(props) {

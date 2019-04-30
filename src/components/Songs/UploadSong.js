@@ -1,7 +1,6 @@
 import React from "react";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/storage";
+import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
+import uploadSong from "../../services/firebaseStorage/uploadSong";
 import "./style.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
@@ -10,40 +9,51 @@ class UploadSong extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      songName: ""
+      songName: "",
+      buttonIsDisable: true,
+      songGenre: "Bollywood Music",
+      songImageurl: ""
     };
     this.toggle = this.toggle.bind(this);
   }
 
   toggle() {
+    this.selectedFile = "";
+    this.songRatings = 0;
     this.setState(prevState => ({
       modal: !prevState.modal,
-      songName: ""
+      songName: "",
+      buttonIsDisable: true,
+      songGenre: "",
+      songImageurl: ""
     }));
   }
 
   selectedFile = "";
-  songGenre = "";
   songRatings = 0;
-  songImageurl = "";
-  buttonIsDisable = true;
 
   filePresent = true;
   handleOnChangeUpalodSong = event => {
     this.selectedFile = event.target.files[0];
     this.filePresent = false;
-    this.setState({
-      songName: this.selectedFile.name
-    });
+    this.setState(
+      {
+        songName: this.selectedFile.name
+      },
+      () => {
+        this.props.songsArray.forEach(doc => {
+          if (doc.name === this.selectedFile.name) {
+            this.filePresent = true;
+          }
+        });
 
-    this.props.songsArray.forEach(doc => {
-      if (doc.name === this.selectedFile.name) {
-        this.filePresent = true;
+        if (this.filePresent === false) {
+          this.setState({
+            buttonIsDisable: false
+          });
+        }
       }
-    });
-    if (this.filePresent === false) {
-      this.buttonIsDisable = false;
-    }
+    );
   };
 
   handleOnChangeSongName = event => {
@@ -53,22 +63,24 @@ class UploadSong extends React.Component {
   };
 
   handleOnChangeGenre = event => {
-    this.songGenre = event.target.value;
+    this.setState({
+      songGenre: event.target.value
+    });
   };
 
-  handleOnChangeSongImageUrl = event =>
-    (this.songImageurl = event.target.value);
+  handleOnChangeSongImageUrl = event => {
+    this.setState({
+      songImageurl: event.target.value
+    });
+  };
 
   handleOnChangeRatings = event => (this.songRatings = event.target.value);
 
   handleAddSong = async () => {
     if (this.filePresent === false) {
-      const uploadTask = firebase
-        .storage()
-        .ref()
-        .child(`Music/${this.selectedFile.name}`)
-        .put(this.selectedFile);
+      const { songName, songGenre, songImageurl } = this.state;
 
+      const uploadTask = uploadSong(this.selectedFile);
       uploadTask.on(
         "state_changed",
         () => {
@@ -82,26 +94,20 @@ class UploadSong extends React.Component {
           uploadTask.snapshot.ref.getDownloadURL().then(async url => {
             var userObject = this.props.userObject.userData;
             userObject.playlists[this.props.index].playlist.push({
-              name: this.selectedFile.name,
+              name: songName,
               url: url,
-              genre: this.songGenre,
+              genre: songGenre,
               ratings: this.songRatings,
-              imageUrl: this.songImageurl
+              imageUrl: songImageurl
             });
 
-            await firebase
-              .firestore()
-              .collection("users")
-              .doc(this.props.userId)
-              .update({
-                playlists: userObject.playlists
-              })
-              .then(() => {
-                console.log("Document successfully written!");
-              })
-              .catch(error => {
-                console.error("Error writing document: ", error);
-              });
+            try {
+              await updatePlaylist(this.props.userId, userObject.playlists);
+              console.log("Document successfully written!");
+            } catch (error) {
+              console.error("Error writing document: ", error);
+            }
+
             this.props.handleLoadingStateChange(false);
           });
         }
@@ -110,9 +116,9 @@ class UploadSong extends React.Component {
   };
 
   handleOnClickUpload = () => {
-    if (this.selectedFile !== "") {
-      this.toggle();
+    if (this.selectedFile !== "" && this.state.songName !== "") {
       this.handleAddSong();
+      this.toggle();
     }
   };
 
@@ -195,7 +201,7 @@ class UploadSong extends React.Component {
           <ModalFooter>
             <Button
               color="info"
-              disabled={this.buttonIsDisable}
+              disabled={this.state.buttonIsDisable}
               onClick={this.handleOnClickUpload}
             >
               Upload

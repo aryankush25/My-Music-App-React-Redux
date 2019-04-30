@@ -8,7 +8,10 @@ class EditButton extends React.Component {
     super(props);
     this.state = {
       modal: false,
-      rating: 0
+      rating: 0,
+      songName: "",
+      songGenre: "Bollywood Music",
+      songImageurl: ""
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -22,24 +25,30 @@ class EditButton extends React.Component {
   toggle() {
     this.setState(prevState => ({
       modal: !prevState.modal,
-      rating: this.props.songRating
+      rating: this.props.songRating,
+      songName: this.props.songName,
+      songGenre: this.props.songGenre,
+      songImageurl: this.props.songImageurl
     }));
   }
 
-  songName = "";
-  songGenre = "Bollywood Music";
-  songImageurl = "";
-
   handleOnChangeSongName = event => {
-    this.songName = event.target.value;
+    this.setState({
+      songName: event.target.value
+    });
   };
 
   handleOnChangeGenre = event => {
-    this.songGenre = event.target.value;
+    this.setState({
+      songGenre: event.target.value
+    });
   };
 
-  handleOnChangeSongImageUrl = event =>
-    (this.songImageurl = event.target.value);
+  handleOnChangeSongImageUrl = event => {
+    this.setState({
+      songImageurl: event.target.value
+    });
+  };
 
   render() {
     if (this.props.showDisableBtn) {
@@ -64,7 +73,7 @@ class EditButton extends React.Component {
                 type="text"
                 className="form-control"
                 placeholder="Enter New Song Name"
-                value={this.props.songName}
+                value={this.state.songName}
                 required
                 autoFocus
                 onChange={this.handleOnChangeSongName}
@@ -76,7 +85,7 @@ class EditButton extends React.Component {
               <select
                 className="form-control"
                 placeholder="Select Genre"
-                value={this.props.songGenre}
+                value={this.state.songGenre}
                 required
                 autoFocus
                 onChange={this.handleOnChangeGenre}
@@ -100,7 +109,7 @@ class EditButton extends React.Component {
                 type="url"
                 className="form-control"
                 placeholder="Enter Song Image URL"
-                value={this.props.songImage}
+                value={this.state.songImage}
                 required
                 autoFocus
                 onChange={this.handleOnChangeSongImageUrl}
@@ -128,9 +137,9 @@ class EditButton extends React.Component {
                 this.toggle();
                 this.props.handleSongEdit(
                   this.props.index,
-                  this.songName,
-                  this.songImageurl,
-                  this.songGenre,
+                  this.state.songName,
+                  this.state.songImageurl,
+                  this.state.songGenre,
                   this.state.rating
                 );
               }}

@@ -1,4 +1,4 @@
-import { EMPTY_NAME } from "../ConstantKeywords/errorConstants";
+import { EMPTY_NAME } from "../constantKeywords/errorConstants";
 
 const validateName = name => {
   if (name === "") {

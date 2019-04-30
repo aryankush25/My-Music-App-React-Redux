@@ -6,6 +6,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
+import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
 import StarRatings from "react-star-ratings";
 
 const DeleteButton = props => {
@@ -132,19 +133,15 @@ class SongsCard extends React.Component {
     var newPlaylistObject = this.props.userObject.userData.playlists;
     newPlaylistObject[this.props.index].playlist = newSongs;
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userId)
-      .update({
-        playlists: newPlaylistObject
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch(error => {
-        console.error("Error writing document: ", error);
-      });
+    this.props.handleLoadingStateChange(true);
+
+    try {
+      await updatePlaylist(this.props.userId, newPlaylistObject);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
     this.props.handleLoadingStateChange(false);
   };
 
@@ -164,19 +161,15 @@ class SongsCard extends React.Component {
     var newPlaylistObject = this.props.userObject.userData.playlists;
     newPlaylistObject[this.props.index].playlist = playlistObject;
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userId)
-      .update({
-        playlists: newPlaylistObject
-      })
-      .then(() => {
-        console.log("Document successfully written!");
-      })
-      .catch(error => {
-        console.error("Error writing document: ", error);
-      });
+    this.props.handleLoadingStateChange(true);
+
+    try {
+      await updatePlaylist(this.props.userId, newPlaylistObject);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
     this.props.handleLoadingStateChange(false);
   };
 

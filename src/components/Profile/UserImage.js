@@ -1,10 +1,7 @@
 import React from "react";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import "./style.scss";
-import firebase from "firebase/app";
-import "firebase/firestore";
-import "firebase/auth";
-import "firebase/storage";
+import uploadImage from "../../services/firebaseStorage/uploadImage";
 
 class UserImage extends React.Component {
   constructor(props) {
@@ -16,11 +13,7 @@ class UserImage extends React.Component {
 
   handleSetImage = event => {
     const selectedFile = event.target.files[0];
-    const uploadTask = firebase
-      .storage()
-      .ref()
-      .child(`UserImages/${selectedFile.name}`)
-      .put(selectedFile);
+    const uploadTask = uploadImage(selectedFile);
 
     uploadTask.on(
       "state_changed",
@@ -41,6 +34,16 @@ class UserImage extends React.Component {
         });
       }
     );
+  };
+
+  handleRemoveUserImage = async () => {
+    this.handleLoadingStateChange(true);
+    var user = await currentUser();
+    await user.updateProfile({
+      photoURL: ""
+    });
+    this.props.getCurrentUserData();
+    this.handleLoadingStateChange(false);
   };
 
   handleLoadingStateChange = isLoading => {
@@ -70,14 +73,26 @@ class UserImage extends React.Component {
     }
 
     return (
-      <div className="card-image">
-        <a href={this.props.photoURL}>
-          <img src={this.props.photoURL} alt="User-Img" />
-        </a>
-        <div className="change-image">
-          <input type="file" accept="image/*" onChange={this.handleSetImage} />
-          Change Image
+      <div>
+        <div className="card-image">
+          <a href={this.props.photoURL}>
+            <img src={this.props.photoURL} alt="User-Img" />
+          </a>
+          <div className="change-image">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={this.handleSetImage}
+            />
+            Change Image
+          </div>
         </div>
+        <button
+          className="btn btn-sm btn-danger"
+          onClick={this.handleRemoveUserImage}
+        >
+          Remove User Image
+        </button>
       </div>
     );
   }

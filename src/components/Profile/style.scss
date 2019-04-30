@@ -81,11 +81,15 @@
   padding: 2rem;
 }
 
-.profile-card-body button {
+.signout-button {
   margin-top: 40px;
   width: 100%;
 }
 
 .profile-card-body h5 {
   color: $SONG_DIV_BG_COLOR;
+}
+
+.change-name-button {
+  margin-left: 20px;
 }

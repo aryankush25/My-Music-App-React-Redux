@@ -1,13 +1,13 @@
 import React from "react";
 import { withRouter, Link } from "react-router-dom";
 import SubmitButton from "../../components/SubmitButton/";
-import validateEmail from "../../utils/ValidationFunctions/validateEmail";
-import validatePassword from "../../utils/ValidationFunctions/validatePassword";
+import validateEmail from "../../utils/validatedFunctions/validateEmail";
+import validatePassword from "../../utils/validatedFunctions/validatePassword";
 import signInUser from "../../services/firebaseAuth/signInUser";
 import {
   AUTH_WRONG_PASS,
   WRONG_PASS
-} from "../../utils/ConstantKeywords/errorConstants";
+} from "../../utils/constantKeywords/errorConstants";
 
 class LoginFormDiv extends React.Component {
   constructor(props) {

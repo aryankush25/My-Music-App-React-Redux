@@ -1,4 +1,4 @@
-import { EMPTY_EMAIL, INVALID_EMAIL } from "../ConstantKeywords/errorConstants";
+import { EMPTY_EMAIL, INVALID_EMAIL } from "../constantKeywords/errorConstants";
 
 const validateEmail = email => {
   if (email === "") {

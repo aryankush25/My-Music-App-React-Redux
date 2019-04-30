@@ -1,4 +1,4 @@
-import { EMPTY_PASS } from "../ConstantKeywords/errorConstants";
+import { EMPTY_PASS } from "../constantKeywords/errorConstants";
 
 const validatePassword = password => {
   if (password === "") {
