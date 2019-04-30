@@ -90,6 +90,7 @@ class EditButton extends React.Component {
                 autoFocus
                 onChange={this.handleOnChangeGenre}
               >
+                <option>Select</option>
                 <option>Bollywood Music</option>
                 <option>EDM</option>
                 <option>Rock Music</option>

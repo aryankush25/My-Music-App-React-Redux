@@ -173,7 +173,8 @@ class UploadSong extends React.Component {
                 autoFocus
                 onChange={this.handleOnChangeGenre}
               >
-                <option default>Bollywood Music</option>
+                <option>Select</option>
+                <option>Bollywood Music</option>
                 <option>EDM</option>
                 <option>Rock Music</option>
                 <option>Jazz Music</option>

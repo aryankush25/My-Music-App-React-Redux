@@ -7,6 +7,7 @@ import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
 import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
+import currentUser from "../../services/firebaseAuth/currentUser";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
@@ -42,26 +43,49 @@ class LikeButton extends React.Component {
     super(props);
 
     this.state = {
-      songLiked: false,
+      songLiked: this.props.isSongLiked,
       likesCount: this.props.likesCount
     };
   }
 
+  componentDidMount() {
+    this.isSongLiked();
+  }
+
+  isSongLiked = async () => {
+    var currUser = await currentUser().uid;
+
+    for (var i = 0; i < this.props.likesCount; i++) {
+      if (this.props.likedByArray[i] === currUser) {
+        this.setState({
+          songLiked: true
+        });
+        break;
+      } else {
+        this.setState({
+          songLiked: false
+        });
+      }
+    }
+  };
+
   componentWillReceiveProps(nextprops) {
+    this.isSongLiked();
     this.setState({
-      songLiked: false,
+      songLiked: nextprops.isSongLiked,
       likesCount: nextprops.likesCount
     });
   }
 
   toggleLike = index => {
-    console.log(index);
     if (this.state.songLiked === true) {
+      this.props.handleSongUnLike(index);
       this.setState({
         songLiked: false,
         likesCount: this.state.likesCount - 1
       });
     } else {
+      this.props.handleSongLike(index);
       this.setState({
         songLiked: true,
         likesCount: this.state.likesCount + 1
@@ -70,6 +94,7 @@ class LikeButton extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <span>
         <FontAwesomeIcon
@@ -107,7 +132,14 @@ class SingleSongCard extends React.Component {
                   starDimension="20px"
                   starSpacing="5px"
                 />
-                <LikeButton index={index} likesCount={0} />
+                <LikeButton
+                  index={index}
+                  likesCount={song.likedBy.length}
+                  likedByArray={song.likedBy}
+                  isSongLiked={false}
+                  handleSongLike={this.props.handleSongLike}
+                  handleSongUnLike={this.props.handleSongUnLike}
+                />
               </div>
             </div>
             <div className="test-class song-buttons">
@@ -223,6 +255,70 @@ class SongsCard extends React.Component {
     this.props.handleLoadingStateChange(false);
   };
 
+  handleSongLike = async index => {
+    var playlistObject = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist;
+
+    var likeUsersArray = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist[index].likedBy;
+
+    this.props.handleLoadingStateChange(true);
+
+    var currUser = await currentUser().uid;
+
+    likeUsersArray.push(currUser);
+
+    var newPlaylistObject = this.props.userObject.userData.playlists;
+    newPlaylistObject[this.props.index].playlist = playlistObject;
+
+    console.log(newPlaylistObject);
+    try {
+      await updatePlaylist(this.props.userId, newPlaylistObject);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
+    this.props.handleLoadingStateChange(false);
+  };
+
+  handleSongUnLike = async index => {
+    var playlistObject = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist;
+
+    var likeUsersArray = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist[index].likedBy;
+
+    this.props.handleLoadingStateChange(true);
+
+    var currUser = await currentUser().uid;
+    var tempArr = [];
+    likeUsersArray.forEach(user => {
+      if (currUser !== user) {
+        tempArr.push(user);
+      }
+    });
+
+    playlistObject[index].likedBy = tempArr;
+
+    var newPlaylistObject = this.props.userObject.userData.playlists;
+    newPlaylistObject[this.props.index].playlist = playlistObject;
+
+    console.log(newPlaylistObject);
+    try {
+      await updatePlaylist(this.props.userId, newPlaylistObject);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
+    this.props.handleLoadingStateChange(false);
+  };
+
   render() {
     return (
       <div className="middle-songs-container">
@@ -255,6 +351,8 @@ class SongsCard extends React.Component {
             handleSongClick={this.props.handleSongClick}
             handleSongDelete={this.handleSongDelete}
             handleSongEdit={this.handleSongEdit}
+            handleSongLike={this.handleSongLike}
+            handleSongUnLike={this.handleSongUnLike}
           />
         </div>
       </div>

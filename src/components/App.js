@@ -18,7 +18,7 @@ class App extends Component {
       const musicAppSiginingIn = window.localStorage.getItem(
         "musicAppSiginingIn"
       );
-      if (user && musicAppSiginingIn === false) {
+      if (user && musicAppSiginingIn !== true) {
         window.localStorage.setItem("musicAppSignedIn", true);
       } else {
         window.localStorage.setItem("musicAppSignedIn", false);
