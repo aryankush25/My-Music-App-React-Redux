@@ -11,7 +11,7 @@ class EditButton extends React.Component {
       rating: 0,
       songName: "",
       songGenre: "Bollywood Music",
-      songImageurl: ""
+      songImage: ""
     };
     this.toggle = this.toggle.bind(this);
   }
@@ -28,7 +28,7 @@ class EditButton extends React.Component {
       rating: this.props.songRating,
       songName: this.props.songName,
       songGenre: this.props.songGenre,
-      songImageurl: this.props.songImageurl
+      songImage: this.props.songImage
     }));
   }
 
@@ -46,7 +46,7 @@ class EditButton extends React.Component {
 
   handleOnChangeSongImageUrl = event => {
     this.setState({
-      songImageurl: event.target.value
+      songImage: event.target.value
     });
   };
 
@@ -90,6 +90,7 @@ class EditButton extends React.Component {
                 autoFocus
                 onChange={this.handleOnChangeGenre}
               >
+                <option>Select</option>
                 <option>Bollywood Music</option>
                 <option>EDM</option>
                 <option>Rock Music</option>
@@ -134,14 +135,14 @@ class EditButton extends React.Component {
             <Button
               color="info"
               onClick={() => {
-                this.toggle();
                 this.props.handleSongEdit(
                   this.props.index,
                   this.state.songName,
-                  this.state.songImageurl,
+                  this.state.songImage,
                   this.state.songGenre,
                   this.state.rating
                 );
+                this.toggle();
               }}
             >
               Change

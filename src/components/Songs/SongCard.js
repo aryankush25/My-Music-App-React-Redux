@@ -7,7 +7,10 @@ import "firebase/firestore";
 import "firebase/storage";
 import "./style.scss";
 import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
+import currentUser from "../../services/firebaseAuth/currentUser";
 import StarRatings from "react-star-ratings";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -35,6 +38,76 @@ const SongImage = props => {
   );
 };
 
+class LikeButton extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      songLiked: this.props.isSongLiked,
+      likesCount: this.props.likesCount
+    };
+  }
+
+  componentDidMount() {
+    this.isSongLiked();
+  }
+
+  isSongLiked = async () => {
+    var currUser = await currentUser().uid;
+
+    for (var i = 0; i < this.props.likesCount; i++) {
+      if (this.props.likedByArray[i] === currUser) {
+        this.setState({
+          songLiked: true
+        });
+        break;
+      } else {
+        this.setState({
+          songLiked: false
+        });
+      }
+    }
+  };
+
+  componentWillReceiveProps(nextprops) {
+    this.isSongLiked();
+    this.setState({
+      songLiked: nextprops.isSongLiked,
+      likesCount: nextprops.likesCount
+    });
+  }
+
+  toggleLike = index => {
+    if (this.state.songLiked === true) {
+      this.props.handleSongUnLike(index);
+      this.setState({
+        songLiked: false,
+        likesCount: this.state.likesCount - 1
+      });
+    } else {
+      this.props.handleSongLike(index);
+      this.setState({
+        songLiked: true,
+        likesCount: this.state.likesCount + 1
+      });
+    }
+  };
+
+  render() {
+    console.log(this.props);
+    return (
+      <span>
+        <FontAwesomeIcon
+          icon={faHeart}
+          className={this.state.songLiked ? "addColor" : ""}
+          onClick={() => this.toggleLike(this.props.index)}
+        />{" "}
+        {this.state.likesCount}
+      </span>
+    );
+  }
+}
+
 class SingleSongCard extends React.Component {
   render() {
     return this.props.songsArray.map((song, index) => {
@@ -50,7 +123,7 @@ class SingleSongCard extends React.Component {
             <div className="song-info-div">
               <h6> {song.name} </h6>
               <p> {song.genre} </p>
-              <div>
+              <div className="rating-like-buttons">
                 <StarRatings
                   rating={song.ratings}
                   starRatedColor="blue"
@@ -58,6 +131,14 @@ class SingleSongCard extends React.Component {
                   name="rating"
                   starDimension="20px"
                   starSpacing="5px"
+                />
+                <LikeButton
+                  index={index}
+                  likesCount={song.likedBy.length}
+                  likedByArray={song.likedBy}
+                  isSongLiked={false}
+                  handleSongLike={this.props.handleSongLike}
+                  handleSongUnLike={this.props.handleSongUnLike}
                 />
               </div>
             </div>
@@ -163,6 +244,71 @@ class SongsCard extends React.Component {
 
     this.props.handleLoadingStateChange(true);
 
+    console.log(newPlaylistObject);
+    try {
+      await updatePlaylist(this.props.userId, newPlaylistObject);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
+    this.props.handleLoadingStateChange(false);
+  };
+
+  handleSongLike = async index => {
+    var playlistObject = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist;
+
+    var likeUsersArray = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist[index].likedBy;
+
+    this.props.handleLoadingStateChange(true);
+
+    var currUser = await currentUser().uid;
+
+    likeUsersArray.push(currUser);
+
+    var newPlaylistObject = this.props.userObject.userData.playlists;
+    newPlaylistObject[this.props.index].playlist = playlistObject;
+
+    console.log(newPlaylistObject);
+    try {
+      await updatePlaylist(this.props.userId, newPlaylistObject);
+      console.log("Document successfully written!");
+    } catch (error) {
+      console.error("Error writing document: ", error);
+    }
+
+    this.props.handleLoadingStateChange(false);
+  };
+
+  handleSongUnLike = async index => {
+    var playlistObject = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist;
+
+    var likeUsersArray = this.props.userObject.userData.playlists[
+      this.props.index
+    ].playlist[index].likedBy;
+
+    this.props.handleLoadingStateChange(true);
+
+    var currUser = await currentUser().uid;
+    var tempArr = [];
+    likeUsersArray.forEach(user => {
+      if (currUser !== user) {
+        tempArr.push(user);
+      }
+    });
+
+    playlistObject[index].likedBy = tempArr;
+
+    var newPlaylistObject = this.props.userObject.userData.playlists;
+    newPlaylistObject[this.props.index].playlist = playlistObject;
+
+    console.log(newPlaylistObject);
     try {
       await updatePlaylist(this.props.userId, newPlaylistObject);
       console.log("Document successfully written!");
@@ -205,6 +351,8 @@ class SongsCard extends React.Component {
             handleSongClick={this.props.handleSongClick}
             handleSongDelete={this.handleSongDelete}
             handleSongEdit={this.handleSongEdit}
+            handleSongLike={this.handleSongLike}
+            handleSongUnLike={this.handleSongUnLike}
           />
         </div>
       </div>

@@ -36,9 +36,9 @@
 }
 
 .song-logo img {
-  max-width: 14.8rem;
+  max-width: 14.7rem;
   max-height: 14.6rem;
-  min-width: 14.8rem;
+  min-width: 14.7rem;
   min-height: 14.6rem;
 }
 
@@ -124,4 +124,17 @@
 
 .song-buttons {
   height: 48%;
+}
+
+.rating-like-buttons {
+  text-align: left;
+}
+
+.rating-like-buttons span {
+  margin-left: 40px;
+  padding-top: 20px;
+}
+
+.addColor {
+  color: red;
 }
