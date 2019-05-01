@@ -88,8 +88,6 @@ class Users extends React.Component {
       userArray.forEach(user => {
         if (this.state.userNumber === i) {
           this.props.handleClickedUser(user);
-          console.log(this.state.userNumber);
-          console.log("Fetch Users");
         }
         i++;
       });
