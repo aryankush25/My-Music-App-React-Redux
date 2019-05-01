@@ -13,6 +13,7 @@ class UsersData extends React.Component {
   }
 
   handleOnClick = (user, index) => {
+    this.props.setUserNumber(index);
     this.props.handleClickedUser(user);
     this.setState({
       selectedUser: index
@@ -52,7 +53,8 @@ class Users extends React.Component {
 
     this.state = {
       isLoading: true,
-      userArray: []
+      userArray: [],
+      userNumber: 0
     };
   }
 
@@ -69,6 +71,7 @@ class Users extends React.Component {
     userSnapshot.onSnapshot(querySnapshot => {
       var userArray = [];
       var currentObj = {};
+
       querySnapshot.forEach(user => {
         var obj = { userData: user.data(), userId: user.id };
 
@@ -77,17 +80,30 @@ class Users extends React.Component {
         } else {
           userArray.push(obj);
         }
-        if (this.currentUserId === user.data().uId) {
-          this.props.handleClickedUser(obj);
-        }
       });
 
       userArray.unshift(currentObj);
+
+      var i = 0;
+      userArray.forEach(user => {
+        if (this.state.userNumber === i) {
+          this.props.handleClickedUser(user);
+          console.log(this.state.userNumber);
+          console.log("Fetch Users");
+        }
+        i++;
+      });
 
       this.setState({
         isLoading: false,
         userArray: userArray
       });
+    });
+  };
+
+  setUserNumber = userNumber => {
+    this.setState({
+      userNumber: userNumber
     });
   };
 
@@ -99,6 +115,7 @@ class Users extends React.Component {
             userArray={this.state.userArray}
             currentUserId={this.currentUserId}
             handleClickedUser={this.props.handleClickedUser}
+            setUserNumber={this.setUserNumber}
           />
         </div>
       </ShowLoadingComponent>

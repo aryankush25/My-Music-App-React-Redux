@@ -98,7 +98,8 @@ class UploadSong extends React.Component {
               url: url,
               genre: songGenre,
               ratings: this.songRatings,
-              imageUrl: songImageurl
+              imageUrl: songImageurl,
+              likedBy: []
             });
 
             try {
