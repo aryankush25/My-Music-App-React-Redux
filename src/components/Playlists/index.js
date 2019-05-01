@@ -10,14 +10,16 @@ class Playlists extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      playlistNumber: 0
     };
   }
 
   componentDidMount() {
     this.props.handleSongsArray(
-      this.props.userObject.userData.playlists[0].playlist,
-      0
+      this.props.userObject.userData.playlists[this.state.playlistNumber]
+        .playlist,
+      this.state.playlistNumber
     );
     this.fetchCurrentUser();
   }
@@ -25,11 +27,20 @@ class Playlists extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     if (this.state.isLoading !== nextState.isLoading) {
       return true;
-    }
-    if (this.props.userObject !== nextProps.userObject) {
+    } else if (this.props.userObject.userId !== nextProps.userObject.userId) {
       nextProps.handleSongsArray(
         nextProps.userObject.userData.playlists[0].playlist,
         0
+      );
+      this.setState({
+        playlistNumber: 0
+      });
+      return true;
+    } else if (this.props.userObject !== nextProps.userObject) {
+      nextProps.handleSongsArray(
+        nextProps.userObject.userData.playlists[this.state.playlistNumber]
+          .playlist,
+        this.state.playlistNumber
       );
       return true;
     }
@@ -87,6 +98,12 @@ class Playlists extends React.Component {
     this.handleLoadingStateChange(false);
   };
 
+  handlePlaylistNumber = index => {
+    this.setState({
+      playlistNumber: index
+    });
+  };
+
   handleLoadingStateChange = isLoading => {
     this.setState({
       isLoading: isLoading
@@ -101,9 +118,11 @@ class Playlists extends React.Component {
             <Playlist
               userObject={this.props.userObject}
               playlistsArray={this.props.userObject.userData.playlists}
+              playlistNumber={this.state.playlistNumber}
               handleSongsArray={this.props.handleSongsArray}
               handleDeletePlaylist={this.handleDeletePlaylist}
               handleEditPlaylist={this.handleEditPlaylist}
+              handlePlaylistNumber={this.handlePlaylistNumber}
             />
           </div>
           <AddPlaylist

@@ -12,8 +12,17 @@ class Playlist extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.playlistNumber !== nextProps.playlistNumber) {
+      this.setState({
+        selectePlaylist: 0
+      });
+    }
+  }
+
   handleOnClick = (playlist, index) => {
     this.props.handleSongsArray(playlist, index);
+    this.props.handlePlaylistNumber(index);
     this.setState({
       selectePlaylist: index
     });
