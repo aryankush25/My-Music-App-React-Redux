@@ -1,7 +1,6 @@
 import { combineReducers } from "redux";
-
-import songs from "./songsReducer";
+import isLoading from "./isLoadingReducer";
 
 export default combineReducers({
-  songs
+  isLoading
 });

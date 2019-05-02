@@ -1,18 +1,12 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Routes from "../routes";
+import { connect } from "react-redux";
+import { setIsLoading } from "../redux/actions/actionIsLoading";
 import firebase from "firebase/app";
 import "firebase/auth";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: true
-    };
-  }
-
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       const musicAppSiginingIn = window.localStorage.getItem(
@@ -23,18 +17,12 @@ class App extends Component {
       } else {
         window.localStorage.setItem("musicAppSignedIn", false);
       }
-      this.handleState();
-    });
-  }
-
-  handleState() {
-    this.setState({
-      isLoading: false
+      this.props.setIsLoading(false);
     });
   }
 
   render() {
-    if (this.state.isLoading === true) {
+    if (this.props.isLoading === true) {
       return (
         <div className="d-flex justify-content-center spinner-body">
           <div className="spinner-border" role="status">
@@ -51,4 +39,18 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  const { isLoading } = state;
+  return { isLoading };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setIsLoading: isLoading => dispatch(setIsLoading(isLoading))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
