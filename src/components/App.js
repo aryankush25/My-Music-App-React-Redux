@@ -1,18 +1,13 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Routes from "../routes";
+import { connect } from "react-redux";
+import { setAppIsLoadingAction } from "../redux/actions/actionApp";
 import firebase from "firebase/app";
 import "firebase/auth";
+import ShowLoadingComponent from "../components/ShowLoadingComponent/index";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: true
-    };
-  }
-
   componentDidMount() {
     firebase.auth().onAuthStateChanged(user => {
       const musicAppSiginingIn = window.localStorage.getItem(
@@ -23,32 +18,34 @@ class App extends Component {
       } else {
         window.localStorage.setItem("musicAppSignedIn", false);
       }
-      this.handleState();
-    });
-  }
-
-  handleState() {
-    this.setState({
-      isLoading: false
+      this.props.setAppIsLoadingAction(false);
     });
   }
 
   render() {
-    if (this.state.isLoading === true) {
-      return (
-        <div className="d-flex justify-content-center spinner-body">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
     return (
-      <div className="main-container">
-        <Routes />
-      </div>
+      <ShowLoadingComponent isLoading={this.props.appIsLoading}>
+        <div className="main-container">
+          <Routes />
+        </div>
+      </ShowLoadingComponent>
     );
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  const { appIsLoading } = state.app;
+  return { appIsLoading };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setAppIsLoadingAction: isLoading =>
+      dispatch(setAppIsLoadingAction(isLoading))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

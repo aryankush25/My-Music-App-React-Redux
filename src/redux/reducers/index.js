@@ -1,7 +1,8 @@
 import { combineReducers } from "redux";
-
-import songs from "./songsReducer";
+import app from "./appReducer";
+import users from "./usersReducer";
 
 export default combineReducers({
-  songs
+  app,
+  users
 });

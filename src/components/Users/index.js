@@ -3,6 +3,12 @@ import "./style.scss";
 import ShowLoadingComponent from "../ShowLoadingComponent";
 import fetchUsersCollections from "../../services/firebaseFirestore/fetchUsersCollections";
 import currentUser from "../../services/firebaseAuth/currentUser";
+import { connect } from "react-redux";
+import {
+  setUsersAction,
+  setCurrentUsersNumberAction,
+  setUsersIsLoadingAction
+} from "../../redux/actions/actionUsers";
 
 class UsersData extends React.Component {
   constructor(props) {
@@ -48,16 +54,6 @@ class UsersData extends React.Component {
 }
 
 class Users extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: true,
-      userArray: [],
-      userNumber: 0
-    };
-  }
-
   componentDidMount() {
     this.fetchUsers();
   }
@@ -71,7 +67,6 @@ class Users extends React.Component {
     userSnapshot.onSnapshot(querySnapshot => {
       var userArray = [];
       var currentObj = {};
-
       querySnapshot.forEach(user => {
         var obj = { userData: user.data(), userId: user.id };
 
@@ -81,39 +76,29 @@ class Users extends React.Component {
           userArray.push(obj);
         }
       });
-
       userArray.unshift(currentObj);
-
       var i = 0;
       userArray.forEach(user => {
-        if (this.state.userNumber === i) {
+        if (this.props.userNumber === i) {
           this.props.handleClickedUser(user);
         }
         i++;
       });
 
-      this.setState({
-        isLoading: false,
-        userArray: userArray
-      });
-    });
-  };
-
-  setUserNumber = userNumber => {
-    this.setState({
-      userNumber: userNumber
+      this.props.setUsersAction(userArray);
+      this.props.setUsersIsLoadingAction(false);
     });
   };
 
   render() {
     return (
-      <ShowLoadingComponent isLoading={this.state.isLoading}>
+      <ShowLoadingComponent isLoading={this.props.isLoading}>
         <div className="small-div-left">
           <UsersData
-            userArray={this.state.userArray}
+            userArray={this.props.userArray}
             currentUserId={this.currentUserId}
+            setUserNumber={this.props.setCurrentUsersNumberAction}
             handleClickedUser={this.props.handleClickedUser}
-            setUserNumber={this.setUserNumber}
           />
         </div>
       </ShowLoadingComponent>
@@ -121,4 +106,23 @@ class Users extends React.Component {
   }
 }
 
-export default Users;
+const mapStateToProps = state => {
+  const { userArray, userNumber, isLoading } = state.users;
+
+  return { userArray, userNumber, isLoading };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUsersAction: userArray => dispatch(setUsersAction(userArray)),
+    setCurrentUsersNumberAction: userNumber =>
+      dispatch(setCurrentUsersNumberAction(userNumber)),
+    setUsersIsLoadingAction: isLoading =>
+      dispatch(setUsersIsLoadingAction(isLoading))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Users);
