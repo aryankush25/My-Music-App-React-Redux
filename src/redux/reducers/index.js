@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import isLoading from "./isLoadingReducer";
+import app from "./appReducer";
 import users from "./usersReducer";
 
 export default combineReducers({
-  isLoading,
+  app,
   users
 });

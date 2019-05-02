@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Routes from "../routes";
 import { connect } from "react-redux";
-import { setIsLoading } from "../redux/actions/actionIsLoading";
+import { setAppIsLoadingAction } from "../redux/actions/actionIsLoading";
 import firebase from "firebase/app";
 import "firebase/auth";
 
@@ -17,12 +17,12 @@ class App extends Component {
       } else {
         window.localStorage.setItem("musicAppSignedIn", false);
       }
-      this.props.setIsLoading(false);
+      this.props.setAppIsLoadingAction(false);
     });
   }
 
   render() {
-    if (this.props.isLoading === true) {
+    if (this.props.appIsLoading === true) {
       return (
         <div className="d-flex justify-content-center spinner-body">
           <div className="spinner-border" role="status">
@@ -40,13 +40,14 @@ class App extends Component {
 }
 
 const mapStateToProps = state => {
-  const { isLoading } = state;
-  return { isLoading };
+  const { appIsLoading } = state.app;
+  return { appIsLoading };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setIsLoading: isLoading => dispatch(setIsLoading(isLoading))
+    setAppIsLoadingAction: isLoading =>
+      dispatch(setAppIsLoadingAction(isLoading))
   };
 };
 

@@ -1,4 +1,6 @@
-export const setIsLoading = isLoading => ({
-  type: "SET_IS_LOADING",
-  isLoading
+export const setAppIsLoadingAction = isLoading => ({
+  type: "SET_APP_IS_LOADING",
+  payload: {
+    isLoading
+  }
 });
