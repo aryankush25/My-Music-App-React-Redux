@@ -4,9 +4,11 @@ import ShowLoadingComponent from "../ShowLoadingComponent";
 import fetchUsersCollections from "../../services/firebaseFirestore/fetchUsersCollections";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import { connect } from "react-redux";
-import { setUsers } from "../../redux/actions/actionUsers";
-import { setCurrentUsersNumber } from "../../redux/actions/actionUsers";
-import { setUsersIsLoading } from "../../redux/actions/actionUsers";
+import {
+  setUsersAction,
+  setCurrentUsersNumberAction,
+  setUsersIsLoadingAction
+} from "../../redux/actions/actionUsers";
 
 class UsersData extends React.Component {
   constructor(props) {
@@ -83,8 +85,8 @@ class Users extends React.Component {
         i++;
       });
 
-      this.props.setUsers(userArray);
-      this.props.setUsersIsLoading(false);
+      this.props.setUsersAction(userArray);
+      this.props.setUsersIsLoadingAction(false);
     });
   };
 
@@ -95,7 +97,7 @@ class Users extends React.Component {
           <UsersData
             userArray={this.props.userArray}
             currentUserId={this.currentUserId}
-            setUserNumber={this.props.setCurrentUsersNumber}
+            setUserNumber={this.props.setCurrentUsersNumberAction}
             handleClickedUser={this.props.handleClickedUser}
           />
         </div>
@@ -112,10 +114,11 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUsers: userArray => dispatch(setUsers(userArray)),
-    setCurrentUsersNumber: userNumber =>
-      dispatch(setCurrentUsersNumber(userNumber)),
-    setUsersIsLoading: isLoading => dispatch(setUsersIsLoading(isLoading))
+    setUsersAction: userArray => dispatch(setUsersAction(userArray)),
+    setCurrentUsersNumberAction: userNumber =>
+      dispatch(setCurrentUsersNumberAction(userNumber)),
+    setUsersIsLoadingAction: isLoading =>
+      dispatch(setUsersIsLoadingAction(isLoading))
   };
 };
 

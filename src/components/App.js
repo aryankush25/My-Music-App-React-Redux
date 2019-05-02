@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { setAppIsLoadingAction } from "../redux/actions/actionIsLoading";
 import firebase from "firebase/app";
 import "firebase/auth";
+import ShowLoadingComponent from "../components/ShowLoadingComponent/index";
 
 class App extends Component {
   componentDidMount() {
@@ -22,19 +23,12 @@ class App extends Component {
   }
 
   render() {
-    if (this.props.appIsLoading === true) {
-      return (
-        <div className="d-flex justify-content-center spinner-body">
-          <div className="spinner-border" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
-        </div>
-      );
-    }
     return (
-      <div className="main-container">
-        <Routes />
-      </div>
+      <ShowLoadingComponent isLoading={this.props.appIsLoading}>
+        <div className="main-container">
+          <Routes />
+        </div>
+      </ShowLoadingComponent>
     );
   }
 }
