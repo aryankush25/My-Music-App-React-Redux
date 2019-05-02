@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Routes from "../routes";
 import { connect } from "react-redux";
-import { setAppIsLoadingAction } from "../redux/actions/actionIsLoading";
+import { setAppIsLoadingAction } from "../redux/actions/actionApp";
 import firebase from "firebase/app";
 import "firebase/auth";
 import ShowLoadingComponent from "../components/ShowLoadingComponent/index";
