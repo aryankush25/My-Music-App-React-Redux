@@ -178,25 +178,25 @@ class SingleSongCard extends React.Component {
 }
 
 class SongsCard extends React.Component {
-  componentDidMount() {
-    var songsTempArrayUrl = [];
-    this.props.songsArray.forEach(doc => {
-      songsTempArrayUrl.push(doc.url);
-    });
-    this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
-  }
+  // componentDidMount() {
+  //   var songsTempArrayUrl = [];
+  //   this.props.songsArray.forEach(doc => {
+  //     songsTempArrayUrl.push(doc.url);
+  //   });
+  //   this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
+  // }
 
-  shouldComponentUpdate(nextprops) {
-    if (nextprops.songsArray !== this.props.songsArray) {
-      var songsTempArrayUrl = [];
-      nextprops.songsArray.forEach(doc => {
-        songsTempArrayUrl.push(doc.url);
-      });
-      nextprops.handleArrayUpdate(nextprops.songsArray, songsTempArrayUrl);
-      return true;
-    }
-    return false;
-  }
+  // shouldComponentUpdate(nextprops) {
+  //   if (nextprops.songsArray !== this.props.songsArray) {
+  //     var songsTempArrayUrl = [];
+  //     nextprops.songsArray.forEach(doc => {
+  //       songsTempArrayUrl.push(doc.url);
+  //     });
+  //     nextprops.handleArrayUpdate(nextprops.songsArray, songsTempArrayUrl);
+  //     return true;
+  //   }
+  //   return false;
+  // }
 
   handleSongDelete = async index => {
     var playlistObject = this.props.userObject.userData.playlists[
@@ -318,9 +318,10 @@ class SongsCard extends React.Component {
   };
 
   render() {
+    console.log(this.props);
     return (
       <div className="middle-songs-container">
-        <div className="songs-header-row">
+        {/* <div className="songs-header-row">
           <div className="current-address">
             <p>
               {this.props.userObject.userData.userName} >{" "}
@@ -341,7 +342,7 @@ class SongsCard extends React.Component {
             }
             handleLoadingStateChange={this.props.handleLoadingStateChange}
           />
-        </div>
+        </div> */}
         <div className="row songs-div">
           <SingleSongCard
             songsArray={this.props.songsArray}

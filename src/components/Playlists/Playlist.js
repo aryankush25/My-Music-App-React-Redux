@@ -1,41 +1,23 @@
 import React from "react";
 import "./style.scss";
-import firebase from "firebase/app";
-import "firebase/auth";
 import EditPlaylist from "./EditPlaylist";
+import { connect } from "react-redux";
+import { setCurrentPlaylistNumberAction } from "../../redux/actions/actionPlaylist";
 
 class Playlist extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectePlaylist: 0
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.playlistNumber !== nextProps.playlistNumber) {
-      this.setState({
-        selectePlaylist: 0
-      });
-    }
-  }
-
   handleOnClick = (playlist, index) => {
     this.props.handleSongsArray(playlist, index);
-    this.props.handlePlaylistNumber(index);
-    this.setState({
-      selectePlaylist: index
-    });
+    this.props.setCurrentPlaylistNumberAction(index);
   };
 
   render() {
-    return this.props.playlistsArray.map((playlist, index) => {
+    return this.props.playlistArray.map((playlist, index) => {
       return (
         <div
           key={index}
           className={
             "playlist-element " +
-            (this.state.selectePlaylist === index ? "selected-playlist" : "")
+            (this.props.playlistNumber === index ? "selected-playlist" : "")
           }
         >
           <div
@@ -48,8 +30,7 @@ class Playlist extends React.Component {
           </div>
           <EditPlaylist
             showDisableBtn={
-              this.props.userObject.userData.uId !==
-              firebase.auth().currentUser.uid
+              this.props.userObject.userData.uId !== this.props.appCurrentUser
             }
             index={index}
             handleDeletePlaylist={() => this.props.handleDeletePlaylist(index)}
@@ -61,4 +42,27 @@ class Playlist extends React.Component {
   }
 }
 
-export default Playlist;
+const mapStateToProps = state => {
+  const { playlistArray, playlistNumber } = state.playlist;
+  const { appCurrentUser } = state.app;
+  const userObject = state.users.userArray[state.users.userNumber];
+
+  return {
+    playlistArray,
+    playlistNumber,
+    appCurrentUser,
+    userObject
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentPlaylistNumberAction: userNumber =>
+      dispatch(setCurrentPlaylistNumberAction(userNumber))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Playlist);

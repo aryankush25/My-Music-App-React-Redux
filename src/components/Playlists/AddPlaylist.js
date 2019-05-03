@@ -25,16 +25,12 @@ class AddPlaylist extends React.Component {
       playlistName: this.playlistName
     });
 
-    this.props.handleLoadingStateChange(true);
-
     try {
       await updatePlaylist(this.props.userObject.userId, userObject.playlists);
       console.log("Document successfully written!");
     } catch (error) {
       console.error("Error writing document: ", error);
     }
-
-    this.props.handleLoadingStateChange(false);
   };
 
   render() {

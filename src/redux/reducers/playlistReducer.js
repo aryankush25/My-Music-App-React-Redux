@@ -10,18 +10,18 @@ let defaultState = {
   isLoading: true
 };
 
-const users = (state = defaultState, action) => {
+const playlist = (state = defaultState, action) => {
   switch (action.type) {
     case SET_PLAYLIST_ARRAY:
       return {
         ...state,
-        userArray: action.payload.playlistArray
+        playlistArray: action.payload.playlistArray
       };
 
     case SET_CURRENT_PLAYLIST_NUMBER:
       return {
         ...state,
-        userNumber: action.payload.playlistNumber
+        playlistNumber: action.payload.playlistNumber
       };
 
     case SET_PLAYLIST_IS_LOADING:
@@ -35,4 +35,4 @@ const users = (state = defaultState, action) => {
   }
 };
 
-export default users;
+export default playlist;

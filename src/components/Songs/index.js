@@ -2,37 +2,31 @@ import React from "react";
 import SongsCard from "./SongCard";
 import "./style.scss";
 import ShowLoadingComponent from "../ShowLoadingComponent";
+import { connect } from "react-redux";
 
 class Songs extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isLoading: false
-    };
-  }
-
-  handleLoadingStateChange = isLoading => {
-    this.setState({
-      isLoading: isLoading
-    });
-  };
-
   render() {
     return (
-      <ShowLoadingComponent isLoading={this.state.isLoading}>
+      <ShowLoadingComponent isLoading={this.props.isLoadingSong}>
         <SongsCard
           userObject={this.props.userObject}
           songsArray={this.props.songsArray}
           index={this.props.index}
           userId={this.props.userId}
-          handleSongClick={this.props.handleSongClick}
-          handleArrayUpdate={this.props.handleArrayUpdate}
-          handleLoadingStateChange={this.handleLoadingStateChange}
         />
       </ShowLoadingComponent>
     );
   }
 }
 
-export default Songs;
+const mapStateToProps = state => {
+  const { isLoading: isLoadingSong, songArray: songsArray } = state.song;
+  const userObject = state.users.userArray[state.users.userNumber];
+
+  return { isLoadingSong, userObject, songsArray };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Songs);

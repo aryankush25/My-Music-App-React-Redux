@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import Routes from "../routes";
 import { connect } from "react-redux";
-import { setAppIsLoadingAction } from "../redux/actions/actionApp";
+import {
+  setAppIsLoadingAction,
+  setAppCurrentUserAction
+} from "../redux/actions/actionApp";
 import firebase from "firebase/app";
 import "firebase/auth";
 import ShowLoadingComponent from "../components/ShowLoadingComponent/index";
@@ -15,6 +18,7 @@ class App extends Component {
       );
       if (user && musicAppSiginingIn !== "true") {
         window.localStorage.setItem("musicAppSignedIn", true);
+        this.props.setAppCurrentUserAction(user.uid);
       } else {
         window.localStorage.setItem("musicAppSignedIn", false);
       }
@@ -41,7 +45,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     setAppIsLoadingAction: isLoading =>
-      dispatch(setAppIsLoadingAction(isLoading))
+      dispatch(setAppIsLoadingAction(isLoading)),
+    setAppCurrentUserAction: currentUser =>
+      dispatch(setAppCurrentUserAction(currentUser))
   };
 };
 

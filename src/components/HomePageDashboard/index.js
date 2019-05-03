@@ -5,29 +5,48 @@ import Songs from "../Songs/";
 import Users from "../Users/";
 import ShowLoadingComponent from "../ShowLoadingComponent";
 import "./style.scss";
+import fetchUsersCollections from "../../services/firebaseFirestore/fetchUsersCollections";
+import { connect } from "react-redux";
+import {
+  setUsersAction,
+  setUsersIsLoadingAction
+} from "../../redux/actions/actionUsers";
+import {
+  setPlaylistAction,
+  setPlaylistIsLoadingAction
+} from "../../redux/actions/actionPlaylist";
+import {
+  setSongAction,
+  setSongIsLoadingAction
+} from "../../redux/actions/actionSongs";
 
 class HomePageDashboard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      clickedUserObject: [],
-      isLoading: true,
-      songsArray: [],
-      index: 0
-    };
+  componentDidMount() {
+    this.fetchUsers();
   }
+  fetchUsers = async () => {
+    var userSnapshot = await fetchUsersCollections();
 
-  handleClickedUser = userObject => {
-    this.setState({
-      clickedUserObject: userObject,
-      isLoading: false
-    });
-  };
+    userSnapshot.onSnapshot(querySnapshot => {
+      var userArray = [];
+      var currentObj = {};
+      querySnapshot.forEach(user => {
+        var obj = { userData: user.data(), userId: user.id };
 
-  handleSongsArray = (songsArray, index) => {
-    this.setState({
-      songsArray: songsArray,
-      index: index
+        if (this.props.appCurrentUser === user.data().uId) {
+          currentObj = obj;
+        } else {
+          userArray.push(obj);
+        }
+      });
+      userArray.unshift(currentObj);
+
+      this.props.setUsersAction(userArray);
+      this.props.setUsersIsLoadingAction(false);
+      this.props.setPlaylistAction(userArray[0].userData.playlists);
+      this.props.setPlaylistIsLoadingAction(false);
+      this.props.setSongAction(userArray[0].userData.playlists[0].playlist);
+      this.props.setSongIsLoadingAction(false);
     });
   };
 
@@ -38,24 +57,14 @@ class HomePageDashboard extends React.Component {
           <div className="header-div-left">
             <p className="friends-logo">FRIENDS</p>
           </div>
-          <Users
-            userId={this.state.clickedUserObject.userId}
-            handleClickedUser={this.handleClickedUser}
-          />
+          <Users />
         </div>
 
         <div className="col-8 middle-col">
           <NavBar sound={this.props.sound} />
 
-          <ShowLoadingComponent isLoading={this.state.isLoading}>
-            <Songs
-              userObject={this.state.clickedUserObject}
-              songsArray={this.state.songsArray}
-              index={this.state.index}
-              userId={this.state.clickedUserObject.userId}
-              handleArrayUpdate={this.props.handleArrayUpdate}
-              handleSongClick={this.props.handleSongClick}
-            />
+          <ShowLoadingComponent isLoading={this.props.isLoadingSong}>
+            <Songs />
           </ShowLoadingComponent>
         </div>
 
@@ -63,11 +72,8 @@ class HomePageDashboard extends React.Component {
           <div className="header-div-right">
             <p className="playlist-logo">PLAYLISTS</p>
           </div>
-          <ShowLoadingComponent isLoading={this.state.isLoading}>
-            <Playlists
-              userObject={this.state.clickedUserObject}
-              handleSongsArray={this.handleSongsArray}
-            />
+          <ShowLoadingComponent isLoading={this.props.isLoadingPlaylist}>
+            <Playlists />
           </ShowLoadingComponent>
         </div>
       </div>
@@ -75,4 +81,35 @@ class HomePageDashboard extends React.Component {
   }
 }
 
-export default HomePageDashboard;
+const mapStateToProps = state => {
+  const { isLoading: isLoadingPlaylist } = state.playlist;
+  const { isLoading: isLoadingSong } = state.song;
+  const { appCurrentUser } = state.app;
+
+  return { isLoadingPlaylist, isLoadingSong, appCurrentUser };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setUsersAction: userArray => dispatch(setUsersAction(userArray)),
+
+    setUsersIsLoadingAction: isLoading =>
+      dispatch(setUsersIsLoadingAction(isLoading)),
+
+    setPlaylistAction: playlistArray =>
+      dispatch(setPlaylistAction(playlistArray)),
+
+    setPlaylistIsLoadingAction: isLoading =>
+      dispatch(setPlaylistIsLoadingAction(isLoading)),
+
+    setSongAction: songArray => dispatch(setSongAction(songArray)),
+
+    setSongIsLoadingAction: isLoading =>
+      dispatch(setSongIsLoadingAction(isLoading))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(HomePageDashboard);

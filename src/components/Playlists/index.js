@@ -4,59 +4,9 @@ import AddPlaylist from "./AddPlaylist";
 import Playlist from "./Playlist";
 import ShowLoadingComponent from "../ShowLoadingComponent";
 import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
-import currentUser from "../../services/firebaseAuth/currentUser";
+import { connect } from "react-redux";
 
 class Playlists extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      playlistNumber: 0
-    };
-  }
-
-  componentDidMount() {
-    this.props.handleSongsArray(
-      this.props.userObject.userData.playlists[this.state.playlistNumber]
-        .playlist,
-      this.state.playlistNumber
-    );
-    this.fetchCurrentUser();
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.isLoading !== nextState.isLoading) {
-      return true;
-    } else if (this.props.userObject.userId !== nextProps.userObject.userId) {
-      nextProps.handleSongsArray(
-        nextProps.userObject.userData.playlists[0].playlist,
-        0
-      );
-      this.setState({
-        playlistNumber: 0
-      });
-      return true;
-    } else if (this.props.userObject !== nextProps.userObject) {
-      nextProps.handleSongsArray(
-        nextProps.userObject.userData.playlists[this.state.playlistNumber]
-          .playlist,
-        this.state.playlistNumber
-      );
-      return true;
-    }
-    return false;
-  }
-
-  currentUser = "";
-
-  fetchCurrentUser = async () => {
-    this.handleLoadingStateChange(true);
-
-    this.currentUser = await currentUser().uid;
-
-    this.handleLoadingStateChange(false);
-  };
-
   handleEditPlaylist = async (index, newPlaylistName) => {
     var userObject = this.props.userObject.userData.playlists;
     var newPlaylists = [];
@@ -66,7 +16,6 @@ class Playlists extends React.Component {
         newPlaylists[i].playlistName = newPlaylistName;
       }
     }
-    this.handleLoadingStateChange(true);
 
     try {
       await updatePlaylist(this.props.userObject.userId, newPlaylists);
@@ -74,8 +23,6 @@ class Playlists extends React.Component {
     } catch (error) {
       console.error("Error writing document: ", error);
     }
-
-    this.handleLoadingStateChange(false);
   };
 
   handleDeletePlaylist = async index => {
@@ -86,7 +33,6 @@ class Playlists extends React.Component {
         newPlaylists.push(userObject[i]);
       }
     }
-    this.handleLoadingStateChange(true);
 
     try {
       await updatePlaylist(this.props.userObject.userId, newPlaylists);
@@ -94,43 +40,25 @@ class Playlists extends React.Component {
     } catch (error) {
       console.error("Error writing document: ", error);
     }
-
-    this.handleLoadingStateChange(false);
-  };
-
-  handlePlaylistNumber = index => {
-    this.setState({
-      playlistNumber: index
-    });
-  };
-
-  handleLoadingStateChange = isLoading => {
-    this.setState({
-      isLoading: isLoading
-    });
   };
 
   render() {
+    console.log(this.props);
     return (
-      <ShowLoadingComponent isLoading={this.state.isLoading}>
+      <ShowLoadingComponent isLoading={this.props.isLoadingPlaylist}>
         <div className="small-div-right">
           <div className="playlists-container">
             <Playlist
-              userObject={this.props.userObject}
-              playlistsArray={this.props.userObject.userData.playlists}
-              playlistNumber={this.state.playlistNumber}
               handleSongsArray={this.props.handleSongsArray}
               handleDeletePlaylist={this.handleDeletePlaylist}
               handleEditPlaylist={this.handleEditPlaylist}
-              handlePlaylistNumber={this.handlePlaylistNumber}
             />
           </div>
           <AddPlaylist
             showDisableBtn={
-              this.props.userObject.userData.uId !== this.currentUser
+              this.props.userObject.userData.uId !== this.props.appCurrentUser
             }
             userObject={this.props.userObject}
-            handleLoadingStateChange={this.handleLoadingStateChange}
           />
         </div>
       </ShowLoadingComponent>
@@ -138,4 +66,19 @@ class Playlists extends React.Component {
   }
 }
 
-export default Playlists;
+const mapStateToProps = state => {
+  const { isLoading: isLoadingPlaylist } = state.playlist;
+  const { appCurrentUser } = state.app;
+  const userObject = state.users.userArray[state.users.userNumber];
+
+  return {
+    isLoadingPlaylist,
+    appCurrentUser,
+    userObject
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Playlists);
