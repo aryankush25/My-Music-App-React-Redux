@@ -7,6 +7,10 @@ import {
   setPlaylistAction,
   setCurrentPlaylistNumberAction
 } from "../../redux/actions/actionPlaylist";
+import {
+  setSongAction,
+  setCurrentSongNumberAction
+} from "../../redux/actions/actionSongs";
 
 class UsersData extends React.Component {
   constructor(props) {
@@ -22,6 +26,10 @@ class UsersData extends React.Component {
       this.props.userArray[index].userData.playlists
     );
     this.props.setCurrentPlaylistNumberAction(0);
+    this.props.setSongAction(
+      this.props.userArray[index].userData.playlists[0].playlist
+    );
+    this.props.setCurrentSongNumberAction(0);
     this.setState({
       selectedUser: index
     });
@@ -57,7 +65,7 @@ class UsersData extends React.Component {
 class Users extends React.Component {
   render() {
     return (
-      <ShowLoadingComponent isLoading={this.props.isLoading}>
+      <ShowLoadingComponent isLoading={this.props.isLoadingUsers}>
         <div className="small-div-left">
           <UsersData
             userArray={this.props.userArray}
@@ -67,6 +75,8 @@ class Users extends React.Component {
             setCurrentPlaylistNumberAction={
               this.props.setCurrentPlaylistNumberAction
             }
+            setSongAction={this.props.setSongAction}
+            setCurrentSongNumberAction={this.props.setCurrentSongNumberAction}
           />
         </div>
       </ShowLoadingComponent>
@@ -75,9 +85,9 @@ class Users extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { userArray, userNumber, isLoading } = state.users;
+  const { userArray, userNumber, isLoading: isLoadingUsers } = state.users;
   const { appCurrentUser } = state.app;
-  return { userArray, userNumber, isLoading, appCurrentUser };
+  return { userArray, userNumber, isLoadingUsers, appCurrentUser };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -86,8 +96,14 @@ const mapDispatchToProps = dispatch => {
       dispatch(setCurrentUsersNumberAction(userNumber)),
 
     setPlaylistAction: userArray => dispatch(setPlaylistAction(userArray)),
+
     setCurrentPlaylistNumberAction: playlistNumber =>
-      dispatch(setCurrentPlaylistNumberAction(playlistNumber))
+      dispatch(setCurrentPlaylistNumberAction(playlistNumber)),
+
+    setSongAction: songsArray => dispatch(setSongAction(songsArray)),
+
+    setCurrentSongNumberAction: songNumber =>
+      dispatch(setCurrentSongNumberAction(songNumber))
   };
 };
 
