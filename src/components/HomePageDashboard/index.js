@@ -43,9 +43,15 @@ class HomePageDashboard extends React.Component {
 
       this.props.setUsersAction(userArray);
       this.props.setUsersIsLoadingAction(false);
-      this.props.setPlaylistAction(userArray[0].userData.playlists);
+      this.props.setPlaylistAction(
+        userArray[this.props.userNumber].userData.playlists
+      );
       this.props.setPlaylistIsLoadingAction(false);
-      this.props.setSongAction(userArray[0].userData.playlists[0].playlist);
+      this.props.setSongAction(
+        userArray[this.props.userNumber].userData.playlists[
+          this.props.playlistNumber
+        ].playlist
+      );
       this.props.setSongIsLoadingAction(false);
     });
   };
@@ -86,7 +92,18 @@ const mapStateToProps = state => {
   const { isLoading: isLoadingSong } = state.song;
   const { appCurrentUser } = state.app;
 
-  return { isLoadingPlaylist, isLoadingSong, appCurrentUser };
+  const { playlistNumber } = state.playlist;
+  const { userNumber } = state.users;
+
+  // console.log(playlistNumber, userNumber);
+
+  return {
+    isLoadingPlaylist,
+    isLoadingSong,
+    appCurrentUser,
+    playlistNumber,
+    userNumber
+  };
 };
 
 const mapDispatchToProps = dispatch => {

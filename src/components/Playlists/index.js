@@ -5,6 +5,7 @@ import Playlist from "./Playlist";
 import ShowLoadingComponent from "../ShowLoadingComponent";
 import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
 import { connect } from "react-redux";
+import { setCurrentPlaylistNumberAction } from "../../redux/actions/actionPlaylist";
 
 class Playlists extends React.Component {
   handleEditPlaylist = async (index, newPlaylistName) => {
@@ -35,6 +36,7 @@ class Playlists extends React.Component {
     }
 
     try {
+      this.props.setCurrentPlaylistNumberAction(0);
       await updatePlaylist(this.props.userObject.userId, newPlaylists);
       console.log("Document successfully written!");
     } catch (error) {
@@ -43,7 +45,6 @@ class Playlists extends React.Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <ShowLoadingComponent isLoading={this.props.isLoadingPlaylist}>
         <div className="small-div-right">
@@ -78,7 +79,14 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentPlaylistNumberAction: playlistNumber =>
+      dispatch(setCurrentPlaylistNumberAction(playlistNumber))
+  };
+};
+
 export default connect(
   mapStateToProps,
-  null
+  mapDispatchToProps
 )(Playlists);

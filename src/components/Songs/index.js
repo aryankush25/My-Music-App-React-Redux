@@ -71,7 +71,6 @@ class Songs extends React.Component {
     var newPlaylistObject = this.props.userObject.userData.playlists;
     newPlaylistObject[this.props.playlistNumber].playlist = playlistObject;
 
-    console.log(newPlaylistObject);
     try {
       await updatePlaylist(this.props.userId, newPlaylistObject);
       console.log("Document successfully written!");

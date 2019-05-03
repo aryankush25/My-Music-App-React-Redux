@@ -1,13 +1,19 @@
 import {
   SET_SONG_ARRAY,
   SET_CURRENT_SONG_NUMBER,
-  SET_SONG_IS_LOADING
+  SET_SONG_IS_LOADING,
+  SET_SONG_IS_PLAYING,
+  SET_SONG_CURRENT_DURATION,
+  SET_IS_NEW_SONG
 } from "../../utils/constantKeywords/actionsReducersConstants";
 
 let defaultState = {
   songArray: [],
   songNumber: 0,
-  isLoading: true
+  isLoading: true,
+  isPlaying: false,
+  currentSongDuration: 0,
+  isNewSong: true
 };
 
 const song = (state = defaultState, action) => {
@@ -30,6 +36,21 @@ const song = (state = defaultState, action) => {
         isLoading: action.payload.isLoading
       };
 
+    case SET_SONG_IS_PLAYING:
+      return {
+        ...state,
+        isPlaying: action.payload.isPlaying
+      };
+    case SET_SONG_CURRENT_DURATION:
+      return {
+        ...state,
+        currentSongDuration: action.payload.currentSongDuration
+      };
+    case SET_IS_NEW_SONG:
+      return {
+        ...state,
+        isNewSong: action.payload.isNewSong
+      };
     default:
       return state;
   }
