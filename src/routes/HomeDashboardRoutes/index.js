@@ -18,83 +18,79 @@ import {
 class Home extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      isPlaying: false,
-      currentDuration: 0,
-      songNumber: 0,
-      songArray: []
+      currentSongDuration: 0
     };
   }
+  updateSongDuration = (reset = false, value = 0) => {
+    if (reset) {
+      this.setState({
+        currentSongDuration: 0
+      });
+    } else {
+      this.setState({
+        currentSongDuration: value ? value : this.state.currentSongDuration++
+      });
+    }
+  };
+  componentDidUpdate(prevProps) {
+    console.log("previous props", prevProps.isPlaying);
+    console.log("this props", this.props.isPlaying);
+    // if (prevProps.isNewSong !== this.props.isNewSong && this.props.isNewSong) {
+    //   console.log("asdasdasdas", this.props);
+    //   console.log("asdasdasdas **** ", prevProps);
+    //   this.handlePlayAudio();
+    // }
 
-  // componentDidUpdate(prevProps) {
-  //   const {
-  //     songArray,
-  //     songNumber,
-  //     isPlaying,
-  //     currentSongDuration,
-  //     isNewSong
-  //   } = this.props;
-
-  //   console.log("nextProps");
-  //   console.log({
-  //     songArray,
-  //     songNumber,
-  //     isPlaying,
-  //     currentSongDuration,
-  //     isNewSong
-  //   });
-
-  //   const {
-  //     songArray: songArrayPrev,
-  //     songNumber: songNumberPrev,
-  //     isPlaying: isPlayingPrev,
-  //     currentSongDuration: currentSongDurationPrev,
-  //     isNewSong: isNewSongPrev
-  //   } = prevProps;
-
-  //   console.log("prevProps");
-  //   console.log({
-  //     songArrayPrev,
-  //     songNumberPrev,
-  //     isPlayingPrev,
-  //     currentSongDurationPrev,
-  //     isNewSongPrev
-  //   });
-  // }
+    if (prevProps.isPlaying === false && this.props.isPlaying === true) {
+      console.log("Play Audio");
+      if (this.props.isNewSong === true) {
+        this.sound = new Howl({
+          src: [this.props.songArray[this.props.songNumber].url],
+          html5: true
+        });
+        this.props.setIsNewSong(false);
+      }
+      this.intervalID = setInterval(this.handleSongTimer, 1000);
+      this.sound.play();
+    }
+  }
 
   sound = {};
   intervalID = 0;
+
+  handleSongTimer = () => {
+    if (Math.round(this.sound._duration) === this.props.currentSongDuration) {
+      this.handlePlayNext();
+    } else {
+      this.props.setSongCurrentDurationAction(
+        this.props.currentSongDuration + 1
+      );
+    }
+  };
 
   handleStop = () => {
     this.sound.stop();
     clearInterval(this.intervalID);
     this.props.setIsNewSong(true);
     this.props.setSongIsPlayingAction(false);
-    this.props.setSongCurrentDurationAction(0);
+    // this.props.setSongCurrentDurationAction(0);
+    this.updateSongDuration(true);
   };
 
   handlePlayAudio = () => {
-    console.log("isNewSong ", this.props.isNewSong);
-    if (this.props.isNewSong === true) {
-      this.sound = new Howl({
-        src: [this.props.songArray[this.props.songNumber].url],
-        html5: true
-      });
-      this.props.setIsNewSong(false);
-    }
+    // console.log("isNewSong ", this.props.isNewSong);
+    // if (this.props.isNewSong === true) {
+    //   this.sound = new Howl({
+    //     src: [this.props.songArray[this.props.songNumber].url],
+    //     html5: true
+    //   });
+    //   this.props.setIsNewSong(false);
+    // }
 
-    this.intervalID = setInterval(() => {
-      if (Math.round(this.sound._duration) === this.props.currentSongDuration) {
-        this.handlePlayNext();
-      } else {
-        this.props.setSongCurrentDurationAction(
-          this.props.currentSongDuration + 1
-        );
-      }
-    }, 1000);
+    // this.intervalID = setInterval(this.handleSongTimer, 1000);
     this.props.setSongIsPlayingAction(true);
-    this.sound.play();
+    // this.sound.play();
   };
 
   handlePauseAudio = () => {
@@ -147,6 +143,21 @@ class Home extends React.Component {
   };
 
   render() {
+    const {
+      songArray,
+      songNumber,
+      isPlaying,
+      currentSongDuration,
+      isNewSong
+    } = this.props;
+    console.log({
+      songArray,
+      songNumber,
+      isPlaying,
+      currentSongDuration,
+      isNewSong
+    });
+
     return (
       <div className="home-container">
         <div className="home-page-div">
@@ -158,6 +169,9 @@ class Home extends React.Component {
           {/* Music Bar Div That Contains the music bar elements */}
 
           <div className="music-bar">
+            {/* <div>
+              <p>{this.props.songArray[this.props.songNumber]}</p>
+            </div> */}
             <MusicBarButtons
               isPlaying={this.props.isPlaying}
               playPrevious={this.handlePlayPrevious}
