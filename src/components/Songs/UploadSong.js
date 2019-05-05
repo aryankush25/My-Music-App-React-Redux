@@ -83,17 +83,16 @@ class UploadSong extends React.Component {
       const uploadTask = uploadSong(this.selectedFile);
       uploadTask.on(
         "state_changed",
-        () => {
-          this.props.handleLoadingStateChange(true);
+        task => {
+          console.log(task);
         },
         error => {
-          this.props.handleLoadingStateChange(false);
           console.log(error);
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(async url => {
             var userObject = this.props.userObject.userData;
-            userObject.playlists[this.props.index].playlist.push({
+            userObject.playlists[this.props.playlistNumber].playlist.push({
               name: songName,
               url: url,
               genre: songGenre,
@@ -108,8 +107,6 @@ class UploadSong extends React.Component {
             } catch (error) {
               console.error("Error writing document: ", error);
             }
-
-            this.props.handleLoadingStateChange(false);
           });
         }
       );

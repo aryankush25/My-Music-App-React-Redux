@@ -5,85 +5,102 @@ import MusicSeekBar from "../../components/MusicBarComponents/MusicSeekBar";
 import MusicVolumeBar from "../../components/MusicBarComponents/MusicVolumeBar";
 import MusicBarButtons from "../../components/MusicBarComponents/MusicBarButtons";
 import "./style.scss";
+import { connect } from "react-redux";
+import {
+  setSongAction,
+  setCurrentSongNumberAction,
+  setSongIsLoadingAction,
+  setSongIsPlayingAction,
+  setSongCurrentDurationAction,
+  setIsNewSong
+} from "../../redux/actions/actionSongs";
 
 class Home extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      isPlaying: false,
-      currentDuration: 0,
-      currentIndex: 0,
-      songsUrlArray: []
+      currentSongDuration: 0
     };
+  }
+  updateSongDuration = (reset = false, value = 0) => {
+    if (reset) {
+      this.setState({
+        currentSongDuration: 0
+      });
+    } else {
+      this.setState({
+        currentSongDuration: value ? value : this.state.currentSongDuration++
+      });
+    }
+  };
+  componentDidUpdate(prevProps) {
+    console.log("previous props", prevProps.isPlaying);
+    console.log("this props", this.props.isPlaying);
+    // if (prevProps.isNewSong !== this.props.isNewSong && this.props.isNewSong) {
+    //   console.log("asdasdasdas", this.props);
+    //   console.log("asdasdasdas **** ", prevProps);
+    //   this.handlePlayAudio();
+    // }
+
+    if (prevProps.isPlaying === false && this.props.isPlaying === true) {
+      console.log("Play Audio");
+      if (this.props.isNewSong === true) {
+        this.sound = new Howl({
+          src: [this.props.songArray[this.props.songNumber].url],
+          html5: true
+        });
+        this.props.setIsNewSong(false);
+      }
+      this.intervalID = setInterval(this.handleSongTimer, 1000);
+      this.sound.play();
+    }
   }
 
   sound = {};
   intervalID = 0;
 
-  handleArrayUpdate = (songsArrayUpdated, songsUrlArray) => {
-    if (this.state.isPlaying === true) {
-      this.handleStop();
+  handleSongTimer = () => {
+    if (Math.round(this.sound._duration) === this.props.currentSongDuration) {
+      this.handlePlayNext();
+    } else {
+      this.props.setSongCurrentDurationAction(
+        this.props.currentSongDuration + 1
+      );
     }
-
-    this.setState({
-      songsUrlArray: songsUrlArray
-    });
-
-    this.sound = new Howl({
-      src: [songsUrlArray[this.state.currentIndex]],
-      html5: true
-    });
   };
 
   handleStop = () => {
     this.sound.stop();
     clearInterval(this.intervalID);
-    this.setState({
-      isPlaying: false,
-      currentDuration: 0
-    });
-  };
-
-  handleSongClick = index => {
-    if (this.state.isPlaying === true) this.handleStop();
-    this.setState({
-      currentIndex: index
-    });
-    this.sound = new Howl({
-      src: [this.state.songsUrlArray[index]],
-      html5: true
-    });
-    this.handlePlayAudio();
+    this.props.setIsNewSong(true);
+    this.props.setSongIsPlayingAction(false);
+    // this.props.setSongCurrentDurationAction(0);
+    this.updateSongDuration(true);
   };
 
   handlePlayAudio = () => {
-    this.intervalID = setInterval(() => {
-      if (Math.round(this.sound._duration) === this.state.currentDuration) {
-        this.handleStop();
-        this.handlePlayNext();
-      } else {
-        this.setState({
-          currentDuration: this.state.currentDuration + 1
-        });
-      }
-    }, 1000);
-    this.sound.play();
-    this.setState({
-      isPlaying: true
-    });
+    // console.log("isNewSong ", this.props.isNewSong);
+    // if (this.props.isNewSong === true) {
+    //   this.sound = new Howl({
+    //     src: [this.props.songArray[this.props.songNumber].url],
+    //     html5: true
+    //   });
+    //   this.props.setIsNewSong(false);
+    // }
+
+    // this.intervalID = setInterval(this.handleSongTimer, 1000);
+    this.props.setSongIsPlayingAction(true);
+    // this.sound.play();
   };
 
   handlePauseAudio = () => {
     this.sound.pause();
     clearInterval(this.intervalID);
-    this.setState({
-      isPlaying: false
-    });
+    this.props.setSongIsPlayingAction(false);
   };
 
   handlePlayPauseAudio = () => {
-    if (this.state.isPlaying === true) {
+    if (this.props.isPlaying === true) {
       this.handlePauseAudio();
     } else {
       this.handlePlayAudio();
@@ -92,46 +109,33 @@ class Home extends React.Component {
 
   handlePlayNext = () => {
     this.handleStop();
-    var currentIndex = 0;
-    if (this.state.songsUrlArray.length - 1 > this.state.currentIndex) {
-      currentIndex = this.state.currentIndex + 1;
+    var songNumber = 0;
+    if (this.props.songArray.length - 1 > this.props.songNumber) {
+      songNumber = this.props.songNumber + 1;
     } else {
-      currentIndex = 0;
+      songNumber = 0;
     }
-    this.setState({
-      currentIndex: currentIndex
-    });
-    this.sound = new Howl({
-      src: [this.state.songsUrlArray[currentIndex]],
-      html5: true
-    });
+    this.props.setCurrentSongNumberAction(songNumber);
+
     this.handlePlayAudio();
   };
 
   handlePlayPrevious = () => {
     this.handleStop();
-    var currentIndex = 0;
-    if (this.state.currentIndex > 0) {
-      currentIndex = this.state.currentIndex - 1;
+    var songNumber = 0;
+    if (this.props.songNumber > 0) {
+      songNumber = this.props.songNumber - 1;
     } else {
-      currentIndex = this.state.songsUrlArray.length - 1;
+      songNumber = this.props.songArray.length - 1;
     }
 
-    this.setState({
-      currentIndex: currentIndex
-    });
-    this.sound = new Howl({
-      src: [this.state.songsUrlArray[currentIndex]],
-      html5: true
-    });
+    this.props.setCurrentSongNumberAction(songNumber);
     this.handlePlayAudio();
   };
 
   handleAdjustSeek = value => {
     this.sound.seek(value);
-    this.setState({
-      currentDuration: value
-    });
+    this.props.setSongCurrentDurationAction(value);
   };
 
   handleAdjustAudio = value => {
@@ -139,27 +143,44 @@ class Home extends React.Component {
   };
 
   render() {
+    const {
+      songArray,
+      songNumber,
+      isPlaying,
+      currentSongDuration,
+      isNewSong
+    } = this.props;
+    console.log({
+      songArray,
+      songNumber,
+      isPlaying,
+      currentSongDuration,
+      isNewSong
+    });
+
     return (
       <div className="home-container">
         <div className="home-page-div">
           <HomePageDashboard
             sound={this.sound}
             handleArrayUpdate={this.handleArrayUpdate}
-            handleSongClick={this.handleSongClick}
           />
 
           {/* Music Bar Div That Contains the music bar elements */}
 
           <div className="music-bar">
+            {/* <div>
+              <p>{this.props.songArray[this.props.songNumber]}</p>
+            </div> */}
             <MusicBarButtons
-              isPlaying={this.state.isPlaying}
+              isPlaying={this.props.isPlaying}
               playPrevious={this.handlePlayPrevious}
               playPauseAudio={this.handlePlayPauseAudio}
               playNext={this.handlePlayNext}
             />
             <MusicSeekBar
               duration={this.sound._duration}
-              currentDuration={this.state.currentDuration}
+              currentDuration={this.props.currentSongDuration}
               adjustSeek={this.handleAdjustSeek}
             />
             <MusicVolumeBar
@@ -173,4 +194,38 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = state => {
+  const {
+    songArray,
+    songNumber,
+    isPlaying,
+    currentSongDuration,
+    isNewSong
+  } = state.song;
+  return { songArray, songNumber, isPlaying, currentSongDuration, isNewSong };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setSongAction: songsArray => dispatch(setSongAction(songsArray)),
+
+    setCurrentSongNumberAction: songNumber =>
+      dispatch(setCurrentSongNumberAction(songNumber)),
+
+    setSongIsLoadingAction: isLoading =>
+      dispatch(setSongIsLoadingAction(isLoading)),
+
+    setSongIsPlayingAction: isPlaying =>
+      dispatch(setSongIsPlayingAction(isPlaying)),
+
+    setSongCurrentDurationAction: currentSongDuration =>
+      dispatch(setSongCurrentDurationAction(currentSongDuration)),
+
+    setIsNewSong: isNewSong => dispatch(setIsNewSong(isNewSong))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

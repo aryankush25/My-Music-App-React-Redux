@@ -1,16 +1,12 @@
 import React from "react";
-import UploadSong from "./UploadSong";
 import EditButton from "./EditButton";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/storage";
 import "./style.scss";
-import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { connect } from "react-redux";
+import { setCurrentSongNumberAction } from "../../redux/actions/actionSongs";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -107,11 +103,17 @@ class LikeButton extends React.Component {
   }
 }
 
-class SingleSongCard extends React.Component {
+class SongCard extends React.Component {
   render() {
     return this.props.songsArray.map((song, index) => {
       return (
-        <div className="card song-div" key={index}>
+        <div
+          className={
+            "card song-div " +
+            (this.props.songNumber === index ? "selected-song" : "")
+          }
+          key={index}
+        >
           <SongImage songImage={song.imageUrl} songName={song.name} />
           <div className="card-body song-card-body">
             <p className="card-text">
@@ -145,7 +147,7 @@ class SingleSongCard extends React.Component {
               <button
                 className="btn btn-md btn-info"
                 onClick={() => {
-                  this.props.handleSongClick(index);
+                  this.props.setCurrentSongNumberAction(index);
                 }}
               >
                 Play
@@ -153,14 +155,14 @@ class SingleSongCard extends React.Component {
               <DeleteButton
                 showDisableBtn={
                   this.props.userObject.userData.uId !==
-                  firebase.auth().currentUser.uid
+                  this.props.currentUserId
                 }
                 handleSongDelete={() => this.props.handleSongDelete(index)}
               />
               <EditButton
                 showDisableBtn={
                   this.props.userObject.userData.uId !==
-                  firebase.auth().currentUser.uid
+                  this.props.currentUserId
                 }
                 songImage={song.imageUrl}
                 songName={song.name}
@@ -177,185 +179,21 @@ class SingleSongCard extends React.Component {
   }
 }
 
-class SongsCard extends React.Component {
-  componentDidMount() {
-    var songsTempArrayUrl = [];
-    this.props.songsArray.forEach(doc => {
-      songsTempArrayUrl.push(doc.url);
-    });
-    this.props.handleArrayUpdate(this.props.songsArray, songsTempArrayUrl);
-  }
+const mapStateToProps = state => {
+  const { songArray: songsArray, songNumber } = state.song;
+  const userObject = state.users.userArray[state.users.userNumber];
+  const currentUserId = state.app.appCurrentUser;
+  return { userObject, songsArray, currentUserId, songNumber };
+};
 
-  shouldComponentUpdate(nextprops) {
-    if (nextprops.songsArray !== this.props.songsArray) {
-      var songsTempArrayUrl = [];
-      nextprops.songsArray.forEach(doc => {
-        songsTempArrayUrl.push(doc.url);
-      });
-      nextprops.handleArrayUpdate(nextprops.songsArray, songsTempArrayUrl);
-      return true;
-    }
-    return false;
-  }
-
-  handleSongDelete = async index => {
-    var playlistObject = this.props.userObject.userData.playlists[
-      this.props.index
-    ].playlist;
-    var newSongs = [];
-
-    for (var i = 0; i < playlistObject.length; i++) {
-      if (i !== index) {
-        newSongs.push(playlistObject[i]);
-      }
-    }
-
-    var newPlaylistObject = this.props.userObject.userData.playlists;
-    newPlaylistObject[this.props.index].playlist = newSongs;
-
-    this.props.handleLoadingStateChange(true);
-
-    try {
-      await updatePlaylist(this.props.userId, newPlaylistObject);
-      console.log("Document successfully written!");
-    } catch (error) {
-      console.error("Error writing document: ", error);
-    }
-
-    this.props.handleLoadingStateChange(false);
+const mapDispatchToProps = dispatch => {
+  return {
+    setCurrentSongNumberAction: songNumber =>
+      dispatch(setCurrentSongNumberAction(songNumber))
   };
+};
 
-  handleSongEdit = async (index, name, imageUrl, genre, ratings) => {
-    var playlistObject = this.props.userObject.userData.playlists[
-      this.props.index
-    ].playlist;
-
-    if (genre !== "") playlistObject[index].genre = genre;
-
-    if (name !== "") playlistObject[index].name = name;
-
-    if (imageUrl !== "") playlistObject[index].imageUrl = imageUrl;
-
-    if (ratings !== "") playlistObject[index].ratings = ratings;
-
-    var newPlaylistObject = this.props.userObject.userData.playlists;
-    newPlaylistObject[this.props.index].playlist = playlistObject;
-
-    this.props.handleLoadingStateChange(true);
-
-    try {
-      await updatePlaylist(this.props.userId, newPlaylistObject);
-      console.log("Document successfully written!");
-    } catch (error) {
-      console.error("Error writing document: ", error);
-    }
-
-    this.props.handleLoadingStateChange(false);
-  };
-
-  handleSongLike = async index => {
-    var playlistObject = this.props.userObject.userData.playlists[
-      this.props.index
-    ].playlist;
-
-    var likeUsersArray = this.props.userObject.userData.playlists[
-      this.props.index
-    ].playlist[index].likedBy;
-
-    this.props.handleLoadingStateChange(true);
-
-    var currUser = await currentUser().uid;
-
-    likeUsersArray.push(currUser);
-
-    var newPlaylistObject = this.props.userObject.userData.playlists;
-    newPlaylistObject[this.props.index].playlist = playlistObject;
-
-    console.log(newPlaylistObject);
-    try {
-      await updatePlaylist(this.props.userId, newPlaylistObject);
-      console.log("Document successfully written!");
-    } catch (error) {
-      console.error("Error writing document: ", error);
-    }
-
-    this.props.handleLoadingStateChange(false);
-  };
-
-  handleSongUnLike = async index => {
-    var playlistObject = this.props.userObject.userData.playlists[
-      this.props.index
-    ].playlist;
-
-    var likeUsersArray = this.props.userObject.userData.playlists[
-      this.props.index
-    ].playlist[index].likedBy;
-
-    this.props.handleLoadingStateChange(true);
-
-    var currUser = await currentUser().uid;
-    var tempArr = [];
-    likeUsersArray.forEach(user => {
-      if (currUser !== user) {
-        tempArr.push(user);
-      }
-    });
-
-    playlistObject[index].likedBy = tempArr;
-
-    var newPlaylistObject = this.props.userObject.userData.playlists;
-    newPlaylistObject[this.props.index].playlist = playlistObject;
-
-    console.log(newPlaylistObject);
-    try {
-      await updatePlaylist(this.props.userId, newPlaylistObject);
-      console.log("Document successfully written!");
-    } catch (error) {
-      console.error("Error writing document: ", error);
-    }
-
-    this.props.handleLoadingStateChange(false);
-  };
-
-  render() {
-    return (
-      <div className="middle-songs-container">
-        <div className="songs-header-row">
-          <div className="current-address">
-            <p>
-              {this.props.userObject.userData.userName} >{" "}
-              {
-                this.props.userObject.userData.playlists[this.props.index]
-                  .playlistName
-              }
-            </p>
-          </div>
-          <UploadSong
-            userObject={this.props.userObject}
-            songsArray={this.props.songsArray}
-            index={this.props.index}
-            userId={this.props.userId}
-            showDisableBtn={
-              this.props.userObject.userData.uId !==
-              firebase.auth().currentUser.uid
-            }
-            handleLoadingStateChange={this.props.handleLoadingStateChange}
-          />
-        </div>
-        <div className="row songs-div">
-          <SingleSongCard
-            songsArray={this.props.songsArray}
-            userObject={this.props.userObject}
-            handleSongClick={this.props.handleSongClick}
-            handleSongDelete={this.handleSongDelete}
-            handleSongEdit={this.handleSongEdit}
-            handleSongLike={this.handleSongLike}
-            handleSongUnLike={this.handleSongUnLike}
-          />
-        </div>
-      </div>
-    );
-  }
-}
-
-export default SongsCard;
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SongCard);

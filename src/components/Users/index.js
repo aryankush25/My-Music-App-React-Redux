@@ -1,14 +1,16 @@
 import React from "react";
 import "./style.scss";
 import ShowLoadingComponent from "../ShowLoadingComponent";
-import fetchUsersCollections from "../../services/firebaseFirestore/fetchUsersCollections";
-import currentUser from "../../services/firebaseAuth/currentUser";
 import { connect } from "react-redux";
+import { setCurrentUsersNumberAction } from "../../redux/actions/actionUsers";
 import {
-  setUsersAction,
-  setCurrentUsersNumberAction,
-  setUsersIsLoadingAction
-} from "../../redux/actions/actionUsers";
+  setPlaylistAction,
+  setCurrentPlaylistNumberAction
+} from "../../redux/actions/actionPlaylist";
+import {
+  setSongAction,
+  setCurrentSongNumberAction
+} from "../../redux/actions/actionSongs";
 
 class UsersData extends React.Component {
   constructor(props) {
@@ -20,7 +22,14 @@ class UsersData extends React.Component {
 
   handleOnClick = (user, index) => {
     this.props.setUserNumber(index);
-    this.props.handleClickedUser(user);
+    this.props.setPlaylistAction(
+      this.props.userArray[index].userData.playlists
+    );
+    this.props.setCurrentPlaylistNumberAction(0);
+    this.props.setSongAction(
+      this.props.userArray[index].userData.playlists[0].playlist
+    );
+    this.props.setCurrentSongNumberAction(0);
     this.setState({
       selectedUser: index
     });
@@ -54,51 +63,20 @@ class UsersData extends React.Component {
 }
 
 class Users extends React.Component {
-  componentDidMount() {
-    this.fetchUsers();
-  }
-
-  currentUserId = "";
-
-  fetchUsers = async () => {
-    this.currentUserId = await currentUser().uid;
-    var userSnapshot = await fetchUsersCollections();
-
-    userSnapshot.onSnapshot(querySnapshot => {
-      var userArray = [];
-      var currentObj = {};
-      querySnapshot.forEach(user => {
-        var obj = { userData: user.data(), userId: user.id };
-
-        if (this.currentUserId === user.data().uId) {
-          currentObj = obj;
-        } else {
-          userArray.push(obj);
-        }
-      });
-      userArray.unshift(currentObj);
-      var i = 0;
-      userArray.forEach(user => {
-        if (this.props.userNumber === i) {
-          this.props.handleClickedUser(user);
-        }
-        i++;
-      });
-
-      this.props.setUsersAction(userArray);
-      this.props.setUsersIsLoadingAction(false);
-    });
-  };
-
   render() {
     return (
-      <ShowLoadingComponent isLoading={this.props.isLoading}>
+      <ShowLoadingComponent isLoading={this.props.isLoadingUsers}>
         <div className="small-div-left">
           <UsersData
             userArray={this.props.userArray}
-            currentUserId={this.currentUserId}
+            currentUserId={this.props.appCurrentUser}
             setUserNumber={this.props.setCurrentUsersNumberAction}
-            handleClickedUser={this.props.handleClickedUser}
+            setPlaylistAction={this.props.setPlaylistAction}
+            setCurrentPlaylistNumberAction={
+              this.props.setCurrentPlaylistNumberAction
+            }
+            setSongAction={this.props.setSongAction}
+            setCurrentSongNumberAction={this.props.setCurrentSongNumberAction}
           />
         </div>
       </ShowLoadingComponent>
@@ -107,18 +85,25 @@ class Users extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { userArray, userNumber, isLoading } = state.users;
-
-  return { userArray, userNumber, isLoading };
+  const { userArray, userNumber, isLoading: isLoadingUsers } = state.users;
+  const { appCurrentUser } = state.app;
+  return { userArray, userNumber, isLoadingUsers, appCurrentUser };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setUsersAction: userArray => dispatch(setUsersAction(userArray)),
     setCurrentUsersNumberAction: userNumber =>
       dispatch(setCurrentUsersNumberAction(userNumber)),
-    setUsersIsLoadingAction: isLoading =>
-      dispatch(setUsersIsLoadingAction(isLoading))
+
+    setPlaylistAction: userArray => dispatch(setPlaylistAction(userArray)),
+
+    setCurrentPlaylistNumberAction: playlistNumber =>
+      dispatch(setCurrentPlaylistNumberAction(playlistNumber)),
+
+    setSongAction: songsArray => dispatch(setSongAction(songsArray)),
+
+    setCurrentSongNumberAction: songNumber =>
+      dispatch(setCurrentSongNumberAction(songNumber))
   };
 };
 
