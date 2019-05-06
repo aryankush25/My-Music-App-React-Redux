@@ -13,7 +13,8 @@ import {
   setSongIsPlayingAction,
   setSongCurrentDurationAction,
   setIsNewSongAction,
-  setSongAndPlayAction
+  setSongAndPlayAction,
+  setSongStop
 } from "../../redux/actions/actionSongs";
 
 class Home extends React.Component {
@@ -30,6 +31,17 @@ class Home extends React.Component {
         if (obj.hasOwnProperty(prop)) return false;
       }
       return true;
+    }
+
+    if (this.props.stopSong === true) {
+      if (!isEmpty(this.sound)) {
+        this.sound.stop();
+        clearInterval(this.intervalID);
+        this.props.setSongIsPlayingAction(false);
+        this.props.setIsNewSongAction(true);
+        this.props.setSongCurrentDurationAction(0);
+        this.props.setSongStop(false);
+      }
     }
 
     if (prevProps.isNewSong && this.props.isNewSong === true) {
@@ -165,10 +177,7 @@ class Home extends React.Component {
     return (
       <div className="home-container">
         <div className="home-page-div">
-          <HomePageDashboard
-            sound={this.sound}
-            handleArrayUpdate={this.handleArrayUpdate}
-          />
+          <HomePageDashboard />
 
           {/* Music Bar Div That Contains the music bar elements */}
 
@@ -225,7 +234,9 @@ const mapDispatchToProps = dispatch => {
     setIsNewSongAction: isNewSong => dispatch(setIsNewSongAction(isNewSong)),
 
     setSongAndPlayAction: songNumber =>
-      dispatch(setSongAndPlayAction(songNumber))
+      dispatch(setSongAndPlayAction(songNumber)),
+
+    setSongStop: stopSong => dispatch(setSongStop(stopSong))
   };
 };
 

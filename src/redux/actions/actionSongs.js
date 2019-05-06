@@ -55,3 +55,10 @@ export const setSongAndPlayFromSongCardAction = songNumber => ({
     isPlaying: true
   }
 });
+
+export const setSongStop = stopSong => ({
+  type: "SET_STOP_SONG",
+  payload: {
+    stopSong
+  }
+});

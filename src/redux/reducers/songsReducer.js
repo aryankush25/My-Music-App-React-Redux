@@ -13,7 +13,8 @@ let defaultState = {
   isLoading: true,
   isPlaying: false,
   currentSongDuration: 0,
-  isNewSong: true
+  isNewSong: true,
+  stopSong: false
 };
 
 const song = (state = defaultState, action) => {
@@ -66,6 +67,11 @@ const song = (state = defaultState, action) => {
         currentSongDuration: action.payload.currentSongDuration,
         isNewSong: action.payload.isNewSong,
         isPlaying: action.payload.isPlaying
+      };
+    case "SET_STOP_SONG":
+      return {
+        ...state,
+        stopSong: action.payload.stopSong
       };
 
     default:
