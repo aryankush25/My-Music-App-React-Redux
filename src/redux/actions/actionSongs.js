@@ -45,3 +45,13 @@ export const setSongAndPlay = songNumber => ({
     isNewSong: true
   }
 });
+
+export const setSongAndPlayFromSongCard = songNumber => ({
+  type: "SET_SONG_AND_PLAY_FROM_SONG_CARD",
+  payload: {
+    songNumber,
+    currentSongDuration: 0,
+    isNewSong: true,
+    isPlaying: true
+  }
+});

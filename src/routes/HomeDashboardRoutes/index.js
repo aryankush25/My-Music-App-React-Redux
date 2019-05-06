@@ -26,6 +26,8 @@ class Home extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.isNewSong && this.props.isNewSong === true) {
+      console.log("IsNew Song Changed from null to true");
+
       this.sound = new Howl({
         src: [this.props.songArray[this.props.songNumber].url],
         html5: true
@@ -33,6 +35,20 @@ class Home extends React.Component {
     }
 
     if (prevProps.isNewSong === false && this.props.isNewSong === true) {
+      console.log("IsNew Song Changed from false to true");
+
+      function isEmpty(obj) {
+        for (var prop in obj) {
+          if (obj.hasOwnProperty(prop)) return false;
+        }
+        return true;
+      }
+
+      if (!isEmpty(this.sound)) {
+        this.sound.stop();
+        clearInterval(this.intervalID);
+      }
+
       this.sound = new Howl({
         src: [this.props.songArray[this.props.songNumber].url],
         html5: true
