@@ -14,7 +14,7 @@ import {
   setSongCurrentDurationAction,
   setIsNewSongAction,
   setSongAndPlayAction,
-  setSongStop
+  setSongStopAction
 } from "../../redux/actions/actionSongs";
 
 class Home extends React.Component {
@@ -40,7 +40,7 @@ class Home extends React.Component {
         this.props.setSongIsPlayingAction(false);
         this.props.setIsNewSongAction(true);
         this.props.setSongCurrentDurationAction(0);
-        this.props.setSongStop(false);
+        this.props.setSongStopAction(false);
       }
     }
 
@@ -236,7 +236,7 @@ const mapDispatchToProps = dispatch => {
     setSongAndPlayAction: songNumber =>
       dispatch(setSongAndPlayAction(songNumber)),
 
-    setSongStop: stopSong => dispatch(setSongStop(stopSong))
+    setSongStopAction: stopSong => dispatch(setSongStopAction(stopSong))
   };
 };
 

@@ -4,7 +4,10 @@ import {
   SET_SONG_IS_LOADING,
   SET_SONG_IS_PLAYING,
   SET_SONG_CURRENT_DURATION,
-  SET_IS_NEW_SONG
+  SET_IS_NEW_SONG,
+  SET_SONG_AND_PLAY,
+  SET_SONG_AND_PLAY_FROM_SONG_CARD,
+  SET_STOP_SONG
 } from "../../utils/constantKeywords/actionsReducersConstants";
 
 let defaultState = {
@@ -53,14 +56,14 @@ const song = (state = defaultState, action) => {
         isNewSong: action.payload.isNewSong
       };
 
-    case "SET_SONG_AND_PLAY":
+    case SET_SONG_AND_PLAY:
       return {
         ...state,
         songNumber: action.payload.songNumber,
         currentSongDuration: action.payload.currentSongDuration,
         isNewSong: action.payload.isNewSong
       };
-    case "SET_SONG_AND_PLAY_FROM_SONG_CARD":
+    case SET_SONG_AND_PLAY_FROM_SONG_CARD:
       return {
         ...state,
         songNumber: action.payload.songNumber,
@@ -68,7 +71,7 @@ const song = (state = defaultState, action) => {
         isNewSong: action.payload.isNewSong,
         isPlaying: action.payload.isPlaying
       };
-    case "SET_STOP_SONG":
+    case SET_STOP_SONG:
       return {
         ...state,
         stopSong: action.payload.stopSong

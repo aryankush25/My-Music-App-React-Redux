@@ -4,7 +4,7 @@ import "./style.scss";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import userImage from "../../assets/images/userImage.png";
 import { connect } from "react-redux";
-import { setSongStop } from "../../redux/actions/actionSongs";
+import { setSongStopAction } from "../../redux/actions/actionSongs";
 
 class FetchCurrentUserDetails extends React.Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class FetchCurrentUserDetails extends React.Component {
     return (
       <div className="user-details">
         <img src={this.state.userProfilePic} alt="img" className="userImage" />
-        <Link to="/profile" onClick={() => this.props.setSongStop(true)}>
+        <Link to="/profile" onClick={() => this.props.setSongStopAction(true)}>
           {this.state.userName}
         </Link>
       </div>
@@ -67,7 +67,7 @@ class NavBar extends React.Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSongStop: stopSong => dispatch(setSongStop(stopSong))
+    setSongStopAction: stopSong => dispatch(setSongStopAction(stopSong))
   };
 };
 
