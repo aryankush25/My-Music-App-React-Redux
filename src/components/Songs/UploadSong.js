@@ -3,6 +3,8 @@ import updatePlaylist from "../../services/firebaseFirestore/updatePlaylist";
 import uploadSong from "../../services/firebaseStorage/uploadSong";
 import "./style.scss";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { connect } from "react-redux";
+import { setSongIsLoadingAction } from "../../redux/actions/actionSongs";
 
 class UploadSong extends React.Component {
   constructor(props) {
@@ -79,7 +81,7 @@ class UploadSong extends React.Component {
   handleAddSong = async () => {
     if (this.filePresent === false) {
       const { songName, songGenre, songImageurl } = this.state;
-
+      this.props.setSongIsLoadingAction(true);
       const uploadTask = uploadSong(this.selectedFile);
       uploadTask.on(
         "state_changed",
@@ -88,6 +90,7 @@ class UploadSong extends React.Component {
         },
         error => {
           console.log(error);
+          this.props.setSongIsLoadingAction(false);
         },
         () => {
           uploadTask.snapshot.ref.getDownloadURL().then(async url => {
@@ -108,6 +111,7 @@ class UploadSong extends React.Component {
               console.error("Error writing document: ", error);
             }
           });
+          this.props.setSongIsLoadingAction(false);
         }
       );
     }
@@ -215,4 +219,22 @@ class UploadSong extends React.Component {
   }
 }
 
-export default UploadSong;
+const mapStateToProps = state => {
+  const { isLoading: isLoadingSong } = state.song;
+
+  return {
+    isLoadingSong
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    setSongIsLoadingAction: isLoading =>
+      dispatch(setSongIsLoadingAction(isLoading))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UploadSong);
