@@ -6,7 +6,7 @@ import StarRatings from "react-star-ratings";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
-import { setSongAndPlayFromSongCard } from "../../redux/actions/actionSongs";
+import { setSongAndPlayFromSongCardAction } from "../../redux/actions/actionSongs";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -147,7 +147,7 @@ class SongCard extends React.Component {
               <button
                 className="btn btn-md btn-info"
                 onClick={() => {
-                  this.props.setSongAndPlayFromSongCard(index);
+                  this.props.setSongAndPlayFromSongCardAction(index);
                 }}
               >
                 Play
@@ -188,8 +188,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSongAndPlayFromSongCard: songNumber =>
-      dispatch(setSongAndPlayFromSongCard(songNumber))
+    setSongAndPlayFromSongCardAction: songNumber =>
+      dispatch(setSongAndPlayFromSongCardAction(songNumber))
   };
 };
 

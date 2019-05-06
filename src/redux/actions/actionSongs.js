@@ -32,12 +32,12 @@ export const setSongCurrentDurationAction = currentSongDuration => ({
   payload: { currentSongDuration }
 });
 
-export const setIsNewSong = isNewSong => ({
+export const setIsNewSongAction = isNewSong => ({
   type: SET_IS_NEW_SONG,
   payload: { isNewSong }
 });
 
-export const setSongAndPlay = songNumber => ({
+export const setSongAndPlayAction = songNumber => ({
   type: "SET_SONG_AND_PLAY",
   payload: {
     songNumber,
@@ -46,7 +46,7 @@ export const setSongAndPlay = songNumber => ({
   }
 });
 
-export const setSongAndPlayFromSongCard = songNumber => ({
+export const setSongAndPlayFromSongCardAction = songNumber => ({
   type: "SET_SONG_AND_PLAY_FROM_SONG_CARD",
   payload: {
     songNumber,

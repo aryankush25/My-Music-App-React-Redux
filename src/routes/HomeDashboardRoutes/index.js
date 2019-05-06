@@ -12,8 +12,8 @@ import {
   setSongIsLoadingAction,
   setSongIsPlayingAction,
   setSongCurrentDurationAction,
-  setIsNewSong,
-  setSongAndPlay
+  setIsNewSongAction,
+  setSongAndPlayAction
 } from "../../redux/actions/actionSongs";
 
 class Home extends React.Component {
@@ -25,8 +25,18 @@ class Home extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    function isEmpty(obj) {
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) return false;
+      }
+      return true;
+    }
+
     if (prevProps.isNewSong && this.props.isNewSong === true) {
-      console.log("IsNew Song Changed from null to true");
+      if (!isEmpty(this.sound)) {
+        this.sound.stop();
+        clearInterval(this.intervalID);
+      }
 
       this.sound = new Howl({
         src: [this.props.songArray[this.props.songNumber].url],
@@ -35,15 +45,6 @@ class Home extends React.Component {
     }
 
     if (prevProps.isNewSong === false && this.props.isNewSong === true) {
-      console.log("IsNew Song Changed from false to true");
-
-      function isEmpty(obj) {
-        for (var prop in obj) {
-          if (obj.hasOwnProperty(prop)) return false;
-        }
-        return true;
-      }
-
       if (!isEmpty(this.sound)) {
         this.sound.stop();
         clearInterval(this.intervalID);
@@ -59,7 +60,7 @@ class Home extends React.Component {
         this.sound.play();
       }
 
-      this.props.setIsNewSong(false);
+      this.props.setIsNewSongAction(false);
     }
 
     if (prevProps.isPlaying === false && this.props.isPlaying === true) {
@@ -68,7 +69,7 @@ class Home extends React.Component {
           src: [this.props.songArray[this.props.songNumber].url],
           html5: true
         });
-        this.props.setIsNewSong(false);
+        this.props.setIsNewSongAction(false);
       }
       this.intervalID = setInterval(this.handleSongTimer, 1000);
       this.sound.play();
@@ -117,7 +118,7 @@ class Home extends React.Component {
     this.sound.stop();
     clearInterval(this.intervalID);
 
-    this.props.setSongAndPlay(songNumber);
+    this.props.setSongAndPlayAction(songNumber);
   };
 
   handlePlayPrevious = () => {
@@ -131,7 +132,7 @@ class Home extends React.Component {
     this.sound.stop();
     clearInterval(this.intervalID);
 
-    this.props.setSongAndPlay(songNumber);
+    this.props.setSongAndPlayAction(songNumber);
   };
 
   handleAdjustSeek = value => {
@@ -221,9 +222,10 @@ const mapDispatchToProps = dispatch => {
     setSongCurrentDurationAction: currentSongDuration =>
       dispatch(setSongCurrentDurationAction(currentSongDuration)),
 
-    setIsNewSong: isNewSong => dispatch(setIsNewSong(isNewSong)),
+    setIsNewSongAction: isNewSong => dispatch(setIsNewSongAction(isNewSong)),
 
-    setSongAndPlay: songNumber => dispatch(setSongAndPlay(songNumber))
+    setSongAndPlayAction: songNumber =>
+      dispatch(setSongAndPlayAction(songNumber))
   };
 };
 
