@@ -67,7 +67,7 @@ class HomePageDashboard extends React.Component {
         </div>
 
         <div className="col-8 middle-col">
-          <NavBar sound={this.props.sound} />
+          <NavBar />
 
           <ShowLoadingComponent isLoading={this.props.isLoadingSong}>
             <Songs />
@@ -94,8 +94,6 @@ const mapStateToProps = state => {
 
   const { playlistNumber } = state.playlist;
   const { userNumber } = state.users;
-
-  // console.log(playlistNumber, userNumber);
 
   return {
     isLoadingPlaylist,

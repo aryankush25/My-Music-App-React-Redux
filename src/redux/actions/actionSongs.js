@@ -4,7 +4,10 @@ import {
   SET_SONG_IS_LOADING,
   SET_SONG_IS_PLAYING,
   SET_SONG_CURRENT_DURATION,
-  SET_IS_NEW_SONG
+  SET_IS_NEW_SONG,
+  SET_SONG_AND_PLAY,
+  SET_SONG_AND_PLAY_FROM_SONG_CARD,
+  SET_STOP_SONG
 } from "../../utils/constantKeywords/actionsReducersConstants";
 
 export const setSongAction = songArray => ({
@@ -32,7 +35,33 @@ export const setSongCurrentDurationAction = currentSongDuration => ({
   payload: { currentSongDuration }
 });
 
-export const setIsNewSong = isNewSong => ({
+export const setIsNewSongAction = isNewSong => ({
   type: SET_IS_NEW_SONG,
   payload: { isNewSong }
+});
+
+export const setSongAndPlayAction = songNumber => ({
+  type: SET_SONG_AND_PLAY,
+  payload: {
+    songNumber,
+    currentSongDuration: 0,
+    isNewSong: true
+  }
+});
+
+export const setSongAndPlayFromSongCardAction = songNumber => ({
+  type: SET_SONG_AND_PLAY_FROM_SONG_CARD,
+  payload: {
+    songNumber,
+    currentSongDuration: 0,
+    isNewSong: true,
+    isPlaying: true
+  }
+});
+
+export const setSongStopAction = stopSong => ({
+  type: SET_STOP_SONG,
+  payload: {
+    stopSong
+  }
 });

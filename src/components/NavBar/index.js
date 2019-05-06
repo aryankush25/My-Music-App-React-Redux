@@ -1,8 +1,10 @@
 import React from "react";
-import { withRouter, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./style.scss";
 import currentUser from "../../services/firebaseAuth/currentUser";
 import userImage from "../../assets/images/userImage.png";
+import { connect } from "react-redux";
+import { setSongStopAction } from "../../redux/actions/actionSongs";
 
 class FetchCurrentUserDetails extends React.Component {
   constructor(props) {
@@ -36,7 +38,9 @@ class FetchCurrentUserDetails extends React.Component {
     return (
       <div className="user-details">
         <img src={this.state.userProfilePic} alt="img" className="userImage" />
-        <Link to="/profile">{this.state.userName}</Link>
+        <Link to="/profile" onClick={() => this.props.setSongStopAction(true)}>
+          {this.state.userName}
+        </Link>
       </div>
     );
   }
@@ -61,4 +65,13 @@ class NavBar extends React.Component {
   }
 }
 
-export default withRouter(NavBar);
+const mapDispatchToProps = dispatch => {
+  return {
+    setSongStopAction: stopSong => dispatch(setSongStopAction(stopSong))
+  };
+};
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(NavBar);
