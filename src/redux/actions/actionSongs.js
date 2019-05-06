@@ -36,3 +36,12 @@ export const setIsNewSong = isNewSong => ({
   type: SET_IS_NEW_SONG,
   payload: { isNewSong }
 });
+
+export const setSongAndPlay = songNumber => ({
+  type: "SET_SONG_AND_PLAY",
+  payload: {
+    songNumber,
+    currentSongDuration: 0,
+    isNewSong: true
+  }
+});

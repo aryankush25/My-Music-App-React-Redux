@@ -51,6 +51,14 @@ const song = (state = defaultState, action) => {
         ...state,
         isNewSong: action.payload.isNewSong
       };
+
+    case "SET_SONG_AND_PLAY":
+      return {
+        ...state,
+        songNumber: action.payload.songNumber,
+        currentSongDuration: action.payload.currentSongDuration,
+        isNewSong: action.payload.isNewSong
+      };
     default:
       return state;
   }
