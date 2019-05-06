@@ -22,7 +22,6 @@ class OverlaySongInfo extends React.Component {
             index={this.props.index}
             likesCount={this.props.song.likedBy.length}
             likedByArray={this.props.song.likedBy}
-            isSongLiked={false}
             handleSongLike={this.props.handleSongLike}
             handleSongUnLike={this.props.handleSongUnLike}
           />
