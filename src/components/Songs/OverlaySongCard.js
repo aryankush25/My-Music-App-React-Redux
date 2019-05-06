@@ -1,12 +1,10 @@
 import React from "react";
 import EditButton from "./EditButton";
 import "./style.scss";
-import currentUser from "../../services/firebaseAuth/currentUser";
 import StarRatings from "react-star-ratings";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { connect } from "react-redux";
 import { setSongAndPlayFromSongCardAction } from "../../redux/actions/actionSongs";
+import LikeButton from "./LikeButton";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -18,75 +16,6 @@ const DeleteButton = props => {
     </button>
   );
 };
-
-class LikeButton extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      songLiked: this.props.isSongLiked,
-      likesCount: this.props.likesCount
-    };
-  }
-
-  componentDidMount() {
-    this.isSongLiked();
-  }
-
-  isSongLiked = async () => {
-    var currUser = await currentUser().uid;
-
-    for (var i = 0; i < this.props.likesCount; i++) {
-      if (this.props.likedByArray[i] === currUser) {
-        this.setState({
-          songLiked: true
-        });
-        break;
-      } else {
-        this.setState({
-          songLiked: false
-        });
-      }
-    }
-  };
-
-  componentWillReceiveProps(nextprops) {
-    this.isSongLiked();
-    this.setState({
-      songLiked: nextprops.isSongLiked,
-      likesCount: nextprops.likesCount
-    });
-  }
-
-  toggleLike = index => {
-    if (this.state.songLiked === true) {
-      this.props.handleSongUnLike(index);
-      this.setState({
-        songLiked: false,
-        likesCount: this.state.likesCount - 1
-      });
-    } else {
-      this.props.handleSongLike(index);
-      this.setState({
-        songLiked: true,
-        likesCount: this.state.likesCount + 1
-      });
-    }
-  };
-
-  render() {
-    return (
-      <span>
-        <FontAwesomeIcon
-          icon={faHeart}
-          className={this.state.songLiked ? "addColor" : ""}
-          onClick={() => this.toggleLike(this.props.index)}
-        />{" "}
-        {this.state.likesCount}
-      </span>
-    );
-  }
-}
 
 class OverlaySongCard extends React.Component {
   render() {
