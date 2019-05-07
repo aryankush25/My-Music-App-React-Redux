@@ -1,26 +1,26 @@
 import {
-  SET_SONG_ARRAY,
-  SET_CURRENT_SONG_NUMBER,
-  SET_SONG_IS_LOADING,
-  SET_SONG_IS_PLAYING
+  SET_SONG_ARRAY_CARD,
+  SET_CURRENT_SONG_NUMBER_CARD,
+  SET_SONG_IS_LOADING_CARD,
+  SET_SONG_IS_PLAYING_CARD
 } from "../../utils/constantKeywords/actionsReducersConstants";
 
-export const setSongAction = songArray => ({
-  type: SET_SONG_ARRAY,
-  payload: { songArray }
+export const setSongArrayCardAction = songArrayCard => ({
+  type: SET_SONG_ARRAY_CARD,
+  payload: { songArrayCard }
 });
 
-export const setCurrentSongNumberAction = songNumber => ({
-  type: SET_CURRENT_SONG_NUMBER,
-  payload: { songNumber }
+export const setCurrentSongNumberCardAction = songNumberCard => ({
+  type: SET_CURRENT_SONG_NUMBER_CARD,
+  payload: { songNumberCard }
 });
 
-export const setSongIsLoadingAction = isLoading => ({
-  type: SET_SONG_IS_LOADING,
-  payload: { isLoading }
+export const setSongIsLoadingCardAction = isLoadingCard => ({
+  type: SET_SONG_IS_LOADING_CARD,
+  payload: { isLoadingCard }
 });
 
-export const setSongIsPlayingAction = isPlaying => ({
-  type: SET_SONG_IS_PLAYING,
-  payload: { isPlaying }
+export const setSongIsPlayingCardAction = isPlayingCard => ({
+  type: SET_SONG_IS_PLAYING_CARD,
+  payload: { isPlayingCard }
 });

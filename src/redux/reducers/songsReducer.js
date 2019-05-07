@@ -66,6 +66,7 @@ const song = (state = defaultState, action) => {
     case SET_SONG_AND_PLAY_FROM_SONG_CARD:
       return {
         ...state,
+        songArray: action.payload.songArray,
         songNumber: action.payload.songNumber,
         currentSongDuration: action.payload.currentSongDuration,
         isNewSong: action.payload.isNewSong,

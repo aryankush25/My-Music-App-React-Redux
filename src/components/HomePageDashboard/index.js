@@ -19,6 +19,10 @@ import {
   setSongAction,
   setSongIsLoadingAction
 } from "../../redux/actions/actionSongs";
+import {
+  setSongArrayCardAction,
+  setSongIsLoadingCardAction
+} from "../../redux/actions/actionSongsCard";
 
 class HomePageDashboard extends React.Component {
   componentDidMount() {
@@ -52,7 +56,16 @@ class HomePageDashboard extends React.Component {
           this.props.playlistNumber
         ].playlist
       );
+
       this.props.setSongIsLoadingAction(false);
+
+      this.props.setSongArrayCardAction(
+        userArray[this.props.userNumber].userData.playlists[
+          this.props.playlistNumber
+        ].playlist
+      );
+
+      this.props.setSongIsLoadingCardAction(false);
     });
   };
 
@@ -120,7 +133,13 @@ const mapDispatchToProps = dispatch => {
     setSongAction: songArray => dispatch(setSongAction(songArray)),
 
     setSongIsLoadingAction: isLoading =>
-      dispatch(setSongIsLoadingAction(isLoading))
+      dispatch(setSongIsLoadingAction(isLoading)),
+
+    setSongArrayCardAction: songArray =>
+      dispatch(setSongArrayCardAction(songArray)),
+
+    setSongIsLoadingCardAction: isLoading =>
+      dispatch(setSongIsLoadingCardAction(isLoading))
   };
 };
 

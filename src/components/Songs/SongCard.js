@@ -22,13 +22,7 @@ class SongCard extends React.Component {
   render() {
     return this.props.songsArray.map((song, index) => {
       return (
-        <div
-          className={
-            "card song-div " +
-            (this.props.songNumber === index ? "selected-song" : "")
-          }
-          key={index}
-        >
+        <div className={"card song-div"} key={index}>
           <SongImage songImage={song.imageUrl} songName={song.name} />
           <div className="card-body song-card-body">
             <p className="card-text">
@@ -50,7 +44,10 @@ class SongCard extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { songArray: songsArray, songNumber } = state.song;
+  const {
+    songArrayCard: songsArray,
+    songNumberCard: songNumber
+  } = state.songsCard;
 
   return { songsArray, songNumber };
 };

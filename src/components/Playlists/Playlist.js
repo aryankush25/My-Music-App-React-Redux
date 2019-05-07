@@ -4,14 +4,14 @@ import EditPlaylist from "./EditPlaylist";
 import { connect } from "react-redux";
 import { setCurrentPlaylistNumberAction } from "../../redux/actions/actionPlaylist";
 import {
-  setSongAction,
-  setCurrentSongNumberAction
-} from "../../redux/actions/actionSongs";
+  setSongArrayCardAction,
+  setCurrentSongNumberCardAction
+} from "../../redux/actions/actionSongsCard";
 
 class Playlist extends React.Component {
   handleOnClick = (playlist, index) => {
-    this.props.setCurrentSongNumberAction(0);
-    this.props.setSongAction(playlist);
+    this.props.setCurrentSongNumberCardAction(0);
+    this.props.setSongArrayCardAction(playlist);
     this.props.setCurrentPlaylistNumberAction(index);
   };
 
@@ -62,11 +62,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSongAction: songsArray => dispatch(setSongAction(songsArray)),
+    setSongArrayCardAction: songsArray =>
+      dispatch(setSongArrayCardAction(songsArray)),
     setCurrentPlaylistNumberAction: userNumber =>
       dispatch(setCurrentPlaylistNumberAction(userNumber)),
-    setCurrentSongNumberAction: songNumber =>
-      dispatch(setCurrentSongNumberAction(songNumber))
+    setCurrentSongNumberCardAction: songNumber =>
+      dispatch(setCurrentSongNumberCardAction(songNumber))
   };
 };
 

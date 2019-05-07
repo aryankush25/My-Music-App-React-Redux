@@ -1,45 +1,45 @@
 import {
-  SET_SONG_ARRAY,
-  SET_CURRENT_SONG_NUMBER,
-  SET_SONG_IS_LOADING,
-  SET_SONG_IS_PLAYING
+  SET_SONG_ARRAY_CARD,
+  SET_CURRENT_SONG_NUMBER_CARD,
+  SET_SONG_IS_LOADING_CARD,
+  SET_SONG_IS_PLAYING_CARD
 } from "../../utils/constantKeywords/actionsReducersConstants";
 
 let defaultState = {
-  songArray: [],
-  songNumber: 0,
-  isLoading: true,
-  isPlaying: false
+  songArrayCard: [],
+  songNumberCard: 0,
+  isLoadingCard: true,
+  isPlayingCard: false
 };
 
-const song = (state = defaultState, action) => {
+const songsCard = (state = defaultState, action) => {
   switch (action.type) {
-    case SET_SONG_ARRAY:
+    case SET_SONG_ARRAY_CARD:
       return {
         ...state,
-        songArray: action.payload.songArray
+        songArrayCard: action.payload.songArrayCard
       };
 
-    case SET_CURRENT_SONG_NUMBER:
+    case SET_CURRENT_SONG_NUMBER_CARD:
       return {
         ...state,
-        songNumber: action.payload.songNumber
+        songNumberCard: action.payload.songNumberCard
       };
 
-    case SET_SONG_IS_LOADING:
+    case SET_SONG_IS_LOADING_CARD:
       return {
         ...state,
-        isLoading: action.payload.isLoading
+        isLoadingCard: action.payload.isLoadingCard
       };
 
-    case SET_SONG_IS_PLAYING:
+    case SET_SONG_IS_PLAYING_CARD:
       return {
         ...state,
-        isPlaying: action.payload.isPlaying
+        isPlayingCard: action.payload.isPlayingCard
       };
     default:
       return state;
   }
 };
 
-export default song;
+export default songsCard;

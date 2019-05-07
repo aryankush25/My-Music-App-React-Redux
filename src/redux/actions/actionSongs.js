@@ -49,9 +49,10 @@ export const setSongAndPlayAction = songNumber => ({
   }
 });
 
-export const setSongAndPlayFromSongCardAction = songNumber => ({
+export const setSongAndPlayFromSongCardAction = (songArray, songNumber) => ({
   type: SET_SONG_AND_PLAY_FROM_SONG_CARD,
   payload: {
+    songArray,
     songNumber,
     currentSongDuration: 0,
     isNewSong: true,
