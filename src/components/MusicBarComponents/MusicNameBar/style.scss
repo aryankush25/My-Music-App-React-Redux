@@ -1,0 +1,28 @@
+@import "../../../utils/styles/colorConstants.scss";
+
+.song-name-music-bar {
+  display: flex;
+  margin-right: 20px;
+  width: 500px;
+}
+
+.song-name-music-bar img {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-top: -10px;
+}
+
+.song-image-bar {
+  background-color: $SONG_DIV_BG_COLOR;
+  text-align: center;
+  color: $SONG_DIV_TEXT_COLOR;
+  padding-top: 10px;
+  font-size: 30px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 20px;
+  margin-top: -10px;
+}
