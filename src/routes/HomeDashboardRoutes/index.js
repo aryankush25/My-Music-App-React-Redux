@@ -18,9 +18,6 @@ class Home extends React.Component {
       <div className="home-container">
         <div className="home-page-div">
           <HomePageDashboard />
-
-          {/* Music Bar Div That Contains the music bar elements */}
-
           <MusicBarComponent arrayIsEmpty={this.props.arrayIsEmpty} />
         </div>
       </div>

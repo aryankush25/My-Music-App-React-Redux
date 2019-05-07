@@ -148,7 +148,10 @@ class Songs extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { isLoading: isLoadingSong, songArray: songsArray } = state.song;
+  const {
+    isLoading: isLoadingSong,
+    songArrayCard: songsArray
+  } = state.songsCard;
   const userObject = state.users.userArray[state.users.userNumber];
   const { playlistNumber } = state.playlist;
   const userId = userObject.userId;

@@ -22,7 +22,10 @@ class OverlaySongsButtons extends React.Component {
         <button
           className="btn btn-md btn-info"
           onClick={() => {
-            this.props.setSongAndPlayFromSongCardAction(this.props.index);
+            this.props.setSongAndPlayFromSongCardAction(
+              this.props.songArray,
+              this.props.index
+            );
           }}
         >
           Play
@@ -49,17 +52,19 @@ const mapStateToProps = state => {
   const userObject = state.users.userArray[state.users.userNumber].userData.uId;
   const currentUserId = state.app.appCurrentUser;
 
+  const songArray = state.songsCard.songArrayCard;
+
   var showDisableBtn = true;
   if (userObject === currentUserId) {
     showDisableBtn = false;
   }
-  return { showDisableBtn };
+  return { showDisableBtn, songArray };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    setSongAndPlayFromSongCardAction: songNumber =>
-      dispatch(setSongAndPlayFromSongCardAction(songNumber))
+    setSongAndPlayFromSongCardAction: (songArray, songNumber) =>
+      dispatch(setSongAndPlayFromSongCardAction(songArray, songNumber))
   };
 };
 

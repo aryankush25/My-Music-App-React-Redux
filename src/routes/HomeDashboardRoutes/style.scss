@@ -10,17 +10,6 @@
   background-size: cover;
 }
 
-.music-bar {
-  background-color: $MUSIC_BAR_BG_COLOR;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 12%;
-  display: flex;
-  color: $SONG_DIV_TEXT_COLOR;
-  padding: 25px;
-}
-
 .spinner-grow {
   justify-content: center;
 }

@@ -8,9 +8,9 @@ import {
   setCurrentPlaylistNumberAction
 } from "../../redux/actions/actionPlaylist";
 import {
-  setSongAction,
-  setCurrentSongNumberAction
-} from "../../redux/actions/actionSongs";
+  setSongArrayCardAction,
+  setCurrentSongNumberCardAction
+} from "../../redux/actions/actionSongsCard";
 
 class UsersData extends React.Component {
   constructor(props) {
@@ -20,16 +20,16 @@ class UsersData extends React.Component {
     };
   }
 
-  handleOnClick = (user, index) => {
+  handleOnClick = index => {
     this.props.setUserNumber(index);
     this.props.setPlaylistAction(
       this.props.userArray[index].userData.playlists
     );
     this.props.setCurrentPlaylistNumberAction(0);
-    this.props.setSongAction(
+    this.props.setSongArrayCardAction(
       this.props.userArray[index].userData.playlists[0].playlist
     );
-    this.props.setCurrentSongNumberAction(0);
+    this.props.setCurrentSongNumberCardAction(0);
     this.setState({
       selectedUser: index
     });
@@ -75,8 +75,10 @@ class Users extends React.Component {
             setCurrentPlaylistNumberAction={
               this.props.setCurrentPlaylistNumberAction
             }
-            setSongAction={this.props.setSongAction}
-            setCurrentSongNumberAction={this.props.setCurrentSongNumberAction}
+            setSongArrayCardAction={this.props.setSongArrayCardAction}
+            setCurrentSongNumberCardAction={
+              this.props.setCurrentSongNumberCardAction
+            }
           />
         </div>
       </ShowLoadingComponent>
@@ -100,10 +102,11 @@ const mapDispatchToProps = dispatch => {
     setCurrentPlaylistNumberAction: playlistNumber =>
       dispatch(setCurrentPlaylistNumberAction(playlistNumber)),
 
-    setSongAction: songsArray => dispatch(setSongAction(songsArray)),
+    setSongArrayCardAction: songsArray =>
+      dispatch(setSongArrayCardAction(songsArray)),
 
-    setCurrentSongNumberAction: songNumber =>
-      dispatch(setCurrentSongNumberAction(songNumber))
+    setCurrentSongNumberCardAction: songNumber =>
+      dispatch(setCurrentSongNumberCardAction(songNumber))
   };
 };
 

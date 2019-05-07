@@ -15,6 +15,7 @@ import {
   setSongAndPlayAction,
   setSongStopAction
 } from "../../redux/actions/actionSongs";
+import "./style.scss";
 
 class MusicBar extends React.Component {
   constructor(props) {

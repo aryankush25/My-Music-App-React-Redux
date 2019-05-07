@@ -27,3 +27,10 @@ export const SET_SONG_AND_PLAY = "SET_SONG_AND_PLAY";
 export const SET_SONG_AND_PLAY_FROM_SONG_CARD =
   "SET_SONG_AND_PLAY_FROM_SONG_CARD";
 export const SET_STOP_SONG = "SET_STOP_SONG";
+
+//* ############################################################ SONGS CARD CONSTANTS ############################################################ *//
+
+export const SET_SONG_ARRAY_CARD = "SET_SONG_ARRAY_CARD";
+export const SET_CURRENT_SONG_NUMBER_CARD = "SET_CURRENT_SONG_NUMBER_CARD";
+export const SET_SONG_IS_LOADING_CARD = "SET_SONG_IS_LOADING_CARD";
+export const SET_SONG_IS_PLAYING_CARD = "SET_SONG_IS_PLAYING_CARD";
