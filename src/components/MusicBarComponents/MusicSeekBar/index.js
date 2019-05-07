@@ -15,10 +15,12 @@ const DurationOfSong = props => {
 
 class MusicSeekBar extends React.Component {
   handleOnClick = e => {
-    const percent =
-      (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth;
-    var temp = Math.round(percent * this.props.duration);
-    this.props.adjustSeek(temp);
+    if (this.props.duration) {
+      const percent =
+        (e.clientX - e.currentTarget.offsetLeft) / e.currentTarget.offsetWidth;
+      var temp = Math.round(percent * this.props.duration);
+      this.props.adjustSeek(temp);
+    }
   };
 
   render() {
@@ -26,10 +28,7 @@ class MusicSeekBar extends React.Component {
       <div className="slider-container-seek">
         <div className="main-music-bar-box">
           <div className="duration-div">
-            <p>
-              {Math.round(this.props.currentDuration / 60)}:
-              {Math.round(this.props.currentDuration % 60)}
-            </p>
+            <DurationOfSong duration={this.props.currentDuration} />
           </div>
           <div className="music-bar-box" onClick={this.handleOnClick}>
             <div

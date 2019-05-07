@@ -4,6 +4,8 @@ import HomePageDashboard from "../../components/HomePageDashboard";
 import MusicSeekBar from "../../components/MusicBarComponents/MusicSeekBar";
 import MusicVolumeBar from "../../components/MusicBarComponents/MusicVolumeBar";
 import MusicBarButtons from "../../components/MusicBarComponents/MusicBarButtons";
+import MusicNameBar from "../../components/MusicBarComponents/MusicNameBar/";
+import ShowLoadingComponent from "../../components/ShowLoadingComponent";
 import "./style.scss";
 import { connect } from "react-redux";
 import {
@@ -89,8 +91,8 @@ class Home extends React.Component {
   }
 
   componentWillUnmount = () => {
-    console.log("Component Unmounted")
-  }
+    console.log("Component Unmounted");
+  };
 
   sound = {};
   intervalID = 0;
@@ -185,23 +187,26 @@ class Home extends React.Component {
 
           {/* Music Bar Div That Contains the music bar elements */}
 
-          <div className="music-bar">
-            <MusicBarButtons
-              isPlaying={this.props.isPlaying}
-              playPrevious={this.handlePlayPrevious}
-              playPauseAudio={this.handlePlayPauseAudio}
-              playNext={this.handlePlayNext}
-            />
-            <MusicSeekBar
-              duration={this.sound._duration}
-              currentDuration={this.props.currentSongDuration}
-              adjustSeek={this.handleAdjustSeek}
-            />
-            <MusicVolumeBar
-              volume={Howler._volume}
-              adjustAudio={this.handleAdjustAudio}
-            />
-          </div>
+          <ShowLoadingComponent isLoading={this.props.isLoadingSong}>
+            <div className="music-bar">
+              <MusicNameBar />
+              <MusicBarButtons
+                isPlaying={this.props.isPlaying}
+                playPrevious={this.handlePlayPrevious}
+                playPauseAudio={this.handlePlayPauseAudio}
+                playNext={this.handlePlayNext}
+              />
+              <MusicSeekBar
+                duration={this.sound._duration}
+                currentDuration={this.props.currentSongDuration}
+                adjustSeek={this.handleAdjustSeek}
+              />
+              <MusicVolumeBar
+                volume={Howler._volume}
+                adjustAudio={this.handleAdjustAudio}
+              />
+            </div>
+          </ShowLoadingComponent>
         </div>
       </div>
     );
@@ -214,9 +219,18 @@ const mapStateToProps = state => {
     songNumber,
     isPlaying,
     currentSongDuration,
-    isNewSong
+    isNewSong,
+    isLoading: isLoadingSong
   } = state.song;
-  return { songArray, songNumber, isPlaying, currentSongDuration, isNewSong };
+
+  return {
+    songArray,
+    songNumber,
+    isPlaying,
+    currentSongDuration,
+    isNewSong,
+    isLoadingSong
+  };
 };
 
 const mapDispatchToProps = dispatch => {
