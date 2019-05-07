@@ -2,7 +2,6 @@ import React from "react";
 import "./style.scss";
 
 const DurationOfSong = props => {
-  console.log(props.duration);
   if (props.duration) {
     return (
       <p>
