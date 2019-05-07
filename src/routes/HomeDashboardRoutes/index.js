@@ -88,6 +88,10 @@ class Home extends React.Component {
     }
   }
 
+  componentWillUnmount = () => {
+    console.log("Component Unmounted")
+  }
+
   sound = {};
   intervalID = 0;
 

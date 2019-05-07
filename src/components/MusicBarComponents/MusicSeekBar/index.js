@@ -1,6 +1,19 @@
 import React from "react";
 import "./style.scss";
 
+const DurationOfSong = props => {
+  console.log(props.duration);
+  if (props.duration) {
+    return (
+      <p>
+        {Math.round(props.duration / 60)}:{Math.round(props.duration % 60)}
+      </p>
+    );
+  } else {
+    return <p>0:0</p>;
+  }
+};
+
 class MusicSeekBar extends React.Component {
   handleOnClick = e => {
     const percent =
@@ -29,10 +42,7 @@ class MusicSeekBar extends React.Component {
             />
           </div>
           <div className="duration-div">
-            <p>
-              {Math.round(this.props.duration / 60)}:
-              {Math.round(this.props.duration % 60)}
-            </p>
+            <DurationOfSong duration={this.props.duration} />
           </div>
         </div>
       </div>
