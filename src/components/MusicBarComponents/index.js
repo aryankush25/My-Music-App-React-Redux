@@ -4,7 +4,6 @@ import MusicSeekBar from "../../components/MusicBarComponents/MusicSeekBar";
 import MusicVolumeBar from "../../components/MusicBarComponents/MusicVolumeBar";
 import MusicBarButtons from "../../components/MusicBarComponents/MusicBarButtons";
 import MusicNameBar from "../../components/MusicBarComponents/MusicNameBar/";
-import ShowLoadingComponent from "../../components/ShowLoadingComponent";
 import { connect } from "react-redux";
 import {
   setSongAction,
@@ -179,26 +178,24 @@ class MusicBar extends React.Component {
 
   render() {
     return (
-      <ShowLoadingComponent isLoading={this.props.isLoadingSong}>
-        <div className="music-bar">
-          <MusicNameBar />
-          <MusicBarButtons
-            isPlaying={this.props.isPlaying}
-            playPrevious={this.handlePlayPrevious}
-            playPauseAudio={this.handlePlayPauseAudio}
-            playNext={this.handlePlayNext}
-          />
-          <MusicSeekBar
-            duration={this.sound._duration}
-            currentDuration={this.props.currentSongDuration}
-            adjustSeek={this.handleAdjustSeek}
-          />
-          <MusicVolumeBar
-            volume={Howler._volume}
-            adjustAudio={this.handleAdjustAudio}
-          />
-        </div>
-      </ShowLoadingComponent>
+      <div className="music-bar">
+        <MusicNameBar />
+        <MusicBarButtons
+          isPlaying={this.props.isPlaying}
+          playPrevious={this.handlePlayPrevious}
+          playPauseAudio={this.handlePlayPauseAudio}
+          playNext={this.handlePlayNext}
+        />
+        <MusicSeekBar
+          duration={this.sound._duration}
+          currentDuration={this.props.currentSongDuration}
+          adjustSeek={this.handleAdjustSeek}
+        />
+        <MusicVolumeBar
+          volume={Howler._volume}
+          adjustAudio={this.handleAdjustAudio}
+        />
+      </div>
     );
   }
 }

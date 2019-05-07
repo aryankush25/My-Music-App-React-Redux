@@ -6,11 +6,7 @@ import { connect } from "react-redux";
 
 const MusicBarComponent = props => {
   if (props.arrayIsEmpty) {
-    return (
-      <div className="music-bar">
-        <p>Please Upload The Song</p>
-      </div>
-    );
+    return <div className="music-bar" />;
   }
 
   return <MusicBar />;
