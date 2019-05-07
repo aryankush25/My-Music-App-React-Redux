@@ -20,7 +20,7 @@ class UsersData extends React.Component {
     };
   }
 
-  handleOnClick = (user, index) => {
+  handleOnClick = index => {
     this.props.setUserNumber(index);
     this.props.setPlaylistAction(
       this.props.userArray[index].userData.playlists
