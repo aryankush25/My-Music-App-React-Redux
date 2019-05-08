@@ -33,6 +33,18 @@ class MusicBar extends React.Component {
       return true;
     }
 
+    const createObject = () => {
+      if (!isEmpty(this.sound)) {
+        this.sound.stop();
+        clearInterval(this.intervalID);
+      }
+      this.sound = new Howl({
+        src: [this.props.songArray[this.props.songNumber].url],
+        html5: true,
+        preload: true
+      });
+    };
+
     if (this.props.stopSong === true) {
       if (!isEmpty(this.sound)) {
         this.sound.stop();
@@ -45,27 +57,11 @@ class MusicBar extends React.Component {
     }
 
     if (prevProps.isNewSong && this.props.isNewSong === true) {
-      if (!isEmpty(this.sound)) {
-        this.sound.stop();
-        clearInterval(this.intervalID);
-      }
-
-      this.sound = new Howl({
-        src: [this.props.songArray[this.props.songNumber].url],
-        html5: true
-      });
+      createObject();
     }
 
     if (prevProps.isNewSong === false && this.props.isNewSong === true) {
-      if (!isEmpty(this.sound)) {
-        this.sound.stop();
-        clearInterval(this.intervalID);
-      }
-
-      this.sound = new Howl({
-        src: [this.props.songArray[this.props.songNumber].url],
-        html5: true
-      });
+      createObject();
 
       if (this.props.isPlaying === true) {
         this.intervalID = setInterval(this.handleSongTimer, 1000);
@@ -77,10 +73,8 @@ class MusicBar extends React.Component {
 
     if (prevProps.isPlaying === false && this.props.isPlaying === true) {
       if (this.props.isNewSong === true) {
-        this.sound = new Howl({
-          src: [this.props.songArray[this.props.songNumber].url],
-          html5: true
-        });
+        createObject();
+
         this.props.setIsNewSongAction(false);
       }
       this.intervalID = setInterval(this.handleSongTimer, 1000);
@@ -96,12 +90,14 @@ class MusicBar extends React.Component {
   intervalID = 0;
 
   handleSongTimer = () => {
-    if (Math.round(this.sound._duration) === this.props.currentSongDuration) {
-      this.handlePlayNext();
-    } else {
-      this.props.setSongCurrentDurationAction(
-        this.props.currentSongDuration + 1
-      );
+    if (this.sound._duration !== 0) {
+      if (Math.round(this.sound._duration) === this.props.currentSongDuration) {
+        this.handlePlayNext();
+      } else {
+        this.props.setSongCurrentDurationAction(
+          this.props.currentSongDuration + 1
+        );
+      }
     }
   };
 
