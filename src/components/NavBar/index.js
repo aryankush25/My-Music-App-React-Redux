@@ -51,12 +51,12 @@ class NavBar extends React.Component {
     return (
       <div className="header-div-middle">
         <div className="input-group">
-          <input
+          {/* <input
             className="form-control mr-sm-2"
             type="search"
-            placeholder="Search"
+            placeholder="My Music App"
             aria-label="Search"
-          />
+          /> */}
         </div>
 
         <FetchCurrentUserDetails />
