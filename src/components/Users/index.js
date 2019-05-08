@@ -42,7 +42,7 @@ class UsersData extends React.Component {
           <div
             key={index}
             style={{ backgroundColor: "#77c4d3" }}
-            onClick={() => this.handleOnClick(user, index)}
+            onClick={() => this.handleOnClick(index)}
           >
             <div className="user-element"> {user.userData.userName} </div>
           </div>
@@ -53,7 +53,7 @@ class UsersData extends React.Component {
           key={index}
           className={this.state.selectedUser === index ? "selected-user" : ""}
           style={{ backgroundColor: "" }}
-          onClick={() => this.handleOnClick(user, index)}
+          onClick={() => this.handleOnClick(index)}
         >
           <div className="user-element"> {user.userData.userName} </div>
         </div>
