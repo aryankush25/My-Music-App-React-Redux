@@ -17,11 +17,23 @@ let defaultState = {
   isPlaying: false,
   currentSongDuration: 0,
   isNewSong: true,
-  stopSong: false
+  stopSong: false,
+  currentSongPlaylist: 0,
+  currentSongUser: 0
 };
 
 const song = (state = defaultState, action) => {
   switch (action.type) {
+    case "SET_CURRENT_SONG_PLAYLIST":
+      return {
+        ...state,
+        currentSongPlaylist: action.payload.currentSongPlaylist
+      };
+    case "SET_CURRENT_SONG_USER":
+      return {
+        ...state,
+        currentSongUser: action.payload.currentSongUser
+      };
     case SET_SONG_ARRAY:
       return {
         ...state,

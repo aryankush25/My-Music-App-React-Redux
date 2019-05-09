@@ -3,6 +3,10 @@ import EditButton from "./EditButton";
 import "./style.scss";
 import { connect } from "react-redux";
 import { setSongAndPlayFromSongCardAction } from "../../redux/actions/actionSongs";
+import {
+  setSongUserAction,
+  setSongPlaylistAction
+} from "../../redux/actions/actionSongs";
 
 const DeleteButton = props => {
   if (props.showDisableBtn) {
@@ -26,6 +30,8 @@ class OverlaySongsButtons extends React.Component {
               this.props.songArray,
               this.props.index
             );
+            this.props.setSongUserAction(this.props.userNumber);
+            this.props.setSongPlaylistAction(this.props.playlistNumber);
           }}
         >
           Play
@@ -54,17 +60,25 @@ const mapStateToProps = state => {
 
   const songArray = state.songsCard.songArrayCard;
 
+  const { playlistNumber } = state.playlist;
+  const { userNumber } = state.users;
+
   var showDisableBtn = true;
   if (userObject === currentUserId) {
     showDisableBtn = false;
   }
-  return { showDisableBtn, songArray };
+  return { showDisableBtn, songArray, playlistNumber, userNumber };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     setSongAndPlayFromSongCardAction: (songArray, songNumber) =>
-      dispatch(setSongAndPlayFromSongCardAction(songArray, songNumber))
+      dispatch(setSongAndPlayFromSongCardAction(songArray, songNumber)),
+
+    setSongUserAction: userNumber => dispatch(setSongUserAction(userNumber)),
+
+    setSongPlaylistAction: playlistNumber =>
+      dispatch(setSongPlaylistAction(playlistNumber))
   };
 };
 
