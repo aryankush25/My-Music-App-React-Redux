@@ -66,3 +66,17 @@ export const setSongStopAction = stopSong => ({
     stopSong
   }
 });
+
+export const setSongPlaylistAction = currentSongPlaylist => ({
+  type: "SET_CURRENT_SONG_PLAYLIST",
+  payload: {
+    currentSongPlaylist
+  }
+});
+
+export const setSongUserAction = currentSongUser => ({
+  type: "SET_CURRENT_SONG_USER",
+  payload: {
+    currentSongUser
+  }
+});

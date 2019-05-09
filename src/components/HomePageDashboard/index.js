@@ -52,8 +52,8 @@ class HomePageDashboard extends React.Component {
       );
       this.props.setPlaylistIsLoadingAction(false);
       this.props.setSongAction(
-        userArray[this.props.userNumber].userData.playlists[
-          this.props.playlistNumber
+        userArray[this.props.currentSongUser].userData.playlists[
+          this.props.currentSongPlaylist
         ].playlist
       );
 
@@ -102,7 +102,11 @@ class HomePageDashboard extends React.Component {
 
 const mapStateToProps = state => {
   const { isLoading: isLoadingPlaylist } = state.playlist;
-  const { isLoading: isLoadingSong } = state.song;
+  const {
+    isLoading: isLoadingSong,
+    currentSongPlaylist,
+    currentSongUser
+  } = state.song;
   const { appCurrentUser } = state.app;
 
   const { playlistNumber } = state.playlist;
@@ -113,7 +117,9 @@ const mapStateToProps = state => {
     isLoadingSong,
     appCurrentUser,
     playlistNumber,
-    userNumber
+    userNumber,
+    currentSongPlaylist,
+    currentSongUser
   };
 };
 
